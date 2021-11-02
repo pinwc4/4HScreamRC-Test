@@ -37,9 +37,9 @@ public class DriverRobotControl extends OpMode {
 
  */
 
-            ccsChassisControlScheme = new SkidControlScheme(gamepad1);
-            chsChassis = new Gobilda120mmChassis(hardwareMap);
-            chsChassis.setCmpMoveParameters(((SkidControlScheme) ccsChassisControlScheme).getCmpMoveParameters());
+            ccsChassisControlScheme = new DroneControlScheme(gamepad1);
+            chsChassis = new MecanumChassis(hardwareMap);
+            chsChassis.setCmpMoveParameters(((DroneControlScheme) ccsChassisControlScheme).getCmpMoveParameters());
 
 
            frtFreightAttechment = new FreightAttachment(gamepad1, gamepad2, hardwareMap, telemetry);

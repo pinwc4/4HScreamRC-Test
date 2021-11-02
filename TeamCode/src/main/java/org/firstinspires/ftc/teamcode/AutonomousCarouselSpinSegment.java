@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-public class AutonomousIntakeSpinSegment extends AutonomousSegment {
+public class AutonomousCarouselSpinSegment extends AutonomousSegment {
     private double desiredEncoderTicks;
 
-    private DcMotor dcmITMotor;
+    private CRServo dcmCSMotor;
 
     private double dblIntakePower;
     private boolean bolPowerSet = false;
@@ -16,9 +17,9 @@ public class AutonomousIntakeSpinSegment extends AutonomousSegment {
     private boolean bolinitialized;
 
 
-    public AutonomousIntakeSpinSegment(double dblIntakePower, DcMotor dcmITMotor) {
+    public AutonomousCarouselSpinSegment(double dblIntakePower, CRServo dcmCSMotor) {
 
-        this.dcmITMotor = dcmITMotor;
+        this.dcmCSMotor = dcmCSMotor;
 
         this.dblIntakePower = dblIntakePower;
 
@@ -34,7 +35,7 @@ public class AutonomousIntakeSpinSegment extends AutonomousSegment {
             init();
         }
 
-        dcmITMotor.setPower(dblIntakePower);
+        dcmCSMotor.setPower(-dblIntakePower);
 
         bolPowerSet = true;
     }
