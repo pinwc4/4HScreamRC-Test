@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-//this program will move the block on the edge over to the building zone
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -21,38 +19,42 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
-@Autonomous(name = "AutoMoveWobbleGoalTest")
+@Autonomous(name = "AutoFreightTest")
 
-public class AutoMoveWobbleGoalTest extends OpMode {
+public class AutoFreightTest extends OpMode {
 
     private DcMotor dcmFrontLeftMotor;
     private DcMotor dcmFrontRightMotor;
     private DcMotor dcmBackLeftMotor;
     private DcMotor dcmBackRightMotor;
 
-    private DcMotorEx dcmLauncherMotor;
-    private DcMotor dcmGrabberMotor;
+    private CRServo dcmCSMotor;
 
-    private Servo srvGrabberServo;
-    private Servo srvLauncherServo;
+    private long dblWaitParameter;
 
     VuforiaLocalizer vuforia;
     TFObjectDetector tfod;
     BNO055IMU imu;
 
-    private MeasuredDistance msdMeasuredSkystoneDistance = new MeasuredDistance();
-
     private int intTfodMonitorViewId;
 
     private AutonomousSegment atsCurrentSegment;
 
-    private AutonomousScanForRings asrScan;
+    private AutonomousScanForDucks ascDucks;
 
-    private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
-    private static final String LABEL_FIRST_ELEMENT = "Quad";
-    private static final String LABEL_SECOND_ELEMENT = "Single";
+    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
+    private static final String[] LABELS = {
+            "Ball",
+            "Cube",
+            "Duck",
+            "Marker"
+    };
 
-    public String strNumber;
+    private static final String VUFORIA_KEY =
+            "AftxbQr/////AAABmQvhWKx8Ok8fiwDdGWphaPsqGLOjlBaX5uyms1XLxF4mODVA3S3WH8/rgWV4hXAMV0cFMid2OOnFgiki5bwjmVNnyd9aPQnt8F6ajQN2epL1407zvC01z+TK5Dm3fLomAJMdnNbq31l+QlnDED9GMsftphNqNchUnI/QtDPU0/qzPohbEfui6sXzOoc6H+iJcg2gyrDwcen544nIDVH7tDEx72xjaSdYf96f7i6vAm6UyXlegp0HjvBFd3aqyhVC6PcG+HS+PHW2iFwsTL5PZ5Gme9oK6rjzfHxAoyHgxZoMdHuCbD59mZAJcwyGTELLXxOWXCuDGhyZP/nxnQEK+Hckg3D8QeY921oQLaKmru3M";
+
+
+    public float strSecondNumber;
 
     //this function will move forward the specified distance, use negative values on Distance only to go backwards, always keep Speed positive
 
@@ -68,24 +70,29 @@ public class AutoMoveWobbleGoalTest extends OpMode {
         dcmBackLeftMotor = hardwareMap.dcMotor.get("MotorBL");
         dcmBackRightMotor = hardwareMap.dcMotor.get("MotorBR");
 
-        dcmLauncherMotor = hardwareMap.get(DcMotorEx.class, "MotorLM");
-        dcmLauncherMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        dcmLauncherMotor.setDirection(DcMotorEx.Direction.REVERSE);
-
-        dcmGrabberMotor = hardwareMap.get(DcMotor.class, "MotorGM");
-
-        srvGrabberServo = hardwareMap.servo.get("GrabberServo");
-        srvLauncherServo = hardwareMap.servo.get("LauncherServo");
+        dcmCSMotor = hardwareMap.crservo.get("SpinnerMotor");
 
         dcmFrontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmFrontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmBackLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmBackRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        initCameraObjects();
+        initVuforia();
+        initTfod();
         initImu();
 
-        srvGrabberServo.setPosition(0);
+        if (tfod != null) {
+            tfod.activate();
+
+            // The TensorFlow software will scale the input images from the camera to a lower resolution.
+            // This can result in lower detection accuracy at longer distances (> 55cm or 22").
+            // If your target is at distance greater than 50 cm (20") you can adjust the magnification value
+            // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
+            // should be set to the value of the images used to create the TensorFlow Object Detection model
+            // (typically 16/9).
+            tfod.setZoom(2.5, 16.0/9.0);
+        }
+
 
         //initalize autonomous segments
 
@@ -94,13 +101,13 @@ public class AutoMoveWobbleGoalTest extends OpMode {
         Positive vales = right and forward
         */
 
-        asrScan = new AutonomousScanForRings(9, 0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, tfod, vuforia, msdMeasuredSkystoneDistance, imu);
+        ascDucks = new AutonomousScanForDucks(telemetry, tfod, vuforia);
 
 
     }
 
     public void init_loop() {
-            asrScan.runSegment();
+        ascDucks.runSegment();
     }
 
     public void start(){
@@ -108,85 +115,91 @@ public class AutoMoveWobbleGoalTest extends OpMode {
         double dblStartRuntime = getRuntime();
         double dblScanTime = 0;
 
-        while(!asrScan.segmentComplete() && dblScanTime < 7){
-            asrScan.runSegment();
+        while(!ascDucks.segmentComplete() && dblScanTime < 7){
+            ascDucks.runSegment();
             dblScanTime = getRuntime() - dblStartRuntime;
         }
 
-        strNumber = asrScan.getStrNumber();
+        strSecondNumber = ascDucks.getStrSecondNumber();
 
         AutonomousSegment atsNextSegment;
 
         AutonomousSegment atsNewSegment;
 
-        atsCurrentSegment = new AutonomousShootLauncherSegment(0, 0, srvLauncherServo, telemetry);
+        atsCurrentSegment = new AutonomousStrafeForwardSegment(10,0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
 
         atsNextSegment = atsCurrentSegment;
 
-        atsNewSegment = new AutonomousSpinLauncherSegment( 2300, dcmLauncherMotor, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousShootLauncherSegment(0, 0,srvLauncherServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousShootLauncherSegment( 0.5, 1,srvLauncherServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousShootLauncherSegment(0, 1,srvLauncherServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousShootLauncherSegment( 0.5, 1, srvLauncherServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousShootLauncherSegment(0,1,  srvLauncherServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousShootLauncherSegment( 0.5, 1, srvLauncherServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousShootLauncherSegment(0, 1, srvLauncherServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousShootLauncherSegment( 0.5, 1, srvLauncherServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousShootLauncherSegment(0,1,  srvLauncherServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousShootLauncherSegment( 0.5, 1, srvLauncherServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousShootLauncherSegment(0, 1, srvLauncherServo, telemetry);
+        atsNewSegment = new AutonomousStrafeSidewaysSegment(14, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
 
 
+        if (strSecondNumber == 1) {
+
+                atsNewSegment = new AutonomousStrafeForwardSegment(1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+                atsNextSegment.setNextSegment(atsNewSegment);
+                atsNextSegment = atsNewSegment;
 
 
+        } else if (strSecondNumber == 2) {
 
-        if (strNumber == "Quad") {
-
-
-        } else if (strNumber == "Single") {
-
+                atsNewSegment = new AutonomousStrafeForwardSegment(1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+                atsNextSegment.setNextSegment(atsNewSegment);
+                atsNextSegment = atsNewSegment;
 
 
         } else {
 
+                atsNewSegment = new AutonomousStrafeForwardSegment(1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+                atsNextSegment.setNextSegment(atsNewSegment);
+                atsNextSegment = atsNewSegment;
+
 
         }
+
+        atsNewSegment = new AutonomousStrafeSidewaysSegment(40, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousStrafeForwardSegment(-12, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousCarouselSpinSegment(1, dcmCSMotor);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousWaitSegment(4000, telemetry);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousCarouselSpinSegment(0, dcmCSMotor);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousStrafeForwardSegment(10, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousStrafeSidewaysSegment(-20, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousCenterPivotSegment(-1, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousStrafeSidewaysSegment(-10, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousStrafeForwardSegment(90, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
     }
 
     public void loop(){
@@ -203,32 +216,26 @@ public class AutoMoveWobbleGoalTest extends OpMode {
 
     }
 
-    public void initCameraObjects(){
+    private void initVuforia() {
 
-        //initalize Vuforia
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
-        parameters.vuforiaLicenseKey = "AftxbQr/////AAABmQvhWKx8Ok8fiwDdGWphaPsqGLOjlBaX5uyms1XLxF4mODVA3S3WH8/rgWV4hXAMV0cFMid2OOnFgiki5bwjmVNnyd9aPQnt8F6ajQN2epL1407zvC01z+TK5Dm3fLomAJMdnNbq31l+QlnDED9GMsftphNqNchUnI/QtDPU0/qzPohbEfui6sXzOoc6H+iJcg2gyrDwcen544nIDVH7tDEx72xjaSdYf96f7i6vAm6UyXlegp0HjvBFd3aqyhVC6PcG+HS+PHW2iFwsTL5PZ5Gme9oK6rjzfHxAoyHgxZoMdHuCbD59mZAJcwyGTELLXxOWXCuDGhyZP/nxnQEK+Hckg3D8QeY921oQLaKmru3M";
-
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
+    }
 
-
-        //initalize Tensor Flow
-
+    private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.8f;
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 320;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-
-        if (tfod != null) {
-            tfod.activate();
-        }
-
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
     }
 
     public void initImu(){

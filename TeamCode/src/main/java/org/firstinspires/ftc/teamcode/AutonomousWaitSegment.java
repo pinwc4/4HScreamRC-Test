@@ -6,15 +6,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
-public class AutonomousShootLauncherSegment extends AutonomousSegment {
-    private double desiredEncoderTicks;
+public class AutonomousWaitSegment extends AutonomousSegment {
 
-    private Servo srvLauncherServo;
 
-    private static final double GS_GRABBING_POSITION = 1;
-    private static final double GS_RELEASE_POSITION = -1;
-
-    private double dblShootLauncher;
     private boolean bolPowerSet = false;
 
     private long dblWaitParameter;
@@ -28,18 +22,12 @@ public class AutonomousShootLauncherSegment extends AutonomousSegment {
     private boolean bolinitialized;
 
 
-<<<<<<< HEAD
-    public AutonomousShootLauncherSegment(double dblShootLauncher, long dblWaitParameter, Servo srvLauncherServo, Telemetry telemetry) {
-=======
-    public AutonomousShootLauncherSegment(double dblShootLauncher, Servo srvLauncherServo, Telemetry telemetry, double dblRuntime) {
->>>>>>> 4ff0b56df670bdc9230983e032223e7b8efd0549
+    public AutonomousWaitSegment(long dblWaitParameter, Telemetry telemetry) {
 
         this.dblWaitParameter = dblWaitParameter;
         this.telemetry = telemetry;
-        this.srvLauncherServo = srvLauncherServo;
         this.dblRuntime = dblRuntime;
 
-        this.dblShootLauncher = dblShootLauncher;
 
         bolinitialized = false;
     }
@@ -57,23 +45,16 @@ public class AutonomousShootLauncherSegment extends AutonomousSegment {
             dblStartTime = dblRuntime;
         }
 
-        srvLauncherServo.setPosition(dblShootLauncher);
-
-<<<<<<< HEAD
         try {
             Thread.sleep(dblWaitParameter);
         } catch (InterruptedException e) {
             e.printStackTrace();
-=======
-        if((dblRuntime - dblStartTime) > 5) {
-            bolPowerSet = true;
->>>>>>> 4ff0b56df670bdc9230983e032223e7b8efd0549
         }
 
             bolPowerSet = true;
 
 
-        telemetry.addData("Position", srvLauncherServo.getPosition());
+     //   telemetry.addData("Position", srvLauncherServo.getPosition());
 
     }
 

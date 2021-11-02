@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -15,11 +14,12 @@ public class FreightAttachment extends Object {
     private Gamepad gmpGamepad1;
     private Gamepad gmpGamepad2;
     private Telemetry telTelemetry;
-    private DcMotor dcmIntake0;
+    private CRServo dcmIntake0;
 
     private CRServo dcmCarouselSpinner1;
 
     private TouchSensor snsTestTouch;
+
     private boolean bolXWasPressed = false;
     private boolean bolRBumperWasPressed = false;
     private boolean bolLBumperWasPressed = false;
@@ -40,7 +40,7 @@ public class FreightAttachment extends Object {
         this.gmpGamepad2 = gmpGamepad2;
         this.telTelemetry = telTelemetry;
 
-        //dcmIntake0 = hmpHardwareMap.get(DcMotor.class, "IntakeMotor");
+        dcmIntake0 = hmpHardwareMap.crservo.get("IntakeMotor");
         dcmCarouselSpinner1 = hmpHardwareMap.crservo.get("SpinnerMotor");
 
     }
@@ -49,7 +49,7 @@ public class FreightAttachment extends Object {
 
     public void moveAttachments() {
 /*
-        double dblCarouselSpeed = 0 + dblCarouselSpeedToggle;
+        double dblCarouselSpeed = 0.5 + dblCarouselSpeedToggle;
 
         if (gmpGamepad1.a && !bolAWasPressed) {
             bolAWasPressed = true;
@@ -81,51 +81,42 @@ public class FreightAttachment extends Object {
 
  */
 
+        dcmCarouselSpinner1.setPower(dblCarouselSpeed);
 
-/*
-        if(gmpGamepad1.b){
+
+
+
+        if(gmpGamepad1.a){
             dblCarouselSpeed = dblCarouselSpeed + 0.0015;
         } else{
             dblCarouselSpeed = 0;
         }
 
-        if(gmpGamepad1.y){
+        if(gmpGamepad1.b){
             dblCarouselSpeed = dblCarouselSpeed + 0.001;
         } else{
             dblCarouselSpeed = 0;
         }
 
 
-
-
-        dcmCarouselSpinner1.setPower(dblCarouselSpeed);
-
-
- */
-
-        dcmCarouselSpinner1.setPower(0.54);
-
-
-
-/*
-        if (gmpGamepad1.right_bumper) {
+        if (gmpGamepad1.right_trigger>0) {
             dcmIntake0.setPower(1);
         } else {
             dcmIntake0.setPower(0);
         }
 
-        if (gmpGamepad1.left_bumper) {
+        if (gmpGamepad1.left_trigger>0) {
             dcmIntake0.setPower(-1);
         } else {
             dcmIntake0.setPower(0);
         }
-*/
+
 
 
         telTelemetry.addData("TouchStatus", snsTestTouch);
         telTelemetry.addData("dblmotorspeed", dblCarouselSpeedToggle);
-        telTelemetry.addData("dblmotorspeed", dblCarouselSpeedToggle);
         telTelemetry.addData("motorspeed", dcmCarouselSpinner1);
+        telTelemetry.addData("Intakemotorspeed", dcmIntake0);
 
         telTelemetry.update();
 
