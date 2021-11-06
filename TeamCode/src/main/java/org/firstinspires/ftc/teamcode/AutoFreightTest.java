@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -23,10 +24,10 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 public class AutoFreightTest extends OpMode {
 
-    private DcMotor dcmFrontLeftMotor;
-    private DcMotor dcmFrontRightMotor;
-    private DcMotor dcmBackLeftMotor;
-    private DcMotor dcmBackRightMotor;
+    private DcMotorEx dcmFrontLeftMotor;
+    private DcMotorEx dcmFrontRightMotor;
+    private DcMotorEx dcmBackLeftMotor;
+    private DcMotorEx dcmBackRightMotor;
 
     private CRServo dcmCSMotor;
 
@@ -60,22 +61,32 @@ public class AutoFreightTest extends OpMode {
 
 
     public void ResetChassisEncoder(){
-        dcmFrontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcmFrontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        dcmFrontLeftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        dcmFrontLeftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        dcmFrontRightMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        dcmFrontRightMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        dcmBackLeftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        dcmBackLeftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        dcmBackRightMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        dcmBackRightMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
     public void init(){
-        dcmFrontLeftMotor = hardwareMap.dcMotor.get("MotorFL");
-        dcmFrontRightMotor = hardwareMap.dcMotor.get("MotorFR");
-        dcmBackLeftMotor = hardwareMap.dcMotor.get("MotorBL");
-        dcmBackRightMotor = hardwareMap.dcMotor.get("MotorBR");
+        dcmFrontLeftMotor = hardwareMap.get(DcMotorEx.class, "MotorFL");
+        dcmFrontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        dcmFrontRightMotor = hardwareMap.get(DcMotorEx.class, "MotorFL");
+        dcmFrontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        dcmBackLeftMotor = hardwareMap.get(DcMotorEx.class, "MotorFL");
+        dcmBackLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        dcmBackRightMotor = hardwareMap.get(DcMotorEx.class, "MotorFL");
+        dcmBackRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        dcmFrontLeftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        dcmFrontRightMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        dcmBackLeftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        dcmBackRightMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         dcmCSMotor = hardwareMap.crservo.get("SpinnerMotor");
-
-        dcmFrontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        dcmFrontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        dcmBackLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        dcmBackRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         initVuforia();
         initTfod();

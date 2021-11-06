@@ -46,8 +46,7 @@ public class LauncherAttechment extends Object {
         this.gmpGamepad2 = gmpGamepad2;
         this.telTelemetry = telTelemetry;
 
-        dcmLauncherMotor = hmpHardwareMap.get(DcMotorEx.class, "MotorLM");
-        dcmLauncherMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         dcmLauncherMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         dcmGrabberMotor = hmpHardwareMap.get(DcMotor.class, "MotorGM");
