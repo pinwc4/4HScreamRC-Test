@@ -14,9 +14,10 @@ public class FreightAttachment extends Object {
     private Gamepad gmpGamepad1;
     private Gamepad gmpGamepad2;
     private Telemetry telTelemetry;
-    private CRServo dcmIntake0;
 
-    private CRServo dcmCarouselSpinner1;
+    private DcMotor dcmIntake0;
+
+    //private CRServo dcmCarouselSpinner1;
 
     private TouchSensor snsTestTouch;
 
@@ -40,8 +41,10 @@ public class FreightAttachment extends Object {
         this.gmpGamepad2 = gmpGamepad2;
         this.telTelemetry = telTelemetry;
 
-        dcmIntake0 = hmpHardwareMap.crservo.get("IntakeMotor");
-        dcmCarouselSpinner1 = hmpHardwareMap.crservo.get("SpinnerMotor");
+        dcmIntake0 = hmpHardwareMap.get(DcMotor.class, "MotorIM");
+        dcmIntake0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //dcmCarouselSpinner1 = hmpHardwareMap.crservo.get("SpinnerMotor");
 
     }
 
@@ -81,7 +84,7 @@ public class FreightAttachment extends Object {
 
  */
 
-        dcmCarouselSpinner1.setPower(dblCarouselSpeed);
+      //  dcmCarouselSpinner1.setPower(dblCarouselSpeed);
 
 
 
@@ -115,7 +118,7 @@ public class FreightAttachment extends Object {
 
         telTelemetry.addData("TouchStatus", snsTestTouch);
         telTelemetry.addData("dblmotorspeed", dblCarouselSpeedToggle);
-        telTelemetry.addData("motorspeed", dcmCarouselSpinner1);
+       // telTelemetry.addData("motorspeed", dcmCarouselSpinner1);
         telTelemetry.addData("Intakemotorspeed", dcmIntake0);
 
         telTelemetry.update();
