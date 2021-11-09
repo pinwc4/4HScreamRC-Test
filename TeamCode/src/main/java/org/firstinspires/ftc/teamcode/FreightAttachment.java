@@ -15,6 +15,7 @@ public class FreightAttachment extends Object {
     private Gamepad gmpGamepad2;
     private Telemetry telTelemetry;
     private CRServo dcmIntake0;
+    private DcMotor dcmSlider1;
 
     private CRServo dcmCarouselSpinner1;
 
@@ -26,7 +27,7 @@ public class FreightAttachment extends Object {
     private boolean bolBWasPressed = false;
     private boolean bolYWasPressed = false;
 
-    private boolean bolGSToggle = false;
+    private boolean bolGMToggle = false;
     private boolean bolAWasPressed = false;
     private boolean bolCarouselToggle = false;
 
@@ -41,7 +42,13 @@ public class FreightAttachment extends Object {
         this.telTelemetry = telTelemetry;
 
         dcmIntake0 = hmpHardwareMap.crservo.get("IntakeMotor");
+
         dcmCarouselSpinner1 = hmpHardwareMap.crservo.get("SpinnerMotor");
+
+        dcmSlider1 = hmpHardwareMap.get(DcMotor.class, "MotorGM");
+        dcmSlider1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcmSlider1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        dcmSlider1.setDirection(DcMotor.Direction.FORWARD);
 
     }
 
@@ -109,6 +116,57 @@ public class FreightAttachment extends Object {
             dcmIntake0.setPower(-1);
         } else {
             dcmIntake0.setPower(0);
+        }
+
+        dcmSlider1.setPower(gmpGamepad2.left_stick_y);
+
+        if (gmpGamepad2.a && !bolAWasPressed) {
+            bolAWasPressed = true;
+            bolGMToggle = !bolGMToggle;
+            if (bolGMToggle) {
+                dcmSlider1.setTargetPosition(400);
+                dcmSlider1.setPower(0.5);
+                dcmSlider1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                if (gmpGamepad2.a && !bolAWasPressed) {
+                    dcmSlider1.setTargetPosition(800);
+                    dcmSlider1.setPower(0.5);
+                    dcmSlider1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    if(gmpGamepad2.a && !bolAWasPressed) {
+                        dcmSlider1.setTargetPosition(1200);
+                        dcmSlider1.setPower(0.5);
+                        dcmSlider1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    }
+                }
+
+            }
+
+        }
+        else if(gmpGamepad2.b && !bolBWasPressed){
+            dcmSlider1.setTargetPosition(0);
+            dcmSlider1.setPower(0.5);
+            dcmSlider1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+
+        if (gmpGamepad2.b && !bolBWasPressed) {
+            bolBWasPressed = true;
+            bolGMToggle = !bolGMToggle;
+            if (bolGMToggle) {
+                dcmSlider1.setTargetPosition(0);
+                dcmSlider1.setPower(0.5);
+                dcmSlider1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                //dcmSlider1.setPosition(1);
+
+            } else {
+                dcmSlider1.setTargetPosition(0);
+                dcmSlider1.setPower(0.5);
+            }
+        } else if (!gmpGamepad2.b) {
+            bolBWasPressed = false;
         }
 
 
