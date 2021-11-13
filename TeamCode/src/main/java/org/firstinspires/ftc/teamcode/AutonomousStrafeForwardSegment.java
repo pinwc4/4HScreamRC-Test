@@ -29,7 +29,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
     private double dblBackLeftMotorPower;
     private double dblBackRightMotorPower;
 
-    private static final double NORMAL_POWER = 0.5;
+    private static final double NORMAL_POWER = 0.3;
     private static final double REDUCED_POWER = 0.525;
     private double dblDesiredHeading = 0;
     private static final double CORRECTION_AGGRESSION = 0.10;
@@ -68,7 +68,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
         bolinitialized = false;
         boldistReached = false;
     }
-
+/*
     public AutonomousStrafeForwardSegment(double distToTravelin, double dblDesiredHeading,  DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, MeasuredDistance msdMeasuredDistance, BNO055IMU imu) {
 
         this.imu = imu;
@@ -86,6 +86,8 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
         this.dblDesiredHeading = dblDesiredHeading;
 
     }
+
+ */
     private void init() {
         dcmFLMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dcmFLMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -208,11 +210,16 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
         dcmBLMotor.setPower(-dblBackLeftMotorPower);
         dcmBRMotor.setPower(dblBackRightMotorPower);
 
-        telemetry.addData("first", dblHeading);
-        telemetry.addData("front left motor position", dcmFLMotor.getCurrentPosition());
+        telemetry.addData("first",angles.firstAngle);
+        telemetry.addData("second", angles.secondAngle);
+        telemetry.addData("third", angles.thirdAngle);
+        telemetry.addData("HEADING", dblDesiredHeading);
+        telemetry.addData("front left motor POSITION", dcmFLMotor.getCurrentPosition());
         telemetry.addData("front left motor power motor", dcmFLMotor.getPower());
-        telemetry.addData("front left motor value", dblFrontLeftMotorValue);
-        telemetry.addData("front right motor power dbl", dblFrontLeftMotorPower);
+        telemetry.addData("front left motor power motor", dcmFRMotor.getPower());
+        telemetry.addData("front left motor power motor", dcmBLMotor.getPower());
+        //telemetry.addData("front left motor value", dblFrontLeftMotorValue);
+        //telemetry.addData("front right motor power dbl", dblFrontLeftMotorPower);
         //telemetry.addData("second", angles.secondAngle);
         //telemetry.addData("third", angles.thirdAngle);
 

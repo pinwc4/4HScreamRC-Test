@@ -69,6 +69,7 @@ public class AutonomousSlideSegment extends AutonomousSegment {
 
         if (dcmSlider1.getCurrentPosition() > intSlideSpeed - 100) {
             srvBucketServo.setPosition(dblServoPosition);
+            boldistReached = true;
         }
 
         telemetry.addData("front left motor position", dcmSlider1.getCurrentPosition());
