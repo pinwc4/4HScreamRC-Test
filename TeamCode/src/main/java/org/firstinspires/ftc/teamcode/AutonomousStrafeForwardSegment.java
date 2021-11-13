@@ -29,7 +29,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
     private double dblBackLeftMotorPower;
     private double dblBackRightMotorPower;
 
-    private static final double NORMAL_POWER = 0.7;
+    private static final double NORMAL_POWER = 0.5;
     private static final double REDUCED_POWER = 0.525;
     private double dblDesiredHeading = 0;
     private static final double CORRECTION_AGGRESSION = 0.10;
