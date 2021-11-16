@@ -29,6 +29,9 @@ public class AutonomousSlideSegment extends AutonomousSegment {
     private boolean boldistReached;
     private double disttoTravelin;
 
+    private double dblRuntime;
+    private double dblStartTime = 0;
+
 
 
     public AutonomousSlideSegment(int intSlideSpeed, double dblServoPosition, DcMotorEx dcmSlider1, Servo srvBucketServo, Telemetry telemetry) {
@@ -49,8 +52,8 @@ public class AutonomousSlideSegment extends AutonomousSegment {
     }
 
     private void init() {
-        dcmSlider1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcmSlider1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //dcmSlider1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //dcmSlider1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         dcmSlider1.setDirection(DcMotor.Direction.FORWARD);
 
         bolinitialized = true;
@@ -62,13 +65,15 @@ public class AutonomousSlideSegment extends AutonomousSegment {
             init();
         }
 
-
         dcmSlider1.setTargetPosition(intSlideSpeed);
         dcmSlider1.setPower(0.5);
         dcmSlider1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         if (dcmSlider1.getCurrentPosition() > intSlideSpeed - 100) {
             srvBucketServo.setPosition(dblServoPosition);
+        }
+
+        if(dcmSlider1.getCurrentPosition() > intSlideSpeed -10 && dcmSlider1.getCurrentPosition() < intSlideSpeed + 10){
             boldistReached = true;
         }
 

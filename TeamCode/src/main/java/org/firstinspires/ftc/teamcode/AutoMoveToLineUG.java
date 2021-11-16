@@ -72,15 +72,15 @@ public class AutoMoveToLineUG extends OpMode {
 
         AutonomousSegment atsNewSegment;
 
-        atsCurrentSegment = new AutonomousStrafeForwardSegment( 20, 0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsCurrentSegment = new AutonomousStrafeForwardWaitSegment( 0.25, 0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
 
         atsNextSegment = atsCurrentSegment;
 
-        atsNewSegment = new AutonomousCenterPivotSegment(1, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousWaitSegment(4000, telemetry);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardSegment(64, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardWaitSegment(0, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 

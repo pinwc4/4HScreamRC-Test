@@ -20,9 +20,9 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
-@Autonomous(name = "AutoFreightDuckSideRed")
+@Autonomous(name = "AutoFreightDuckSideBlue")
 
-public class AutoFreightDuckSideRed extends OpMode {
+public class AutoFreightDuckSideBlue extends OpMode {
 
     private DcMotor dcmFrontLeftMotor;
     private DcMotor dcmFrontRightMotor;
@@ -143,11 +143,11 @@ public class AutoFreightDuckSideRed extends OpMode {
         atsNextSegment = atsCurrentSegment;
 
 
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(-20, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeSidewaysSegment(13, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardSegment(15, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardSegment(13, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -187,11 +187,11 @@ public class AutoFreightDuckSideRed extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(50, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeSidewaysSegment(-50, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousCarouselSpinSegment(1, dcmCSMotor);
+        atsNewSegment = new AutonomousCarouselSpinSegment(-1, dcmCSMotor);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -215,7 +215,7 @@ public class AutoFreightDuckSideRed extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardSegment(20, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardSegment(17, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
