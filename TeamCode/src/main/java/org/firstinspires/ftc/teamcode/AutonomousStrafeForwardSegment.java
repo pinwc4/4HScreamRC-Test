@@ -152,7 +152,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
 
             telemetry.addLine();
 
-        } else if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks + 50) && desiredEncoderTicks < 0){
+       /* } else if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks + 50) && desiredEncoderTicks < 0){
 
             if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks/2)){
                 dblFrontLeftMotorValue -= INCREMENT;
@@ -195,6 +195,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
                 dblBackLeftMotorValue = -(NORMAL_POWER + (dblHeadingCorrection));
             }
 */
+
         }else{
 
             dblFrontLeftMotorPower = 0;
@@ -211,17 +212,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
         dcmBRMotor.setPower(dblBackRightMotorPower);
 
         telemetry.addData("first",angles.firstAngle);
-        telemetry.addData("second", angles.secondAngle);
-        telemetry.addData("third", angles.thirdAngle);
         telemetry.addData("HEADING", dblDesiredHeading);
-        telemetry.addData("front left motor POSITION", dcmFLMotor.getCurrentPosition());
-        telemetry.addData("front left motor power motor", dcmFLMotor.getPower());
-        telemetry.addData("front left motor power motor", dcmFRMotor.getPower());
-        telemetry.addData("front left motor power motor", dcmBLMotor.getPower());
-        //telemetry.addData("front left motor value", dblFrontLeftMotorValue);
-        //telemetry.addData("front right motor power dbl", dblFrontLeftMotorPower);
-        //telemetry.addData("second", angles.secondAngle);
-        //telemetry.addData("third", angles.thirdAngle);
 
         telemetry.update();
     }

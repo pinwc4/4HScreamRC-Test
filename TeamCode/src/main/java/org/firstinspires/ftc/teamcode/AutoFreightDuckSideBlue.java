@@ -34,6 +34,8 @@ public class AutoFreightDuckSideBlue extends OpMode {
 
     private DcMotorEx dcmSlider1;
 
+    private DcMotorEx dcmMagnetArm;
+
     private long dblWaitParameter;
 
     VuforiaLocalizer vuforia;
@@ -46,12 +48,9 @@ public class AutoFreightDuckSideBlue extends OpMode {
 
     private AutonomousScanForDucks ascDucks;
 
-    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
+    private static final String TFOD_MODEL_ASSET = "V2model_20211204_165120.tflite";
     private static final String[] LABELS = {
-            "Ball",
-            "Cube",
-            "Duck",
-            "Marker"
+            "Green TSE"
     };
 
     private static final String VUFORIA_KEY =
@@ -78,6 +77,11 @@ public class AutoFreightDuckSideBlue extends OpMode {
         dcmSlider1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dcmSlider1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         dcmSlider1.setDirection(DcMotor.Direction.FORWARD);
+
+        dcmMagnetArm = hardwareMap.get(DcMotorEx.class, "MagnetArm");
+        dcmMagnetArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcmMagnetArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        dcmMagnetArm.setDirection(DcMotor.Direction.FORWARD);
 
         dcmCSMotor = hardwareMap.crservo.get("SpinnerMotor");
 
@@ -143,11 +147,11 @@ public class AutoFreightDuckSideBlue extends OpMode {
         atsNextSegment = atsCurrentSegment;
 
 
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(13, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeSidewaysSegment(15, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardSegment(13, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardSegment(11, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -175,7 +179,7 @@ public class AutoFreightDuckSideBlue extends OpMode {
 
         }
 
-        atsNewSegment = new AutonomousWaitSegment(4000, telemetry);
+        atsNewSegment = new AutonomousWaitSegment(1000, telemetry);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -187,7 +191,7 @@ public class AutoFreightDuckSideBlue extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(-50, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeSidewaysSegment(-45, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -195,7 +199,11 @@ public class AutoFreightDuckSideBlue extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardWaitSegment(-0.25, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardWaitSegment(-0.2, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousCarouselSpinSegment(-1, dcmCSMotor);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 

@@ -19,12 +19,9 @@ import java.util.List;
 
 public class AutonomousScanForDucks extends AutonomousSegment {
 
-    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
+    private static final String TFOD_MODEL_ASSET = "V2model_20211204_165120.tflite";
     private static final String[] LABELS = {
-            "Ball",
-            "Cube",
-            "Duck",
-            "Marker"
+            "Green TSE"
     };
 
     private int intNumSameRecognitions = 0;
@@ -112,12 +109,12 @@ public class AutonomousScanForDucks extends AutonomousSegment {
                     strNewName = recognition.getLabel();
                 }
 
-                if (strNewName.equals("Duck") && strNewNumber > 400) {
+                if (strNewName.equals("Green TSE") && strNewNumber > 400) {
                     strNumber = 1;
-                    telemetry.addLine("Level 1");
-                } else if (strNewName.equals("Duck") && strNewNumber < 400) {
-                    strNumber = 2;
                     telemetry.addLine("Level 2");
+                } else if (strNewName.equals("Green TSE") && strNewNumber < 400) {
+                    strNumber = 2;
+                    telemetry.addLine("Level 1");
                 } else {
                     strNumber = 3;
                     telemetry.addLine("Level 3");

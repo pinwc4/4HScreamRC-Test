@@ -54,12 +54,10 @@ import java.util.List;
 
 public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
 
-    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
+    //private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
+    private static final String TFOD_MODEL_ASSET = "model_20211130_205855.tflite";
     private static final String[] LABELS = {
-      "Ball",
-      "Cube",
-      "Duck",
-      "Marker"
+      "Green TSE"
     };
 
     public float strNumber = 0;
@@ -98,7 +96,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(2.5, 16.0/9.0);
+            tfod.setZoom(2.5, 14.0/11.0);
         }
 
         /** Wait for the game to begin */
@@ -127,10 +125,10 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
                           strNewNumber = recognition.getLeft();
                           strNewName = recognition.getLabel();
                       }
-                        if (strNewName.equals("Duck") && strNewNumber > 500) {
+                        if (strNewName.equals("Green TSE") && strNewNumber > 500) {
                             strNumber = 1;
                             telemetry.addLine("1");
-                        } else if (strNewName.equals("Duck") && strNewNumber < 500) {
+                        } else if (strNewName.equals("Green TSE") && strNewNumber < 500) {
                             strNumber = 2;
                             telemetry.addLine("2");
                         } else {
@@ -161,7 +159,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
             "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-       tfodParameters.minResultConfidence = 0.8f;
+       tfodParameters.minResultConfidence = 0.7f;
        tfodParameters.isModelTensorFlow2 = true;
        tfodParameters.inputSize = 320;
        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
