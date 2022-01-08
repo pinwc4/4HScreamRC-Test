@@ -18,10 +18,13 @@ public class FreightAttachment extends Object {
     private Gamepad gmpGamepad2;
     private Telemetry telTelemetry;
     private DcMotorEx dcmSlider1;
+    private DcMotorEx dcmMagnetArm;
 
     private DcMotor dcmIntake0;
 
     private Servo srvBucketServo;
+    private Servo srvMagnetSwitch;
+    private Servo srvMagnetOrientation;
 
     private CRServo dcmCarouselSpinner1;
 
@@ -32,21 +35,33 @@ public class FreightAttachment extends Object {
     private boolean bolLBumperWasPressed = false;
     private boolean bolBWasPressed = false;
     private boolean bolYWasPressed = false;
+    private boolean bolDPadDownWasPressed = false;
+    private boolean bolDPadUpWasPressed = false;
 
     private boolean bolGMAToggle = false;
     private boolean bolGMBToggle = false;
     private boolean bolGMYToggle = false;
     private boolean bolSVToggle = false;
+    private boolean bolMOToggle = false;
+    private boolean bolMPToggle = false;
+    private boolean bolMCToggle = false;
+    private boolean bolAPToggle = false;
+
     private boolean bolAWasPressed = false;
     private boolean bolCarouselToggle = false;
 
     private boolean bolStickMoved = false;
 
     private double dblCarouselSpeed;
+    private double dblCapDist;
     private double dblSlideSpeed;
+    private double dblMagnetArmSpeed;
     private int intSlideSpeed;
+    private int intMagnetArmSpeed;
+    private int intMagnetArmSpeed2;
 
     private double dblCarouselSpeedToggle;
+    private static final double SERVO_MOVE_INTERVAL = 0.005;
 
     public FreightAttachment(Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry) {
 
@@ -66,6 +81,16 @@ public class FreightAttachment extends Object {
 
         srvBucketServo = hmpHardwareMap.servo.get("BucketServo");
         srvBucketServo.setPosition(0.85);
+
+
+        dcmMagnetArm = hmpHardwareMap.get(DcMotorEx.class, "MagnetArm");
+        dcmMagnetArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcmMagnetArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        dcmMagnetArm.setDirection(DcMotor.Direction.FORWARD);
+
+        srvMagnetOrientation = hmpHardwareMap.servo.get("ServoMO");
+
+        srvMagnetSwitch = hmpHardwareMap.servo.get("ServoMS");
 
     }
 
@@ -104,6 +129,7 @@ public class FreightAttachment extends Object {
 
 
  */
+
 
         dcmCarouselSpinner1.setPower(dblCarouselSpeed);
 
@@ -217,14 +243,109 @@ public class FreightAttachment extends Object {
 
 
 
-        telTelemetry.addData("TouchStatus", snsTestTouch);
-        telTelemetry.addData("dblmotorspeed", dblCarouselSpeedToggle);
-        telTelemetry.addData("Intakemotorspeed", dcmIntake0.getPower());
+
+            //Magnet Code
+
+
+
+        //Magnet Switch Toggle
+        if (gmpGamepad2.left_bumper && !bolLBumperWasPressed) {
+            bolLBumperWasPressed = true;
+            bolMOToggle = !bolMOToggle;
+            if (bolMOToggle) {
+                srvMagnetSwitch.setPosition(0.2);
+            } else {
+                srvMagnetSwitch.setPosition(0.8);
+            }
+            //difference is 2/3 (180)
+        } else if (!gmpGamepad2.left_bumper && bolLBumperWasPressed) {
+            bolLBumperWasPressed = false;
+        }
+
+
+
+
+       //Manual Arm Control
+
+        if(gmpGamepad2.right_stick_y != 0) {
+            dblMagnetArmSpeed = dblMagnetArmSpeed + (-gmpGamepad2.right_stick_y*6);
+
+            intMagnetArmSpeed2 = (int) dblMagnetArmSpeed;
+        }
+
+
+
+
+
+        //Arm Preset Delivery
+        if (gmpGamepad2.right_bumper && !bolRBumperWasPressed) {
+            bolRBumperWasPressed = true;
+            bolMPToggle = !bolMPToggle;
+            if (bolMPToggle) {
+                intMagnetArmSpeed = 3100;
+                srvMagnetSwitch.setPosition(0.2);
+
+            } else {
+                intMagnetArmSpeed = 0;
+            }
+
+        } else if (!gmpGamepad2.right_bumper && bolRBumperWasPressed) {
+            bolRBumperWasPressed = false;
+        }
+
+
+
+
+        //Arm Preset Capping
+        if (gmpGamepad2.dpad_down && !bolDPadDownWasPressed) {
+            bolDPadDownWasPressed = true;
+            bolMCToggle = !bolMCToggle;
+            if (bolMCToggle) {
+                dblCapDist=0.4;
+            } else {
+                dblCapDist=0;
+            }
+            //difference is 2/3 (180)
+        } else if (!gmpGamepad2.dpad_down && bolDPadDownWasPressed) {
+            bolDPadDownWasPressed = false;
+        }else{
+            srvMagnetOrientation.setPosition((dcmMagnetArm.getCurrentPosition()/3700f+dblCapDist));
+        }
+
+
+
+
+        //Pick Up TSE
+        if (gmpGamepad2.dpad_up && !bolDPadUpWasPressed) {
+            bolDPadUpWasPressed = true;
+            bolAPToggle = !bolAPToggle;
+            if (bolAPToggle) {
+                intMagnetArmSpeed = 2000;
+
+            } else {
+                intMagnetArmSpeed = 0;
+            }
+
+        } else if (!gmpGamepad2.dpad_up && bolDPadUpWasPressed) {
+            bolDPadUpWasPressed = false;
+        }
+
+
+        dcmMagnetArm.setTargetPosition(intMagnetArmSpeed+intMagnetArmSpeed2);
+        dcmMagnetArm.setPower(0.5);
+        dcmMagnetArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+
+
         telTelemetry.addData("sliderposition", dcmSlider1.getCurrentPosition());
+        telTelemetry.addData("MagnetArm", dcmMagnetArm.getCurrentPosition());
         telTelemetry.addData("sliderpower", dcmSlider1.getPower());
         telTelemetry.addData("slidespeed", intSlideSpeed);
-        telTelemetry.addData("slidespeed", dblCarouselSpeed);
 
+
+
+        telTelemetry.addData("Orientation", srvMagnetOrientation.getPosition());
         telTelemetry.update();
 
 

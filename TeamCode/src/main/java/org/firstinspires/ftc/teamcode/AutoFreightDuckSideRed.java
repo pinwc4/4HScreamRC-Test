@@ -34,6 +34,8 @@ public class AutoFreightDuckSideRed extends OpMode {
 
     private DcMotorEx dcmSlider1;
 
+    private DcMotorEx dcmMagnetArm;
+
     private long dblWaitParameter;
 
     VuforiaLocalizer vuforia;
@@ -46,12 +48,9 @@ public class AutoFreightDuckSideRed extends OpMode {
 
     private AutonomousScanForDucks ascDucks;
 
-    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
+    private static final String TFOD_MODEL_ASSET = "V2model_20211204_165120.tflite";
     private static final String[] LABELS = {
-            "Ball",
-            "Cube",
-            "Duck",
-            "Marker"
+            "Green TSE"
     };
 
     private static final String VUFORIA_KEY =
@@ -79,6 +78,11 @@ public class AutoFreightDuckSideRed extends OpMode {
         dcmSlider1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         dcmSlider1.setDirection(DcMotor.Direction.FORWARD);
 
+        dcmMagnetArm = hardwareMap.get(DcMotorEx.class, "MagnetArm");
+        dcmMagnetArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcmMagnetArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        dcmMagnetArm.setDirection(DcMotor.Direction.FORWARD);
+
         dcmCSMotor = hardwareMap.crservo.get("SpinnerMotor");
 
         srvBucketServo = hardwareMap.servo.get("BucketServo");
@@ -102,7 +106,7 @@ public class AutoFreightDuckSideRed extends OpMode {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(2.5, 16.0/9.0);
+            tfod.setZoom(2.5, 16.0/11.0);
         }
 
 
@@ -147,39 +151,47 @@ public class AutoFreightDuckSideRed extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardSegment(15, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousMagnetArmSegment(400, dcmSlider1, telemetry);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousStrafeForwardSegment(14, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
 
         if (strSecondNumber == 1) {
 
-                atsNewSegment = new AutonomousSlideSegment(400, 0.15, dcmSlider1, srvBucketServo, telemetry);
+                atsNewSegment = new AutonomousSlideSegment(600, 0.15, dcmSlider1, srvBucketServo, telemetry);
                 atsNextSegment.setNextSegment(atsNewSegment);
                 atsNextSegment = atsNewSegment;
 
 
         } else if (strSecondNumber == 2) {
 
-            atsNewSegment = new AutonomousSlideSegment(250, 0.15, dcmSlider1, srvBucketServo, telemetry);
+            atsNewSegment = new AutonomousSlideSegment(400, 0.15, dcmSlider1, srvBucketServo, telemetry);
             atsNextSegment.setNextSegment(atsNewSegment);
             atsNextSegment = atsNewSegment;
 
 
         } else {
 
-            atsNewSegment = new AutonomousSlideSegment(600, 0.15, dcmSlider1, srvBucketServo, telemetry);
+            atsNewSegment = new AutonomousSlideSegment(250, 0.15, dcmSlider1, srvBucketServo, telemetry);
             atsNextSegment.setNextSegment(atsNewSegment);
             atsNextSegment = atsNewSegment;
 
 
         }
 
-        atsNewSegment = new AutonomousWaitSegment(4000, telemetry);
+        atsNewSegment = new AutonomousWaitSegment(1000, telemetry);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
         atsNewSegment = new AutonomousSlideSegment(0, 0.85, dcmSlider1, srvBucketServo, telemetry);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousMagnetArmSegment(0, dcmSlider1, telemetry);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -195,7 +207,7 @@ public class AutoFreightDuckSideRed extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardWaitSegment(-0.25, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardWaitSegment(-0.2, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 

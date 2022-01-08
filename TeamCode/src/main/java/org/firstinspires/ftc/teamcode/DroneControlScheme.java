@@ -33,9 +33,9 @@ public class DroneControlScheme extends ChassisControlScheme {
             bolStickWasPressed = false;
         }
         if (bolSDToggle) {
-            cmpMoveParameters.setXDirection(gmpGamepad1.right_stick_x / 4);
-            cmpMoveParameters.setYDirection(gmpGamepad1.right_stick_y / 4);
-            cmpMoveParameters.setCenterPivot(gmpGamepad1.left_stick_x / 4);
+            cmpMoveParameters.setXDirection(gmpGamepad1.right_stick_x / 2);
+            cmpMoveParameters.setYDirection(gmpGamepad1.right_stick_y / 2);
+            cmpMoveParameters.setCenterPivot(gmpGamepad1.left_stick_x / 2);
         } else {
             cmpMoveParameters.setXDirection(gmpGamepad1.right_stick_x);
             cmpMoveParameters.setYDirection(gmpGamepad1.right_stick_y);

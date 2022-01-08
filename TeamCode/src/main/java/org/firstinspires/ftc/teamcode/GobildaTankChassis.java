@@ -40,11 +40,11 @@ public class GobildaTankChassis extends Chassis {
             fltRightMotorPower = fltThrottle;
         }
         if (fltCenterPivot == 0){
-            dcmLeftMotor.setPower(-fltLeftMotorPower);
-            dcmRightMotor.setPower((fltRightMotorPower));
+            dcmLeftMotor.setPower(-fltLeftMotorPower/2);
+            dcmRightMotor.setPower((fltRightMotorPower/2));
         } else {
-            dcmLeftMotor.setPower(fltCenterPivot);
-            dcmRightMotor.setPower(fltCenterPivot);
+            dcmLeftMotor.setPower(-fltCenterPivot/2);
+            dcmRightMotor.setPower(-fltCenterPivot/2);
         }
     }
 }
