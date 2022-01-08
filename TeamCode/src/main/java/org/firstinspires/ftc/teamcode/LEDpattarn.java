@@ -33,6 +33,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
@@ -46,10 +47,15 @@ public class LEDpattarn extends Object {
     private Gamepad gmpGamepad1;
     private Telemetry telTelemetry;
 
+    private Servo srvLightRow1;
+    private Servo srvlightRow2;
+
     private int intTimespan = 4;
 
     private boolean bolStickWasPressed;
     private boolean bolSDToggle;
+    private boolean bolGMXWasPressed = false;
+    private boolean bolGMXToggle = false;
     private double dblGetRunTime;
 
     /*
@@ -101,14 +107,16 @@ public class LEDpattarn extends Object {
 
         boolean on = true;
 
-        double dblFunction = Math.sin(dblGetRunTime*(intTimespan*(180)));
+        //double dblFunction = Math.sin(dblGetRunTime*(intTimespan*(180)));
 
-        if (dblFunction > 0){
+        if (dblGetRunTime % 2 == 0){
             on = true;
         }
         else {
             on = false;
         }
+
+
 
         if (gmpGamepad1.left_stick_button && !bolStickWasPressed) {
             bolStickWasPressed = true;
@@ -120,7 +128,7 @@ public class LEDpattarn extends Object {
 
         telTelemetry.addData("toggle", bolSDToggle);
         telTelemetry.addData("on", on);
-        telTelemetry.addData("Funtion", dblFunction);
+        //telTelemetry.addData("Funtion", dblFunction);
         telTelemetry.update();
 
         if (bolSDToggle == true) {
@@ -160,6 +168,24 @@ public class LEDpattarn extends Object {
                     displayPattern();
                 }
             }
+
+        }
+
+        if (gmpGamepad1.x && !bolGMXWasPressed) {
+            bolGMXWasPressed = true;
+            bolGMXToggle = !bolGMXToggle;
+
+        } else if (!gmpGamepad1.x) {
+            bolGMXWasPressed = false;
+        }
+
+        if(bolGMXToggle == true){
+            srvlightRow2.setPosition(1);
+            srvLightRow1.setPosition(0);
+        }
+        else{
+            srvLightRow1.setPosition(1);
+            srvlightRow2.setPosition(0);
         }
 
         if (bolSDToggle == false) {
