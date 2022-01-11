@@ -47,6 +47,9 @@ public class FreightAttachment extends Object {
     private boolean bolMCToggle = false;
     private boolean bolAPToggle = false;
 
+    private boolean bolGMBToggle = false;
+    private boolean bolGMYToggle = false;
+    private boolean bolSVToggle = false;
     private boolean bolAWasPressed = false;
     private boolean bolCarouselToggle = false;
 
@@ -132,7 +135,6 @@ public class FreightAttachment extends Object {
 
 
         dcmCarouselSpinner1.setPower(dblCarouselSpeed);
-
 
 
 
@@ -254,16 +256,24 @@ public class FreightAttachment extends Object {
             bolMOToggle = !bolMOToggle;
             if (bolMOToggle) {
                 srvMagnetSwitch.setPosition(0.2);
-            } else {
                 srvMagnetSwitch.setPosition(0.8);
             }
             //difference is 2/3 (180)
         } else if (!gmpGamepad2.left_bumper && bolLBumperWasPressed) {
             bolLBumperWasPressed = false;
-        }
+            }
+            if (dcmSlider1.getCurrentPosition() > 540 - 100 && bolGMYToggle) {
+                srvBucketServo.setPosition(0.15);
+            }
 
 
 
+
+
+
+        telTelemetry.addData("sliderpower", dcmSlider1.getPower());
+        telTelemetry.addData("slidespeed", intSlideSpeed);
+        telTelemetry.addData("slidespeed", dblCarouselSpeed);
 
        //Manual Arm Control
 
