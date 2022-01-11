@@ -146,7 +146,6 @@ public class AutoFreightDuckSideRed extends OpMode {
 
         atsNextSegment = atsCurrentSegment;
 
-
         atsNewSegment = new AutonomousStrafeSidewaysSegment(-18, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
@@ -155,7 +154,7 @@ public class AutoFreightDuckSideRed extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardSegment(14, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardSegment(13, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -191,7 +190,7 @@ public class AutoFreightDuckSideRed extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardSegment(-12, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardSegment(-10, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -207,15 +206,11 @@ public class AutoFreightDuckSideRed extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardWaitSegment(-0.15, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardWaitSegment(-0.125, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
         atsNewSegment = new AutonomousWaitSegment(4000, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousWaitSegment(2000, telemetry);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 

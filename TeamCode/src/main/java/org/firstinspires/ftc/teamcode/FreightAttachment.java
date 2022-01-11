@@ -268,7 +268,7 @@ public class FreightAttachment extends Object {
        //Manual Arm Control
 
         if(gmpGamepad2.right_stick_y != 0) {
-            dblMagnetArmSpeed = dblMagnetArmSpeed + (-gmpGamepad2.right_stick_y*6);
+            dblMagnetArmSpeed = dblMagnetArmSpeed + (-gmpGamepad2.right_stick_y*12);
 
             intMagnetArmSpeed2 = (int) dblMagnetArmSpeed;
         }
