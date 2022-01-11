@@ -152,7 +152,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
 
             telemetry.addLine();
 
-       /* } else if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks + 50) && desiredEncoderTicks < 0){
+        } else if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks + 50) && desiredEncoderTicks < 0){
 
             if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks/2)){
                 dblFrontLeftMotorValue -= INCREMENT;
@@ -213,6 +213,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
 
         telemetry.addData("first",angles.firstAngle);
         telemetry.addData("HEADING", dblDesiredHeading);
+        telemetry.addData("position", dcmFLMotor.getCurrentPosition());
 
         telemetry.update();
     }
