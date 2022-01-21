@@ -35,7 +35,7 @@ public class DroneControlScheme extends ChassisControlScheme {
         if (bolSDToggle) {
             cmpMoveParameters.setXDirection(gmpGamepad1.right_stick_x / 2);
             cmpMoveParameters.setYDirection(gmpGamepad1.right_stick_y / 2);
-            cmpMoveParameters.setCenterPivot(gmpGamepad1.left_stick_x / 2);
+            cmpMoveParameters.setCenterPivot(-gmpGamepad1.left_stick_x / 3);
         } else {
             cmpMoveParameters.setXDirection(gmpGamepad1.right_stick_x);
             cmpMoveParameters.setYDirection(gmpGamepad1.right_stick_y);

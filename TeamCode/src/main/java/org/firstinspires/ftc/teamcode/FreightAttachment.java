@@ -1,15 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class FreightAttachment extends Object {
 
@@ -30,6 +34,12 @@ public class FreightAttachment extends Object {
 
     private TouchSensor snsTestTouch;
 
+    private DigitalChannel lteMagnetDetect;
+    private DigitalChannel lteBucketDetect;
+
+    private ColorSensor snsColor;
+    private DistanceSensor snsDistance1;
+
     private boolean bolXWasPressed = false;
     private boolean bolRBumperWasPressed = false;
     private boolean bolLBumperWasPressed = false;
@@ -47,9 +57,7 @@ public class FreightAttachment extends Object {
     private boolean bolMCToggle = false;
     private boolean bolAPToggle = false;
 
-    private boolean bolGMBToggle = false;
-    private boolean bolGMYToggle = false;
-    private boolean bolSVToggle = false;
+
     private boolean bolAWasPressed = false;
     private boolean bolCarouselToggle = false;
 
@@ -95,43 +103,50 @@ public class FreightAttachment extends Object {
 
         srvMagnetSwitch = hmpHardwareMap.servo.get("ServoMS");
 
+        lteBucketDetect = hmpHardwareMap.get(DigitalChannel.class, "red");
+        lteMagnetDetect = hmpHardwareMap.get(DigitalChannel.class, "green");
+
+        lteMagnetDetect.setMode(DigitalChannel.Mode.OUTPUT);
+        lteBucketDetect.setMode(DigitalChannel.Mode.OUTPUT);
+
+        snsColor = hmpHardwareMap.get(ColorSensor.class, "Color");
+
+        snsDistance1 = hmpHardwareMap.get(DistanceSensor.class, "Distance");
+
+    }
+
+    public static enum PIDModes {
+        Relaxed(new PIDFCoefficients(10 , 0.1f, 0f, 0.2f));
+
+        final PIDFCoefficients PIDValues;
+
+        PIDModes (PIDFCoefficients PIDValues){
+            this.PIDValues = PIDValues;
+        }
+        public PIDFCoefficients getPID(){
+            return PIDValues;
+        }
+    }
+
+    public void setShooterPIDMode (MotorTest.PIDModes mode){
+        dcmMagnetArm.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, mode.getPID());
     }
 
 
 
     public void moveAttachments() {
-/*
-        double dblCarouselSpeed = 0.5 + dblCarouselSpeedToggle;
 
-        if (gmpGamepad1.a && !bolAWasPressed) {
-            bolAWasPressed = true;
-            bolCarouselToggle = !bolCarouselToggle;
-        } else if (!gmpGamepad1.a) {
-            bolAWasPressed = false;
-        }
+        //setShooterPIDMode(MotorTest.PIDModes.Relaxed);
 
-        if (bolCarouselToggle) {
-            dcmCarouselSpinner1.setPower(dblCarouselSpeed);
+        if(snsColor.red() > (snsColor.green()/2)){
+            lteBucketDetect.setState(false);
         } else {
-            dcmCarouselSpinner1.setPower(0);
+            lteBucketDetect.setState(true);
         }
 
-
-        if (gmpGamepad1.right_bumper && bolRBumperWasPressed == false){
-            bolRBumperWasPressed = true;
-        } if (bolRBumperWasPressed == true && !gmpGamepad1.right_bumper) {
-            dblCarouselSpeedToggle = dblCarouselSpeedToggle + 0.01;
-            bolRBumperWasPressed = false;
+        if(snsDistance1.getDistance(DistanceUnit.INCH) < 10){
+            dblCarouselSpeed = 1;
         }
-        if (gmpGamepad1.left_bumper && bolLBumperWasPressed == false){
-            bolLBumperWasPressed = true;
-        } if (bolLBumperWasPressed == true && !gmpGamepad1.left_bumper) {
-            dblCarouselSpeedToggle = dblCarouselSpeedToggle - 0.01;
-            bolLBumperWasPressed = false;
-        }
-
-
- */
 
 
         dcmCarouselSpinner1.setPower(dblCarouselSpeed);
@@ -255,34 +270,28 @@ public class FreightAttachment extends Object {
             bolLBumperWasPressed = true;
             bolMOToggle = !bolMOToggle;
             if (bolMOToggle) {
-                srvMagnetSwitch.setPosition(0.2);
-                srvMagnetSwitch.setPosition(0.8);
+                srvMagnetSwitch.setPosition(0.85);
+                lteMagnetDetect.setState(true);
+            } else{
+                srvMagnetSwitch.setPosition(0.15);
+                lteMagnetDetect.setState(false);
             }
             //difference is 2/3 (180)
         } else if (!gmpGamepad2.left_bumper && bolLBumperWasPressed) {
             bolLBumperWasPressed = false;
             }
-            if (dcmSlider1.getCurrentPosition() > 540 - 100 && bolGMYToggle) {
-                srvBucketServo.setPosition(0.15);
-            }
 
 
 
 
-
-
-        telTelemetry.addData("sliderpower", dcmSlider1.getPower());
-        telTelemetry.addData("slidespeed", intSlideSpeed);
-        telTelemetry.addData("slidespeed", dblCarouselSpeed);
 
        //Manual Arm Control
 
-        if(gmpGamepad2.right_stick_y != 0) {
-            dblMagnetArmSpeed = dblMagnetArmSpeed + (-gmpGamepad2.right_stick_y*12);
-
+        if(gmpGamepad2.right_stick_y != 0){
+            dblMagnetArmSpeed = dblMagnetArmSpeed + (-gmpGamepad2.right_stick_y*16);
             intMagnetArmSpeed2 = (int) dblMagnetArmSpeed;
-        }
 
+        }
 
 
 
@@ -292,11 +301,17 @@ public class FreightAttachment extends Object {
             bolRBumperWasPressed = true;
             bolMPToggle = !bolMPToggle;
             if (bolMPToggle) {
-                intMagnetArmSpeed = 3100;
-                srvMagnetSwitch.setPosition(0.2);
+                intMagnetArmSpeed = 3125;
+                srvMagnetSwitch.setPosition(0.15);
+                dblMagnetArmSpeed = 0;
+                intMagnetArmSpeed2 = 0;
+
+                lteMagnetDetect.setState(false);
 
             } else {
                 intMagnetArmSpeed = 0;
+                dblMagnetArmSpeed = 0;
+                intMagnetArmSpeed2 = 0;
             }
 
         } else if (!gmpGamepad2.right_bumper && bolRBumperWasPressed) {
@@ -331,9 +346,13 @@ public class FreightAttachment extends Object {
             bolAPToggle = !bolAPToggle;
             if (bolAPToggle) {
                 intMagnetArmSpeed = 2000;
+                dblMagnetArmSpeed = 0;
+                intMagnetArmSpeed2 = 0;
 
             } else {
-                intMagnetArmSpeed = 0;
+                intMagnetArmSpeed = 3150;
+                dblMagnetArmSpeed = 0;
+                intMagnetArmSpeed2 = 0;
             }
 
         } else if (!gmpGamepad2.dpad_up && bolDPadUpWasPressed) {
@@ -341,20 +360,26 @@ public class FreightAttachment extends Object {
         }
 
 
-        dcmMagnetArm.setTargetPosition(intMagnetArmSpeed+intMagnetArmSpeed2);
+        dcmMagnetArm.setTargetPosition(intMagnetArmSpeed + intMagnetArmSpeed2);
         dcmMagnetArm.setPower(0.5);
         dcmMagnetArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
 
 
+
+        /*
+        telTelemetry.addData("green", snsColor.green());
+        telTelemetry.addData("red", snsColor.red());
+        telTelemetry.addData("blue", snsColor.blue());
+        telTelemetry.addData("argb", snsColor.argb());
+        telTelemetry.addData("alpha", snsColor.alpha());
+        telTelemetry.addData("Distance", snsDistance1.getDistance(DistanceUnit.INCH));
+         */
+
+        telTelemetry.addData("slidespeed", intSlideSpeed);
         telTelemetry.addData("sliderposition", dcmSlider1.getCurrentPosition());
         telTelemetry.addData("MagnetArm", dcmMagnetArm.getCurrentPosition());
-        telTelemetry.addData("sliderpower", dcmSlider1.getPower());
-        telTelemetry.addData("slidespeed", intSlideSpeed);
-
-
-
         telTelemetry.addData("Orientation", srvMagnetOrientation.getPosition());
         telTelemetry.update();
 

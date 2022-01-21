@@ -34,7 +34,7 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
     private double dblDesiredHeading = 0;
     private static final double HEADING_ERROR_RANGE = 3;
     private static final double CORRECTION_AGGRESSION = 0.07;
-    static final double INCREMENT   = 0.0075;
+    static final double INCREMENT   = 0.0125;
 
 
     Orientation angles;
@@ -84,7 +84,9 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
 
         double dblHeading = angles.firstAngle;
 
-        double dblHeadingCorrection = dblHeading*CORRECTION_AGGRESSION;
+        double dblHeadingDifference = dblHeading - dblDesiredHeading;
+
+        double dblHeadingCorrection = dblHeadingDifference*CORRECTION_AGGRESSION;
 
         // At the beginning of each telemetry update, grab a bunch of data
         // from the IMU that we will then display in separate lines.

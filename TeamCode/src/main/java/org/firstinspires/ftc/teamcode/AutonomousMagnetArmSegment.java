@@ -62,7 +62,7 @@ public class AutonomousMagnetArmSegment extends AutonomousSegment {
         }
 
         dcmMagnetArm.setTargetPosition(intMASpeed);
-        dcmMagnetArm.setPower(0.5);
+        dcmMagnetArm.setPower(0.9);
         dcmMagnetArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         if(dcmMagnetArm.getCurrentPosition() > intMASpeed -10 && dcmMagnetArm.getCurrentPosition() < intMASpeed + 10){
