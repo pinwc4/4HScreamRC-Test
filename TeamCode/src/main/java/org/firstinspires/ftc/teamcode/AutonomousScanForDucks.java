@@ -111,13 +111,13 @@ public class AutonomousScanForDucks extends AutonomousSegment {
 
                 if (strNewName.equals("Green TSE") && strNewNumber > 400) {
                     strNumber = 1;
-                    telemetry.addLine("Level 2");
+                    telemetry.addLine("Level 3");
                 } else if (strNewName.equals("Green TSE") && strNewNumber < 400) {
                     strNumber = 2;
-                    telemetry.addLine("Level 1");
+                    telemetry.addLine("Level 2");
                 } else {
                     strNumber = 3;
-                    telemetry.addLine("Level 3");
+                    telemetry.addLine("Level 1");
                 }
                 telemetry.addData("recognition v", strNewNumber);
 

@@ -64,6 +64,7 @@ public class FreightAttachment extends Object {
     private boolean bolStickMoved = false;
 
     private double dblCarouselSpeed;
+    private double dblCarouselSpeed2;
     private double dblCapDist;
     private double dblSlideSpeed;
     private double dblMagnetArmSpeed;
@@ -111,7 +112,7 @@ public class FreightAttachment extends Object {
 
         snsColor = hmpHardwareMap.get(ColorSensor.class, "Color");
 
-        snsDistance1 = hmpHardwareMap.get(DistanceSensor.class, "Distance");
+
 
     }
 
@@ -144,21 +145,22 @@ public class FreightAttachment extends Object {
             lteBucketDetect.setState(true);
         }
 
-        if(snsDistance1.getDistance(DistanceUnit.INCH) < 10){
-            dblCarouselSpeed = 1;
-        }
 
-
-        dcmCarouselSpinner1.setPower(dblCarouselSpeed);
+        dcmCarouselSpinner1.setPower(dblCarouselSpeed2);
 
 
 
         if(gmpGamepad1.a){
+            dblCarouselSpeed2 = 0.15;
             dblCarouselSpeed = dblCarouselSpeed + 0.01;
+            dblCarouselSpeed2 = dblCarouselSpeed2 + dblCarouselSpeed;
         } else if(gmpGamepad1.b){
+            dblCarouselSpeed2 = 0.15;
             dblCarouselSpeed = dblCarouselSpeed - 0.01;
+            dblCarouselSpeed2 = -dblCarouselSpeed2 + dblCarouselSpeed;
         }else{
             dblCarouselSpeed = 0;
+            dblCarouselSpeed2 = 0;
         }
 
 
@@ -326,7 +328,7 @@ public class FreightAttachment extends Object {
             bolDPadDownWasPressed = true;
             bolMCToggle = !bolMCToggle;
             if (bolMCToggle) {
-                dblCapDist=0.4;
+                    dblCapDist = 0.4;
             } else {
                 dblCapDist=0;
             }
@@ -377,6 +379,7 @@ public class FreightAttachment extends Object {
         telTelemetry.addData("Distance", snsDistance1.getDistance(DistanceUnit.INCH));
          */
 
+        telTelemetry.addData("Carousel", dblCarouselSpeed);
         telTelemetry.addData("slidespeed", intSlideSpeed);
         telTelemetry.addData("sliderposition", dcmSlider1.getCurrentPosition());
         telTelemetry.addData("MagnetArm", dcmMagnetArm.getCurrentPosition());

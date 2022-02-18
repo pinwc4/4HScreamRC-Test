@@ -98,6 +98,12 @@ public class LEDpattarn extends Object {
 
         ledCycleDeadline = new Deadline(LED_PERIOD, TimeUnit.SECONDS);
         gamepadRateLimit = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
+
+        srvLightRow1 = hmpHardwareMap.servo.get("RedLights");
+        srvLightRow1.setPosition(0);
+        srvlightRow2 = hmpHardwareMap.servo.get("WhiteLights");
+        srvlightRow2.setPosition(2200);
+
     }
 
     public void lights(double dblGetRunTime) {
@@ -180,13 +186,15 @@ public class LEDpattarn extends Object {
         }
 
         if(bolGMXToggle == true){
-            srvlightRow2.setPosition(1);
+            srvlightRow2.setPosition(2200);
             srvLightRow1.setPosition(0);
         }
         else{
-            srvLightRow1.setPosition(1);
+            srvLightRow1.setPosition(2200);
             srvlightRow2.setPosition(0);
         }
+
+
 
         if (bolSDToggle == false) {
             if (dblGetRunTime < 60) {

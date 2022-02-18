@@ -32,32 +32,33 @@ public class DriverRobotControl extends OpMode {
         chsChassis.setCmpMoveParameters(((DroneControlScheme) ccsChassisControlScheme).getCmpMoveParameters());
         //atcDR4BAttachment = new DR4BAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
         latLauncherAttachment = new LauncherAttechment(gamepad1, gamepad2, hardwareMap, telemetry);
-        ledLedPattern = new LEDpattarn(gamepad1, hardwareMap, telemetry);
 
 
  */
 
-            ccsChassisControlScheme = new DroneControlScheme(gamepad1);
-            chsChassis = new MecanumChassis(hardwareMap);
-            chsChassis.setCmpMoveParameters(((DroneControlScheme) ccsChassisControlScheme).getCmpMoveParameters());
+            ccsChassisControlScheme = new SkidControlScheme(gamepad1);
+            chsChassis = new GobildaTankChassis(hardwareMap);
+            chsChassis.setCmpMoveParameters(((SkidControlScheme) ccsChassisControlScheme).getCmpMoveParameters());
 
 
-           frtFreightAttechment = new FreightAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
+           //frtFreightAttechment = new FreightAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
+           //ledLedPattern = new LEDpattarn(gamepad1, hardwareMap, telemetry);
     }
 
     @Override
     public void loop() {
 
 
-        frtFreightAttechment.moveAttachments();
-            ccsChassisControlScheme.updateControls();
-            chsChassis.moveChassis();
+        //frtFreightAttechment.moveAttachments();
+        ccsChassisControlScheme.updateControls();
+        chsChassis.moveChassis();
+        //ledLedPattern.lights(getRuntime());
         /*
         if(!bolTest) {
             latLauncherAttachment.moveAttachments();
         }
         if(!bolTest) {
-            ledLedPattern.lights(getRuntime());
+
         }
         if(bolTest) {
             frtFreightAttechment.moveAttachments();
