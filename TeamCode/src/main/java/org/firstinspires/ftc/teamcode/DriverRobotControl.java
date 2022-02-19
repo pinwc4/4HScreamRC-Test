@@ -36,23 +36,23 @@ public class DriverRobotControl extends OpMode {
 
  */
 
-            ccsChassisControlScheme = new SkidControlScheme(gamepad1);
-            chsChassis = new GobildaTankChassis(hardwareMap);
-            chsChassis.setCmpMoveParameters(((SkidControlScheme) ccsChassisControlScheme).getCmpMoveParameters());
+            ccsChassisControlScheme = new DroneControlScheme(gamepad1);
+            chsChassis = new MecanumChassis(hardwareMap);
+            chsChassis.setCmpMoveParameters(((DroneControlScheme) ccsChassisControlScheme).getCmpMoveParameters());
 
 
-           //frtFreightAttechment = new FreightAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
-           //ledLedPattern = new LEDpattarn(gamepad1, hardwareMap, telemetry);
+           frtFreightAttechment = new FreightAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
+           ledLedPattern = new LEDpattarn(gamepad1, hardwareMap, telemetry);
     }
 
     @Override
     public void loop() {
 
 
-        //frtFreightAttechment.moveAttachments();
+        frtFreightAttechment.moveAttachments();
         ccsChassisControlScheme.updateControls();
         chsChassis.moveChassis();
-        //ledLedPattern.lights(getRuntime());
+        ledLedPattern.lights(getRuntime());
         /*
         if(!bolTest) {
             latLauncherAttachment.moveAttachments();

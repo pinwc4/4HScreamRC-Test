@@ -31,6 +31,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -50,7 +51,10 @@ public class LEDpattarn extends Object {
     private Servo srvLightRow1;
     private Servo srvlightRow2;
 
+    private ColorSensor snsColor;
+
     private int intTimespan = 4;
+    private int intGetRunTime;
 
     private boolean bolStickWasPressed;
     private boolean bolSDToggle;
@@ -104,24 +108,20 @@ public class LEDpattarn extends Object {
         srvlightRow2 = hmpHardwareMap.servo.get("WhiteLights");
         srvlightRow2.setPosition(2200);
 
+        snsColor = hmpHardwareMap.get(ColorSensor.class, "Color");
+
     }
 
-    public void lights(int intGetRunTime) {
+    public void lights(double dblGetRunTime) {
         handleGamepad();
 
-        this.dblGetRunTime = intGetRunTime;
+        this.dblGetRunTime = dblGetRunTime;
 
-        boolean on = true;
-
-        //double dblFunction = Math.sin(dblGetRunTime*(intTimespan*(180)));
-
-        if (intGetRunTime % 2 == 0){
-            on = true;
+        if(snsColor.red() > (snsColor.green()/2)){
+            bolSDToggle = true;
+        } else {
+            bolSDToggle = false;
         }
-        else {
-            on = false;
-        }
-
 
 
         if (gmpGamepad1.left_stick_button && !bolStickWasPressed) {
@@ -132,8 +132,10 @@ public class LEDpattarn extends Object {
             bolStickWasPressed = false;
         }
 
+
+
         telTelemetry.addData("toggle", bolSDToggle);
-        telTelemetry.addData("on", on);
+        //telTelemetry.addData("on", on);
         //telTelemetry.addData("Funtion", dblFunction);
         telTelemetry.update();
 
@@ -143,14 +145,14 @@ public class LEDpattarn extends Object {
                 displayPattern();
             }
 
-            else if(dblGetRunTime >= 60 && dblGetRunTime < 75){
-                pattern = RevBlinkinLedDriver.BlinkinPattern.ORANGE;
+            else if(dblGetRunTime >= 60 && dblGetRunTime < 90){
+                pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
                 displayPattern();
             }
 
-            else if(dblGetRunTime >= 75 && dblGetRunTime < 90){
+            /*else if(dblGetRunTime >= 75 && dblGetRunTime < 90){
                 if(on == true){
-                    pattern = RevBlinkinLedDriver.BlinkinPattern.ORANGE;
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
                     displayPattern();
                 }
                 if(on == false){
@@ -159,12 +161,14 @@ public class LEDpattarn extends Object {
                 }
             }
 
-            else if(dblGetRunTime >= 90 && dblGetRunTime < 105){
+             */
+
+            else if(dblGetRunTime >= 90){
                 pattern = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
                 displayPattern();
             }
 
-            else {
+            /*else {
                 if(on == true){
                     pattern = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
                     displayPattern();
@@ -173,7 +177,7 @@ public class LEDpattarn extends Object {
                     pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
                     displayPattern();
                 }
-            }
+            }*/
 
         }
 
@@ -185,14 +189,51 @@ public class LEDpattarn extends Object {
             bolGMXWasPressed = false;
         }
 
-        if(bolGMXToggle == true){
-            srvlightRow2.setPosition(2200);
-            srvLightRow1.setPosition(0);
+        boolean on = true;
+
+        //double dblFunction = Math.sin(dblGetRunTime*(intTimespan*(180)));
+
+        intGetRunTime = ((int) dblGetRunTime);
+
+        if (intGetRunTime % 2 == 0){
+            on = true;
+        }
+        else {
+            on = false;
+        }
+
+        if(intGetRunTime < 105){
+            if(bolGMXToggle == true){
+                srvlightRow2.setPosition(2200);
+                srvLightRow1.setPosition(0);
+            }
+            else{
+                srvLightRow1.setPosition(2200);
+                srvlightRow2.setPosition(0);
+            }
         }
         else{
-            srvLightRow1.setPosition(2200);
-            srvlightRow2.setPosition(0);
+            if(on == true) {
+                if (bolGMXToggle == true) {
+                    srvlightRow2.setPosition(2200);
+                    srvLightRow1.setPosition(0);
+                } else {
+                    srvLightRow1.setPosition(2200);
+                    srvlightRow2.setPosition(0);
+                }
+            }
+            else if(on == false){
+                if (bolGMXToggle == true) {
+                    srvlightRow2.setPosition(0);
+                    srvLightRow1.setPosition(0);
+                } else {
+                    srvLightRow1.setPosition(0);
+                    srvlightRow2.setPosition(0);
+                }
+            }
         }
+
+
 
 
 
@@ -202,14 +243,14 @@ public class LEDpattarn extends Object {
                 displayPattern();
             }
 
-            else if(dblGetRunTime >= 60 && dblGetRunTime < 75){
-                pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+            else if(dblGetRunTime >= 60 && dblGetRunTime < 90){
+                pattern = RevBlinkinLedDriver.BlinkinPattern.ORANGE;
                 displayPattern();
             }
 
-            else if(dblGetRunTime >= 75 && dblGetRunTime < 90){
+            /*else if(dblGetRunTime >= 75 && dblGetRunTime < 90){
                 if(on == true){
-                    pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.ORANGE;
                     displayPattern();
                 }
                 if(on == false){
@@ -218,12 +259,14 @@ public class LEDpattarn extends Object {
                 }
             }
 
-            else if(dblGetRunTime >= 90 && dblGetRunTime < 105){
+             */
+
+            else if(dblGetRunTime >= 90){
                 pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
                 displayPattern();
             }
 
-            else {
+            /*else {
                 if(on == true){
                     pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
                     displayPattern();
@@ -233,6 +276,8 @@ public class LEDpattarn extends Object {
                     displayPattern();
                 }
             }
+
+             */
         }
 
         telTelemetry.addData("runtime", dblGetRunTime);
