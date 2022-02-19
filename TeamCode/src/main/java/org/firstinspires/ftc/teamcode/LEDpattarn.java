@@ -106,16 +106,16 @@ public class LEDpattarn extends Object {
 
     }
 
-    public void lights(double dblGetRunTime) {
+    public void lights(int intGetRunTime) {
         handleGamepad();
 
-        this.dblGetRunTime = dblGetRunTime;
+        this.dblGetRunTime = intGetRunTime;
 
         boolean on = true;
 
         //double dblFunction = Math.sin(dblGetRunTime*(intTimespan*(180)));
 
-        if (dblGetRunTime % 2 == 0){
+        if (intGetRunTime % 2 == 0){
             on = true;
         }
         else {
@@ -153,7 +153,7 @@ public class LEDpattarn extends Object {
                     pattern = RevBlinkinLedDriver.BlinkinPattern.ORANGE;
                     displayPattern();
                 }
-                else{
+                if(on == false){
                     pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
                     displayPattern();
                 }
@@ -169,7 +169,7 @@ public class LEDpattarn extends Object {
                     pattern = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
                     displayPattern();
                 }
-                else{
+                if(on == false){
                     pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
                     displayPattern();
                 }
@@ -212,7 +212,7 @@ public class LEDpattarn extends Object {
                     pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
                     displayPattern();
                 }
-                else{
+                if(on == false){
                     pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
                     displayPattern();
                 }
@@ -228,7 +228,7 @@ public class LEDpattarn extends Object {
                     pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
                     displayPattern();
                 }
-                else{
+                if(on == false){
                     pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
                     displayPattern();
                 }

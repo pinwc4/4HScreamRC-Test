@@ -65,6 +65,8 @@ public class FreightAttachment extends Object {
 
     private double dblCarouselSpeed;
     private double dblCarouselSpeed2;
+    private double dblCarouselAcceleration = 0.01;
+
     private double dblCapDist;
     private double dblSlideSpeed;
     private double dblMagnetArmSpeed;
@@ -148,15 +150,22 @@ public class FreightAttachment extends Object {
 
         dcmCarouselSpinner1.setPower(dblCarouselSpeed2);
 
+        if(gmpGamepad1.left_bumper){
+            dblCarouselAcceleration = 0.01;
+        }
+        if(gmpGamepad1.right_bumper){
+            dblCarouselAcceleration = 0.15;
+        }
+
 
 
         if(gmpGamepad1.a){
             dblCarouselSpeed2 = 0.15;
-            dblCarouselSpeed = dblCarouselSpeed + 0.01;
+            dblCarouselSpeed = dblCarouselSpeed + dblCarouselAcceleration;
             dblCarouselSpeed2 = dblCarouselSpeed2 + dblCarouselSpeed;
         } else if(gmpGamepad1.b){
             dblCarouselSpeed2 = 0.15;
-            dblCarouselSpeed = dblCarouselSpeed - 0.01;
+            dblCarouselSpeed = dblCarouselSpeed - dblCarouselAcceleration;
             dblCarouselSpeed2 = -dblCarouselSpeed2 + dblCarouselSpeed;
         }else{
             dblCarouselSpeed = 0;
