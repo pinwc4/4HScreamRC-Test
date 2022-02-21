@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -40,6 +41,9 @@ public class AutoFreightWarehouseSideRedDeep extends OpMode {
     private DcMotorEx dcmMagnetArm;
 
     private ColorSensor snsColor;
+
+    private DistanceSensor snsDistanceLeft;
+    private DistanceSensor snsDistanceRight;
 
     private long dblWaitParameter;
 
@@ -96,6 +100,9 @@ public class AutoFreightWarehouseSideRedDeep extends OpMode {
         srvBucketServo.setPosition(0.85);
 
         snsColor = hardwareMap.get(ColorSensor.class, "Color");
+
+        snsDistanceLeft = hardwareMap.get(DistanceSensor.class, "DistanceLeft");
+        snsDistanceRight = hardwareMap.get(DistanceSensor.class, "DistanceRight");
 
         dcmFrontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmFrontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -167,6 +174,8 @@ public class AutoFreightWarehouseSideRedDeep extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
+        /*
+
 
         if (strSecondNumber == 1) {
 
@@ -198,6 +207,8 @@ public class AutoFreightWarehouseSideRedDeep extends OpMode {
         atsNewSegment = new AutonomousSlideSegment(0, 0.85, dcmSlider1, srvBucketServo, telemetry);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
+        
+         */
 
         atsNewSegment = new AutonomousStrafeForwardSegment(-12, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
@@ -211,7 +222,7 @@ public class AutoFreightWarehouseSideRedDeep extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(14, 90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousDistanceSidewaysSegment(13, 90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceLeft, snsDistanceRight);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
