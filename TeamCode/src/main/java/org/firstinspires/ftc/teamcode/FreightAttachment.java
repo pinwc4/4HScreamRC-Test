@@ -40,6 +40,9 @@ public class FreightAttachment extends Object {
     private ColorSensor snsColor;
     private DistanceSensor snsDistance1;
 
+    private boolean bolStickWasPressed;
+    private boolean bolSDToggle;
+
     private boolean bolXWasPressed = false;
     private boolean bolRBumperWasPressed = false;
     private boolean bolLBumperWasPressed = false;
@@ -65,6 +68,8 @@ public class FreightAttachment extends Object {
 
     private double dblCarouselSpeed;
     private double dblCarouselSpeed2;
+    private double dblCarouselAcceleration = 0.015;
+
     private double dblCapDist;
     private double dblSlideSpeed;
     private double dblMagnetArmSpeed;
@@ -139,24 +144,37 @@ public class FreightAttachment extends Object {
 
         //setShooterPIDMode(MotorTest.PIDModes.Relaxed);
 
-        if(snsColor.red() > (snsColor.green()/2)){
-            lteBucketDetect.setState(false);
-        } else {
-            lteBucketDetect.setState(true);
+        if (gmpGamepad1.left_stick_button && !bolStickWasPressed) {
+            bolStickWasPressed = true;
+            bolSDToggle = !bolSDToggle;
+            if (bolSDToggle) {
+                lteBucketDetect.setState(false);
+            } else {
+                lteBucketDetect.setState(true);
+            }
+        } else if (!gmpGamepad1.left_stick_button && bolStickWasPressed) {
+            bolStickWasPressed = false;
         }
 
 
         dcmCarouselSpinner1.setPower(dblCarouselSpeed2);
 
+        if(gmpGamepad1.left_bumper){
+            dblCarouselAcceleration = 0.01;
+        }
+        if(gmpGamepad1.right_bumper){
+            dblCarouselAcceleration = 0.02;
+        }
+
 
 
         if(gmpGamepad1.a){
             dblCarouselSpeed2 = 0.15;
-            dblCarouselSpeed = dblCarouselSpeed + 0.01;
+            dblCarouselSpeed = dblCarouselSpeed + dblCarouselAcceleration;
             dblCarouselSpeed2 = dblCarouselSpeed2 + dblCarouselSpeed;
         } else if(gmpGamepad1.b){
             dblCarouselSpeed2 = 0.15;
-            dblCarouselSpeed = dblCarouselSpeed - 0.01;
+            dblCarouselSpeed = dblCarouselSpeed - dblCarouselAcceleration;
             dblCarouselSpeed2 = -dblCarouselSpeed2 + dblCarouselSpeed;
         }else{
             dblCarouselSpeed = 0;
@@ -384,6 +402,7 @@ public class FreightAttachment extends Object {
         telTelemetry.addData("sliderposition", dcmSlider1.getCurrentPosition());
         telTelemetry.addData("MagnetArm", dcmMagnetArm.getCurrentPosition());
         telTelemetry.addData("Orientation", srvMagnetOrientation.getPosition());
+        telTelemetry.addData("Carousel Acceleration", dblCarouselAcceleration);
         telTelemetry.update();
 
 
