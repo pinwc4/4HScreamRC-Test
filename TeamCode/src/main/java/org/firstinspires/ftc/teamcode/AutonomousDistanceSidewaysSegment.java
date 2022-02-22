@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
@@ -50,7 +51,7 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
     private boolean boldistReached;
 
 
-    public AutonomousDistanceSidewaysSegment(double distToTravelin, double dblDesiredHeading, DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, BNO055IMU imu) {
+    public AutonomousDistanceSidewaysSegment(double distToTravelin, double dblDesiredHeading, DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, BNO055IMU imu, DistanceSensor snsDistanceLeft, DistanceSensor snsDistanceRight) {
         // add approptiate comment for conversions
         desiredEncoderTicks = distToTravelin * 68;
 
@@ -64,6 +65,9 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
         this.dcmBRMotor = dcmBRMotor;
 
         this.dblDesiredHeading = dblDesiredHeading;
+
+        this.snsDistanceLeft = snsDistanceLeft;
+        this.snsDistanceRight = snsDistanceRight;
 
         bolinitialized = false;
         boldistReached = false;
@@ -97,7 +101,7 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
 
 
         //left
-        if (dcmFLMotor.getCurrentPosition() > (-desiredEncoderTicks + 50) && desiredEncoderTicks > 0) {
+        if (desiredEncoderTicks > 0) {
 
             if(dcmFLMotor.getCurrentPosition() < (desiredEncoderTicks/2)){
                 dblFrontLeftMotorValue += INCREMENT;
@@ -132,10 +136,14 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
                 dblBackLeftMotorPower -= (-dblHeadingCorrection);
             }
 
+            if (snsDistanceLeft.getDistance(DistanceUnit.INCH) < 3){
+                boldistReached = true;
+            }
+
             telemetry.addLine();
 
             //right
-        } else if (dcmFLMotor.getCurrentPosition() < (-desiredEncoderTicks - 50) && desiredEncoderTicks < 0) {
+        } else if (desiredEncoderTicks < 0) {
 
             if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks/2)){
                 dblFrontLeftMotorValue -= INCREMENT;
@@ -170,6 +178,9 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
                 dblBackLeftMotorPower -= (-dblHeadingCorrection);
             }
 
+            if (snsDistanceRight.getDistance(DistanceUnit.INCH) < 3){
+                boldistReached = true;
+            }
 
         } else {
 
@@ -177,9 +188,8 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
             dblFrontRightMotorPower = 0;
             dblBackLeftMotorPower = 0;
             dblBackRightMotorPower = 0;
-
-            boldistReached = true;
         }
+
 
         dcmFLMotor.setPower(dblFrontLeftMotorPower);
         dcmFRMotor.setPower(dblFrontRightMotorPower);
