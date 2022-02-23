@@ -247,7 +247,7 @@ public class FreightAttachment extends Object {
                 bolYWasPressed = true;
                 bolGMYToggle = !bolGMYToggle;
                 if (bolGMYToggle) {
-                    intSlideSpeed = 540;
+                    intSlideSpeed = 620;
 
                 } else {
                     intSlideSpeed = 0;
