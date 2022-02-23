@@ -29,7 +29,7 @@ public class AutonomousCenterPivotSegment extends AutonomousSegment {
     private static final double NORMAL_POWER = 0.3;
     private static final double TURN_POWER = -0.5;
     private double dblDesiredHeading = 0;
-    private static final double HEADING_ERROR_RANGE = 2;
+    private static final double HEADING_ERROR_RANGE = 7;
 
     Orientation angles;
 
@@ -76,7 +76,7 @@ public class AutonomousCenterPivotSegment extends AutonomousSegment {
 
         bolHeadingReached = false;
 
-        double dblHeading = angles.firstAngle + 360;
+        double dblHeading = angles.firstAngle;
 
         if(dblDesiredHeading >= dblHeading){
             bolTurnRight = true;

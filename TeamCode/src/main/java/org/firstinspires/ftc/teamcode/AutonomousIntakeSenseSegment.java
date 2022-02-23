@@ -10,8 +10,12 @@ public class AutonomousIntakeSenseSegment extends AutonomousSegment {
 
     private ColorSensor snsColor;
 
+    private int intNumSameRecognitions = 0;
+
     private double dblRGBValue;
     private boolean bolPowerSet = false;
+
+    private static final double MINIMUM_SAME_RECOGNITIONS = 15;
 
 
     private boolean bolinitialized;
@@ -35,8 +39,17 @@ public class AutonomousIntakeSenseSegment extends AutonomousSegment {
             init();
         }
 
+
         if(snsColor.red() > (snsColor.green()/2)){
-            bolPowerSet = true;
+            intNumSameRecognitions++;
+
+            if(intNumSameRecognitions > MINIMUM_SAME_RECOGNITIONS){
+                bolPowerSet = true;
+            }
+
+        }
+        else {
+            intNumSameRecognitions = 0;
         }
 
 

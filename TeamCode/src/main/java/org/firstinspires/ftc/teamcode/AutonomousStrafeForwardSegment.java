@@ -29,11 +29,11 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
     private double dblBackLeftMotorPower;
     private double dblBackRightMotorPower;
 
-    private static final double NORMAL_POWER = 0.6;
+    private static final double NORMAL_POWER = 0.8;
     private static final double REDUCED_POWER = 0.525;
     private double dblDesiredHeading = 0;
     private static final double CORRECTION_AGGRESSION = 0.10;
-    static final double INCREMENT   = 0.01;
+    static final double INCREMENT   = 0.02;
 
     private static final double TICKSTOINCHES = (537.6 * 1) / (Math.PI * 3.77953);
 
@@ -67,6 +67,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
         this.dcmBRMotor = dcmBRMotor;
 
         this.dblDesiredHeading = dblDesiredHeading;
+
 
         bolinitialized = false;
         boldistReached = false;
@@ -118,16 +119,18 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
 
         double dblHeadingCorrection = dblHeadingDifference*CORRECTION_AGGRESSION;
 
+        double dblRampDown = desiredEncoderTicks * 0.2945;
+
         if (dcmFLMotor.getCurrentPosition() < (desiredEncoderTicks) && desiredEncoderTicks > 0){
 
             telemetry.addLine("forwards");
 
-            if(dcmFLMotor.getCurrentPosition() < ((desiredEncoderTicks - 400)/2) && bolRampUp){
+            if(dcmFLMotor.getCurrentPosition() < ((desiredEncoderTicks - dblRampDown)/2) && bolRampUp){
                 dblFrontLeftMotorValue += INCREMENT;
                 dblFrontRightMotorValue += INCREMENT;
                 dblBackLeftMotorValue += INCREMENT;
                 dblBackRightMotorValue += INCREMENT;
-            } else if(dcmFLMotor.getCurrentPosition() > ((desiredEncoderTicks - 400)/2)){
+            } else if(dcmFLMotor.getCurrentPosition() > ((desiredEncoderTicks - dblRampDown)/2)){
                 dblFrontLeftMotorValue -= INCREMENT;
                 dblFrontRightMotorValue -= INCREMENT;
                 dblBackLeftMotorValue -= INCREMENT;
@@ -165,20 +168,24 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
 
             telemetry.addLine();
 
-        } else if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks + 70) && desiredEncoderTicks < 0){
+        } else if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks) && desiredEncoderTicks < 0){
 
             telemetry.addLine("backwards");
 
-            if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks/2)){
+            if(dcmFLMotor.getCurrentPosition() > ((desiredEncoderTicks + dblRampDown)/2)){
                 dblFrontLeftMotorValue -= INCREMENT;
                 dblFrontRightMotorValue -= INCREMENT;
                 dblBackLeftMotorValue -= INCREMENT;
                 dblBackRightMotorValue -= INCREMENT;
-            } else if(dcmFLMotor.getCurrentPosition() < (desiredEncoderTicks/2)){
+            } else if(dcmFLMotor.getCurrentPosition() < ((desiredEncoderTicks + dblRampDown)/2)){
                 dblFrontLeftMotorValue += INCREMENT;
                 dblFrontRightMotorValue += INCREMENT;
                 dblBackLeftMotorValue += INCREMENT;
                 dblBackRightMotorValue += INCREMENT;
+
+                if(dblFrontLeftMotorValue < 0 || dblFrontLeftMotorValue == 0){
+                    boldistReached = true;
+                }
             }
 
             if (dblFrontLeftMotorValue > -NORMAL_POWER) {
@@ -236,6 +243,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
         telemetry.addData("Motor Power", dcmFLMotor.getPower());
 
         telemetry.addData("Desired", desiredEncoderTicks);
+        telemetry.addData("RD", dblRampDown);
 
         telemetry.update();
     }
