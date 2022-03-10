@@ -33,7 +33,7 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
     private double dblBackLeftMotorPower;
     private double dblBackRightMotorPower;
 
-    private static final double NORMAL_POWER = 0.6;
+    private static final double NORMAL_POWER = 0.25;
     private static final double REDUCED_POWER = 0.525;
     private double dblDesiredHeading = 0;
     private static final double CORRECTION_AGGRESSION = 0.05;
@@ -176,7 +176,13 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
                 dblBackRightMotorPower += (-dblHeadingCorrection);
             }
 
-            if (snsDistanceBack.getDistance(DistanceUnit.INCH) > desiredEncoderTicks){
+            if (snsDistanceBack.getDistance(DistanceUnit.INCH) > 30){
+
+                dblFrontLeftMotorPower = 0;
+                dblFrontRightMotorPower = 0;
+                dblBackLeftMotorPower = 0;
+                dblBackRightMotorPower = 0;
+
                 boldistReached = true;
             }
 
@@ -247,8 +253,7 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
         dcmBLMotor.setPower(-dblBackLeftMotorPower);
         dcmBRMotor.setPower(dblBackRightMotorPower);
 
-        //telemetry.addData("first",angles.firstAngle);
-        //telemetry.addData("HEADING", dblDesiredHeading);
+
         telemetry.addData("Distance", snsDistanceBack.getDistance(DistanceUnit.INCH));
 
 

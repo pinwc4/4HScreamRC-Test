@@ -26,11 +26,14 @@ public class FreightAttachment extends Object {
 
     private DcMotor dcmIntake0;
 
+    private DcMotor dcmServoEncoder;
+
     private Servo srvBucketServo;
     private Servo srvMagnetSwitch;
     private Servo srvMagnetOrientation;
 
     private CRServo dcmCarouselSpinner1;
+    //private CRServo csrvMagnetOrientation;
 
     private TouchSensor snsTestTouch;
 
@@ -68,6 +71,14 @@ public class FreightAttachment extends Object {
 
     private double dblCarouselSpeed;
     private double dblCarouselSpeed2;
+
+    private double dblDesiredOrientation;
+    private double dblOrientationDifference;
+    private double dblHeadingCorrection;
+
+
+    private double dblMagnetOrientation;
+
     private double dblCarouselAcceleration = 0.015;
 
     private double dblCapDist;
@@ -77,8 +88,10 @@ public class FreightAttachment extends Object {
     private int intMagnetArmSpeed;
     private int intMagnetArmSpeed2;
 
+    private DistanceSensor snsDistanceBack;
+
     private double dblCarouselSpeedToggle;
-    private static final double SERVO_MOVE_INTERVAL = 0.005;
+    private static final double CORRECTION_AGGRESSION = 0.00025;
 
     public FreightAttachment(Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry) {
 
@@ -99,6 +112,8 @@ public class FreightAttachment extends Object {
         srvBucketServo = hmpHardwareMap.servo.get("BucketServo");
         srvBucketServo.setPosition(0.85);
 
+        dcmServoEncoder = hmpHardwareMap.get(DcMotor.class, "ServoEncoder");
+        dcmServoEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         dcmMagnetArm = hmpHardwareMap.get(DcMotorEx.class, "MagnetArm");
         dcmMagnetArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -106,6 +121,8 @@ public class FreightAttachment extends Object {
         dcmMagnetArm.setDirection(DcMotor.Direction.FORWARD);
 
         srvMagnetOrientation = hmpHardwareMap.servo.get("ServoMO");
+
+        //csrvMagnetOrientation = hmpHardwareMap.crservo.get("ServoMO");
 
         srvMagnetSwitch = hmpHardwareMap.servo.get("ServoMS");
 
@@ -116,6 +133,9 @@ public class FreightAttachment extends Object {
         lteBucketDetect.setMode(DigitalChannel.Mode.OUTPUT);
 
         snsColor = hmpHardwareMap.get(ColorSensor.class, "Color");
+
+        snsDistanceBack = hmpHardwareMap.get(DistanceSensor.class, "DistanceBack");
+
 
 
 
@@ -140,6 +160,7 @@ public class FreightAttachment extends Object {
 
 
 
+
     public void moveAttachments() {
 
         //setShooterPIDMode(MotorTest.PIDModes.Relaxed);
@@ -157,8 +178,6 @@ public class FreightAttachment extends Object {
         }
 
 
-        dcmCarouselSpinner1.setPower(dblCarouselSpeed2);
-
         if(gmpGamepad1.left_bumper){
             dblCarouselAcceleration = 0.01;
         }
@@ -168,18 +187,28 @@ public class FreightAttachment extends Object {
 
 
 
+
         if(gmpGamepad1.a){
             dblCarouselSpeed2 = 0.15;
-            dblCarouselSpeed = dblCarouselSpeed + dblCarouselAcceleration;
-            dblCarouselSpeed2 = dblCarouselSpeed2 + dblCarouselSpeed;
-        } else if(gmpGamepad1.b){
-            dblCarouselSpeed2 = 0.15;
-            dblCarouselSpeed = dblCarouselSpeed - dblCarouselAcceleration;
-            dblCarouselSpeed2 = -dblCarouselSpeed2 + dblCarouselSpeed;
+            dblCarouselSpeed += dblCarouselAcceleration;
+            dblCarouselSpeed2 += dblCarouselSpeed;
+            if(dblCarouselSpeed2 > 0.5){
+                dblCarouselSpeed2 = 1;
+            }
+        }else if(gmpGamepad1.b){
+            dblCarouselSpeed2 = -0.15;
+            dblCarouselSpeed += dblCarouselAcceleration;
+            dblCarouselSpeed2 -= dblCarouselSpeed;
+            if(dblCarouselSpeed2 < -0.5){
+                dblCarouselSpeed2 = -1;
+            }
         }else{
             dblCarouselSpeed = 0;
             dblCarouselSpeed2 = 0;
         }
+
+        dcmCarouselSpinner1.setPower(dblCarouselSpeed2);
+
 
 
         if (gmpGamepad1.right_trigger>0) {
@@ -316,12 +345,14 @@ public class FreightAttachment extends Object {
 
 
 
+
+
         //Arm Preset Delivery
         if (gmpGamepad2.right_bumper && !bolRBumperWasPressed) {
             bolRBumperWasPressed = true;
             bolMPToggle = !bolMPToggle;
             if (bolMPToggle) {
-                intMagnetArmSpeed = 3125;
+                intMagnetArmSpeed = 3050;
                 srvMagnetSwitch.setPosition(0.15);
                 dblMagnetArmSpeed = 0;
                 intMagnetArmSpeed2 = 0;
@@ -341,12 +372,19 @@ public class FreightAttachment extends Object {
 
 
 
+        //+2000 if capping
+
+
+
+
+
+
         //Arm Preset Capping
         if (gmpGamepad2.dpad_down && !bolDPadDownWasPressed) {
             bolDPadDownWasPressed = true;
             bolMCToggle = !bolMCToggle;
             if (bolMCToggle) {
-                    dblCapDist = 0.4;
+                    dblCapDist = 0.4; //2000
             } else {
                 dblCapDist=0;
             }
@@ -354,7 +392,19 @@ public class FreightAttachment extends Object {
         } else if (!gmpGamepad2.dpad_down && bolDPadDownWasPressed) {
             bolDPadDownWasPressed = false;
         }else{
-            srvMagnetOrientation.setPosition((dcmMagnetArm.getCurrentPosition()/3700f+dblCapDist));
+
+            srvMagnetOrientation.setPosition(dcmMagnetArm.getCurrentPosition()/3700f+dblCapDist);
+
+            /*
+            dblDesiredOrientation = (dcmMagnetArm.getCurrentPosition()*(5/3.2) + dblCapDist);
+            dblOrientationDifference = dcmServoEncoder.getCurrentPosition() - dblDesiredOrientation;
+            dblHeadingCorrection = dblOrientationDifference*CORRECTION_AGGRESSION;
+
+            dblMagnetOrientation = dblHeadingCorrection;
+            csrvMagnetOrientation.setPower(-dblMagnetOrientation);
+
+             */
+
         }
 
 
@@ -370,7 +420,7 @@ public class FreightAttachment extends Object {
                 intMagnetArmSpeed2 = 0;
 
             } else {
-                intMagnetArmSpeed = 3150;
+                intMagnetArmSpeed = 3050;
                 dblMagnetArmSpeed = 0;
                 intMagnetArmSpeed2 = 0;
             }
@@ -381,8 +431,9 @@ public class FreightAttachment extends Object {
 
 
         dcmMagnetArm.setTargetPosition(intMagnetArmSpeed + intMagnetArmSpeed2);
-        dcmMagnetArm.setPower(0.5);
+        dcmMagnetArm.setPower(0.75);
         dcmMagnetArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
 
 
@@ -395,16 +446,27 @@ public class FreightAttachment extends Object {
         telTelemetry.addData("argb", snsColor.argb());
         telTelemetry.addData("alpha", snsColor.alpha());
         telTelemetry.addData("Distance", snsDistance1.getDistance(DistanceUnit.INCH));
-         */
 
-        telTelemetry.addData("Carousel", dblCarouselSpeed);
+
+        telTelemetry.addData("Carousel", dblCarouselSpeed2);
         telTelemetry.addData("slidespeed", intSlideSpeed);
         telTelemetry.addData("sliderposition", dcmSlider1.getCurrentPosition());
         telTelemetry.addData("MagnetArm", dcmMagnetArm.getCurrentPosition());
-        telTelemetry.addData("Orientation", srvMagnetOrientation.getPosition());
+        telTelemetry.addData("Orientation", dcmServoEncoder.getCurrentPosition());
         telTelemetry.addData("Carousel Acceleration", dblCarouselAcceleration);
         telTelemetry.update();
 
+
+
+        telTelemetry.addData("Correction", dblHeadingCorrection);
+
+        telTelemetry.addData("Orientation", dcmServoEncoder.getCurrentPosition());
+
+        telTelemetry.addData("MagnetArm", dcmMagnetArm.getCurrentPosition());
+
+ */
+
+        telTelemetry.addData("Distance", snsDistanceBack.getDistance(DistanceUnit.INCH));
 
     }
 

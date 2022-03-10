@@ -49,10 +49,10 @@ public class ServoTest extends OpMode {
 
 
         if(gamepad1.a){
-            srvArmServo.setPosition(0.5);
+            srvArmServo.setPosition(0.85);
         }
         if(gamepad1.b){
-            srvArmServo.setPosition(0.1);
+            srvArmServo.setPosition(0.15);
         }
 
 

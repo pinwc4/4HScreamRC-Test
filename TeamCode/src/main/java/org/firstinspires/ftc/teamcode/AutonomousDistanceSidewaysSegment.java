@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
     private double desiredEncoderTicks;
+    private double sensorDist;
 
     private DcMotor dcmFRMotor;
     private DcMotor dcmFLMotor;
@@ -51,9 +52,11 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
     private boolean boldistReached;
 
 
-    public AutonomousDistanceSidewaysSegment(double distToTravelin, double dblDesiredHeading, DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, BNO055IMU imu, DistanceSensor snsDistanceLeft, DistanceSensor snsDistanceRight) {
+    public AutonomousDistanceSidewaysSegment(double distToTravelin, double sensorDist, double dblDesiredHeading, DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, BNO055IMU imu, DistanceSensor snsDistanceLeft, DistanceSensor snsDistanceRight) {
         // add approptiate comment for conversions
         desiredEncoderTicks = distToTravelin * 68;
+
+        this.sensorDist = sensorDist;
 
         this.imu = imu;
 
@@ -136,7 +139,7 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
                 dblBackLeftMotorPower -= (-dblHeadingCorrection);
             }
 
-            if (snsDistanceLeft.getDistance(DistanceUnit.INCH) < 3){
+            if (snsDistanceLeft.getDistance(DistanceUnit.INCH) < sensorDist){
                 boldistReached = true;
             }
 
@@ -178,7 +181,7 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
                 dblBackLeftMotorPower -= (-dblHeadingCorrection);
             }
 
-            if (snsDistanceRight.getDistance(DistanceUnit.INCH) < 3){
+            if (snsDistanceRight.getDistance(DistanceUnit.INCH) < sensorDist){
                 boldistReached = true;
             }
 
