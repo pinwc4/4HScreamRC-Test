@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -101,7 +102,6 @@ public class FreightAttachment extends Object {
 
         dcmIntake0 = hmpHardwareMap.get(DcMotor.class, "MotorIM");
 
-
         dcmCarouselSpinner1 = hmpHardwareMap.crservo.get("SpinnerMotor");
 
         dcmSlider1 = hmpHardwareMap.get(DcMotorEx.class, "MotorGM");
@@ -111,9 +111,6 @@ public class FreightAttachment extends Object {
 
         srvBucketServo = hmpHardwareMap.servo.get("BucketServo");
         srvBucketServo.setPosition(0.85);
-
-        dcmServoEncoder = hmpHardwareMap.get(DcMotor.class, "ServoEncoder");
-        dcmServoEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         dcmMagnetArm = hmpHardwareMap.get(DcMotorEx.class, "MagnetArm");
         dcmMagnetArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -210,7 +207,6 @@ public class FreightAttachment extends Object {
         dcmCarouselSpinner1.setPower(dblCarouselSpeed2);
 
 
-
         if (gmpGamepad1.right_trigger>0) {
             dcmIntake0.setPower(-1);
         } else if(gmpGamepad1.left_trigger>0){
@@ -218,6 +214,8 @@ public class FreightAttachment extends Object {
         }else {
             dcmIntake0.setPower(0);
         }
+
+
 
 
 
@@ -439,6 +437,7 @@ public class FreightAttachment extends Object {
 
 
 
+
         /*
         telTelemetry.addData("green", snsColor.green());
         telTelemetry.addData("red", snsColor.red());
@@ -467,6 +466,7 @@ public class FreightAttachment extends Object {
  */
 
         telTelemetry.addData("Distance", snsDistanceBack.getDistance(DistanceUnit.INCH));
+        telTelemetry.addData("Intake3", dcmIntake0.getCurrentPosition());
 
     }
 

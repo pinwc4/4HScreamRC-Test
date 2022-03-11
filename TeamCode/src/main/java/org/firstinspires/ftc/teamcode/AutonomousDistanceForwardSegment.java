@@ -33,10 +33,10 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
     private double dblBackLeftMotorPower;
     private double dblBackRightMotorPower;
 
-    private static final double NORMAL_POWER = 0.25;
+    private static final double NORMAL_POWER = 0.3;
     private static final double REDUCED_POWER = 0.525;
     private double dblDesiredHeading = 0;
-    private static final double CORRECTION_AGGRESSION = 0.05;
+    private static final double CORRECTION_AGGRESSION = 0.65;
     static final double INCREMENT   = 0.01;
 
     private static final double TICKSTOINCHES = (537.6 * 1) / (Math.PI * 3.77953);
@@ -176,7 +176,7 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
                 dblBackRightMotorPower += (-dblHeadingCorrection);
             }
 
-            if (snsDistanceBack.getDistance(DistanceUnit.INCH) > 30){
+            if (snsDistanceBack.getDistance(DistanceUnit.INCH) > 25){
 
                 dblFrontLeftMotorPower = 0;
                 dblFrontRightMotorPower = 0;

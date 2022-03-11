@@ -36,7 +36,7 @@ public class AutoFreightWarehouseSideBlueDeep extends OpMode {
 
     private DcMotorEx dcmSlider1;
 
-    private DcMotor dcmITMotor;
+    private DcMotorEx dcmITMotor;
 
     private DcMotorEx dcmMagnetArm;
 
@@ -97,7 +97,7 @@ public class AutoFreightWarehouseSideBlueDeep extends OpMode {
         srvBucketServo = hardwareMap.servo.get("BucketServo");
         srvBucketServo.setPosition(0.85);
 
-        dcmITMotor = hardwareMap.get(DcMotor.class, "MotorIM");
+        dcmITMotor = hardwareMap.get(DcMotorEx.class, "MotorIM");
 
         snsColor = hardwareMap.get(ColorSensor.class, "Color");
 

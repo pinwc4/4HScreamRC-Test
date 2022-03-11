@@ -31,7 +31,7 @@ public class AutoFreightWarehouseSideRedDeep extends OpMode {
     private DcMotor dcmBackLeftMotor;
     private DcMotor dcmBackRightMotor;
 
-    private DcMotor dcmITMotor;
+    private DcMotorEx dcmITMotor;
 
     private Servo srvBucketServo;
     private CRServo dcmCSMotor;
@@ -94,7 +94,8 @@ public class AutoFreightWarehouseSideRedDeep extends OpMode {
         dcmMagnetArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         dcmMagnetArm.setDirection(DcMotor.Direction.FORWARD);
 
-        dcmITMotor = hardwareMap.get(DcMotor.class, "MotorIM");
+        dcmITMotor = hardwareMap.get(DcMotorEx.class, "MotorIM");
+        dcmITMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         dcmCSMotor = hardwareMap.crservo.get("SpinnerMotor");
 
@@ -227,7 +228,7 @@ public class AutoFreightWarehouseSideRedDeep extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        /*
+
 
         atsNewSegment = new AutonomousStrafeForwardSegment(-19, 90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
@@ -269,47 +270,11 @@ public class AutoFreightWarehouseSideRedDeep extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousDistanceSidewaysSegment(-9, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceLeft, snsDistanceRight);
+        atsNewSegment = new AutonomousDistanceSidewaysSegment(-9, 1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceLeft, snsDistanceRight);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardSegment(20, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousCenterPivotSegment(1, 45, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeForwardSegment(7, 45, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousSlideSegment(250, 0.15, dcmSlider1, srvBucketServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousWaitSegment(750, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousSlideSegment(0, 0.85, dcmSlider1, srvBucketServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousCenterPivotSegment(-1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousDistanceSidewaysSegment(-9, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceLeft, snsDistanceRight);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeForwardSegment(-40, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-         */
 
     }
 

@@ -39,8 +39,8 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
     private static final double REDUCED_POWER = 0.6;
     private double dblDesiredHeading = 0;
     private static final double HEADING_ERROR_RANGE = 3;
-    private static final double CORRECTION_AGGRESSION = 0.07;
-    static final double INCREMENT   = 0.0125;
+    private static final double CORRECTION_AGGRESSION = 0.02;
+    static final double INCREMENT   = 0.015;
 
 
     Orientation angles;

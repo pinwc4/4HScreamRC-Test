@@ -2,12 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 
 public class AutonomousIntakeSpinSegment extends AutonomousSegment {
     private double desiredEncoderTicks;
 
-    private DcMotor dcmITMotor;
+    private DcMotorEx dcmITMotor;
 
     private double dblIntakePower;
     private boolean bolPowerSet = false;
@@ -16,7 +17,7 @@ public class AutonomousIntakeSpinSegment extends AutonomousSegment {
     private boolean bolinitialized;
 
 
-    public AutonomousIntakeSpinSegment(double dblIntakePower, DcMotor dcmITMotor) {
+    public AutonomousIntakeSpinSegment(double dblIntakePower, DcMotorEx dcmITMotor) {
 
         this.dcmITMotor = dcmITMotor;
 
