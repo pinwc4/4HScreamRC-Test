@@ -20,7 +20,6 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
 @Autonomous(name = "AutoMoveToLineUG")
-@Disabled
 public class AutoMoveToLineUG extends OpMode {
 
     private DcMotor dcmFrontLeftMotor;
@@ -77,22 +76,16 @@ public class AutoMoveToLineUG extends OpMode {
 
         atsNextSegment = atsCurrentSegment;
 
+        /*atsNewSegment = new AutonomousStrafeTurnSegment( 1, 1, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+         */
 
         atsNewSegment = new AutonomousStrafeDiagonalWaitSegment(-0.12, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousWaitSegment(3000, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeDiagonalWaitSegment(0, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeForwardSegment(30, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
 
 
     }

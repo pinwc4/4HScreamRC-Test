@@ -313,6 +313,7 @@ public class LEDpattarn extends Object {
         if (ledCycleDeadline.hasExpired()) {
             pattern = pattern.next();
             displayPattern();
+
             ledCycleDeadline.reset();
         }
     }
