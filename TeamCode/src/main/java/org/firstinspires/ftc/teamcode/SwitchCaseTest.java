@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -21,9 +22,10 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
-@Autonomous(name = "AutoFreightWarehouseSideBlue")
+@Autonomous(name = "AutoSwitchCaseTest")
 
-public class AutoFreightWarehouseSideBlue extends OpMode {
+
+public class SwitchCaseTest extends OpMode {
 
     private DcMotor dcmFrontLeftMotor;
     private DcMotor dcmFrontRightMotor;
@@ -37,6 +39,9 @@ public class AutoFreightWarehouseSideBlue extends OpMode {
 
     private DcMotorEx dcmMagnetArm;
 
+    private DigitalChannel lteGreen;
+    private DigitalChannel lteRed;
+
     private DistanceSensor snsDistanceLeft;
     private DistanceSensor snsDistanceRight;
 
@@ -44,9 +49,17 @@ public class AutoFreightWarehouseSideBlue extends OpMode {
 
     private long dblWaitParameter;
 
+    private int intCounter;
+
+    private int programOrder;
+
     VuforiaLocalizer vuforia;
     TFObjectDetector tfod;
     BNO055IMU imu;
+
+    private static final double NORMAL_POWER = 0.8;
+
+
 
     private int intTfodMonitorViewId;
 
@@ -98,6 +111,12 @@ public class AutoFreightWarehouseSideBlue extends OpMode {
         snsDistanceRight = hardwareMap.get(DistanceSensor.class, "DistanceRight");
         snsDistanceBack = hardwareMap.get(DistanceSensor.class, "DistanceBack");
 
+        lteRed = hardwareMap.get(DigitalChannel.class, "red");
+        lteGreen = hardwareMap.get(DigitalChannel.class, "green");
+
+        lteGreen.setMode(DigitalChannel.Mode.OUTPUT);
+        lteRed.setMode(DigitalChannel.Mode.OUTPUT);
+
         dcmFrontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmFrontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmBackLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -120,122 +139,95 @@ public class AutoFreightWarehouseSideBlue extends OpMode {
         }
 
 
-        //initalize autonomous segments
-
-        /*
-        Negative values = left and backward
-        Positive vales = right and forward
-        */
-
-        ascDucks = new AutonomousScanForDucks(telemetry, tfod, vuforia);
-
-
     }
 
-    public void init_loop() {
-        ascDucks.runSegment();
-    }
-
-    public void start(){
-
-        double dblStartRuntime = getRuntime();
-        double dblScanTime = 0;
-
-        while(!ascDucks.segmentComplete() && dblScanTime < 7){
-            ascDucks.runSegment();
-            dblScanTime = getRuntime() - dblStartRuntime;
-        }
-
-        strSecondNumber = ascDucks.getStrSecondNumber();
-
-        AutonomousSegment atsNextSegment;
-
-        AutonomousSegment atsNewSegment;
-
-        atsCurrentSegment = new AutonomousDistanceForwardSegment(10, 10, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
-                //new AutonomousStrafeForwardSegment(10,0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-
-        atsNextSegment = atsCurrentSegment;
-
-
-        atsNewSegment = new AutonomousDistanceSidewaysSegment(-17, 60,0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceLeft, snsDistanceRight);
-                //new AutonomousStrafeSidewaysSegment(-17, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeForwardSegment(11, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-
-        if (strSecondNumber == 1) {
-
-                atsNewSegment = new AutonomousSlideSegment(600, 0.15, dcmSlider1, srvBucketServo, telemetry);
-                atsNextSegment.setNextSegment(atsNewSegment);
-                atsNextSegment = atsNewSegment;
-
-
-        } else if (strSecondNumber == 2) {
-
-            atsNewSegment = new AutonomousSlideSegment(400, 0.15, dcmSlider1, srvBucketServo, telemetry);
-            atsNextSegment.setNextSegment(atsNewSegment);
-            atsNextSegment = atsNewSegment;
-
-
-        } else {
-
-            atsNewSegment = new AutonomousSlideSegment(250, 0.15, dcmSlider1, srvBucketServo, telemetry);
-            atsNextSegment.setNextSegment(atsNewSegment);
-            atsNextSegment = atsNewSegment;
-
-
-        }
-
-        atsNewSegment = new AutonomousWaitSegment(1000, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousSlideSegment(0, 0.85, dcmSlider1, srvBucketServo, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeForwardSegment(-12, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(13, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousCenterPivotSegment(-1, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousDistanceSidewaysSegment(-30,3, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceLeft, snsDistanceRight);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeForwardSegment(-30, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-
-
-    }
 
     public void loop(){
 
-        if (!atsCurrentSegment.segmentComplete()) {
-            atsCurrentSegment.runSegment();
-        } else if (atsCurrentSegment.segmentComplete()) {
-            ResetChassisEncoder();
-            atsCurrentSegment = atsCurrentSegment.getNextSegment();
-            if (atsCurrentSegment == null){
-                requestOpModeStop();
-            }
+        switch (programOrder){
+
+            case 0:
+
+                break;
+            case 1:
+
+
+                /*dcmFrontLeftMotor.setPower(-NORMAL_POWER);
+                dcmFrontRightMotor.setPower(NORMAL_POWER);
+                dcmBackLeftMotor.setPower(-NORMAL_POWER);
+                dcmBackRightMotor.setPower(NORMAL_POWER);
+
+                programOrder++;
+                break;
+
+
+
+            case 1:
+                if(dcmFrontLeftMotor.getCurrentPosition() >= 2500){
+                    dcmFrontLeftMotor.setPower(0);
+                    dcmFrontRightMotor.setPower(0);
+                    dcmBackLeftMotor.setPower(0);
+                    dcmBackRightMotor.setPower(0);
+
+                    programOrder++;
+                }
+                break;
+
+            case 2:
+                dcmMagnetArm.setTargetPosition(1000);
+                dcmMagnetArm.setPower(0.9);
+                dcmMagnetArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                programOrder++;
+                break;
+
+            case 3:
+
+                dcmFrontLeftMotor.setPower(NORMAL_POWER);
+                dcmFrontRightMotor.setPower(-NORMAL_POWER);
+                dcmBackLeftMotor.setPower(NORMAL_POWER);
+                dcmBackRightMotor.setPower(-NORMAL_POWER);
+
+                programOrder++;
+                break;
+
+            case 4:
+                if(dcmFrontLeftMotor.getCurrentPosition() <= 1500){
+                    dcmMagnetArm.setTargetPosition(0);
+                    dcmMagnetArm.setPower(0.9);
+                    dcmMagnetArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    programOrder++;
+
+                }
+
+                break;
+
+            case 5:
+                if(dcmFrontLeftMotor.getCurrentPosition() <= 1000){
+                    dcmFrontLeftMotor.setPower(0);
+                    dcmFrontRightMotor.setPower(0);
+                    dcmBackLeftMotor.setPower(0);
+                    dcmBackRightMotor.setPower(0);
+
+                    programOrder++;
+                }
+                break;
+
+                 */
+
+
+
+
+
+
         }
 
+        telemetry.addData("PO", programOrder);
+        telemetry.addData("MA", dcmMagnetArm.getCurrentPosition());
+        telemetry.addData("FLMotor", dcmFrontLeftMotor.getCurrentPosition());
+
     }
+
 
     private void initVuforia() {
 

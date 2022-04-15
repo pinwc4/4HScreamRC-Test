@@ -33,14 +33,16 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
     private double dblBackLeftMotorPower;
     private double dblBackRightMotorPower;
 
+    private double distSense;
+
     private static final double NORMAL_POWER = 0.3;
     private static final double REDUCED_POWER = 0.525;
     private double dblDesiredHeading = 0;
-    private static final double CORRECTION_AGGRESSION = 0.65;
+    private static final double CORRECTION_AGGRESSION = 0.02;
     static final double INCREMENT   = 0.01;
 
-    private static final double TICKSTOINCHES = (537.6 * 1) / (Math.PI * 3.77953);
-
+    private static final double TICKSTOINCHES = (384.5 * 1) / (Math.PI * 3.77953);
+    //                                           537.6 ppr
     Orientation angles;
 
     private MeasuredDistance msdMeasuredDistance = null;
@@ -57,8 +59,10 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
     private double disttoTravelin;
 
 
-    public AutonomousDistanceForwardSegment(double distToTravelin, double dblDesiredHeading, DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, BNO055IMU imu, DistanceSensor snsDistanceBack) {
+    public AutonomousDistanceForwardSegment(double distSense,double distToTravelin, double dblDesiredHeading, DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, BNO055IMU imu, DistanceSensor snsDistanceBack) {
         //add appropriate comment for conversions
+        this.distSense = distSense;
+
         desiredEncoderTicks = (distToTravelin * TICKSTOINCHES);
 
         this.telemetry = telemetry;
@@ -126,43 +130,7 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
 
         double dblRampDown = desiredEncoderTicks * 0.2945;
 
-        if (dcmFLMotor.getCurrentPosition() < (desiredEncoderTicks) && desiredEncoderTicks > 0){
-
-            telemetry.addLine("forwards");
-
-            /*
-            if(dcmFLMotor.getCurrentPosition() < ((desiredEncoderTicks - dblRampDown)/2) && bolRampUp){
-                dblFrontLeftMotorValue += INCREMENT;
-                dblFrontRightMotorValue += INCREMENT;
-                dblBackLeftMotorValue += INCREMENT;
-                dblBackRightMotorValue += INCREMENT;
-            } else if(dcmFLMotor.getCurrentPosition() > ((desiredEncoderTicks - dblRampDown)/2)){
-                dblFrontLeftMotorValue -= INCREMENT;
-                dblFrontRightMotorValue -= INCREMENT;
-                dblBackLeftMotorValue -= INCREMENT;
-                dblBackRightMotorValue -= INCREMENT;
-
-            }
-
-
-            if (dblFrontLeftMotorValue < NORMAL_POWER) {
-                dblFrontLeftMotorPower = dblFrontLeftMotorValue;
-                dblFrontRightMotorPower = dblFrontRightMotorValue;
-                dblBackLeftMotorPower = dblBackLeftMotorValue;
-                dblBackRightMotorPower = dblBackRightMotorValue;
-            }
-
-
-
-            if (dblFrontLeftMotorValue >= NORMAL_POWER) {
-                dblFrontLeftMotorPower = NORMAL_POWER;
-                dblFrontRightMotorPower = NORMAL_POWER;
-                dblBackLeftMotorPower = NORMAL_POWER;
-                dblBackRightMotorPower = NORMAL_POWER;
-            }
-
-             */
-
+        if(desiredEncoderTicks > 0){
             dblFrontLeftMotorPower = NORMAL_POWER;
             dblFrontRightMotorPower = NORMAL_POWER;
             dblBackLeftMotorPower = NORMAL_POWER;
@@ -176,7 +144,9 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
                 dblBackRightMotorPower += (-dblHeadingCorrection);
             }
 
-            if (snsDistanceBack.getDistance(DistanceUnit.INCH) > 25){
+
+
+            if (snsDistanceBack.getDistance(DistanceUnit.INCH) > distSense){
 
                 dblFrontLeftMotorPower = 0;
                 dblFrontRightMotorPower = 0;
@@ -185,73 +155,44 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
 
                 boldistReached = true;
             }
-
-
-            telemetry.addLine();
-
-        } else if(dcmFLMotor.getCurrentPosition() > (desiredEncoderTicks) && desiredEncoderTicks < 0){
-
-            telemetry.addLine("backwards");
-
-            /*
-            if(dcmFLMotor.getCurrentPosition() > ((desiredEncoderTicks + dblRampDown)/2)){
-                dblFrontLeftMotorValue -= INCREMENT;
-                dblFrontRightMotorValue -= INCREMENT;
-                dblBackLeftMotorValue -= INCREMENT;
-                dblBackRightMotorValue -= INCREMENT;
-            } else if(dcmFLMotor.getCurrentPosition() < ((desiredEncoderTicks + dblRampDown)/2)){
-                dblFrontLeftMotorValue += INCREMENT;
-                dblFrontRightMotorValue += INCREMENT;
-                dblBackLeftMotorValue += INCREMENT;
-                dblBackRightMotorValue += INCREMENT;
-
-
-            }
-
-            if (dblFrontLeftMotorValue > -NORMAL_POWER) {
-                dblFrontLeftMotorPower = dblFrontLeftMotorValue;
-                dblFrontRightMotorPower = dblFrontRightMotorValue;
-                dblBackLeftMotorPower = dblBackLeftMotorValue;
-                dblBackRightMotorPower = dblBackRightMotorValue;
-            }
-            if (dblFrontLeftMotorValue <= -NORMAL_POWER) {
-                dblFrontLeftMotorPower = -NORMAL_POWER;
-                dblFrontRightMotorPower = -NORMAL_POWER;
-                dblBackLeftMotorPower = -NORMAL_POWER;
-                dblBackRightMotorPower = -NORMAL_POWER;
-            }
-
-             */
-
+        } else {
             dblFrontLeftMotorPower = -NORMAL_POWER;
             dblFrontRightMotorPower = -NORMAL_POWER;
             dblBackLeftMotorPower = -NORMAL_POWER;
             dblBackRightMotorPower = -NORMAL_POWER;
 
-            if(dblHeading < dblDesiredHeading){
+            if(dblHeading > dblDesiredHeading){
                 dblFrontLeftMotorPower += (dblHeadingCorrection);
                 dblBackLeftMotorPower += (dblHeadingCorrection);
-            }else if(dblHeading > dblDesiredHeading){
+            }else if(dblHeading < dblDesiredHeading){
                 dblFrontRightMotorPower += (-dblHeadingCorrection);
                 dblBackRightMotorPower += (-dblHeadingCorrection);
             }
 
 
-        }else{
 
-            dblFrontLeftMotorPower = 0;
-            dblFrontRightMotorPower = 0;
-            dblBackLeftMotorPower = 0;
-            dblBackRightMotorPower = 0;
+            if (snsDistanceBack.getDistance(DistanceUnit.INCH) < distSense){
 
+                dblFrontLeftMotorPower = 0;
+                dblFrontRightMotorPower = 0;
+                dblBackLeftMotorPower = 0;
+                dblBackRightMotorPower = 0;
+
+                boldistReached = true;
+            }
         }
 
-        //1358.29
+
+
 
         dcmFLMotor.setPower(-dblFrontLeftMotorPower);
         dcmFRMotor.setPower(dblFrontRightMotorPower);
         dcmBLMotor.setPower(-dblBackLeftMotorPower);
         dcmBRMotor.setPower(dblBackRightMotorPower);
+
+            telemetry.addLine();
+
+
 
 
         telemetry.addData("Distance", snsDistanceBack.getDistance(DistanceUnit.INCH));

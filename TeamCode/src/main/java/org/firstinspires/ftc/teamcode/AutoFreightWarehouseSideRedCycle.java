@@ -22,7 +22,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
-@Autonomous(name = "AutoFreightWarehouseSideRedCycle")
+@Autonomous(name = "NOTHING")
 
 public class AutoFreightWarehouseSideRedCycle extends OpMode {
 
@@ -256,7 +256,7 @@ public class AutoFreightWarehouseSideRedCycle extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousDistanceForwardSegment(30, 90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
+        atsNewSegment = new AutonomousDistanceForwardSegment(25, 30, 90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 

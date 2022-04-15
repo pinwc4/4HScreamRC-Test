@@ -24,8 +24,8 @@ public class AutonomousStrafeTurnSegment extends AutonomousSegment {
     private double dblBackLeftMotorPower;
     private double dblBackRightMotorPower;
 
-    private static final double NORMAL_POWER = -0.5;
-    private static final double TURN_POWER = -0.15;
+    private static final double NORMAL_POWER = 0.5;
+    private static final double TURN_POWER = 0.15;
     private static final double REDUCED_POWER = 0.35;
     private double dblDesiredHeading = 0;
     private static final double HEADING_ERROR_RANGE = 3;
@@ -107,15 +107,12 @@ public class AutonomousStrafeTurnSegment extends AutonomousSegment {
         telemetry.addLine();
 
 
-        dcmFLMotor.setPower(dblFrontLeftMotorPower);
-        dcmFRMotor.setPower(-dblFrontRightMotorPower);
-        dcmBLMotor.setPower(dblBackLeftMotorPower);
-        dcmBRMotor.setPower(-dblBackRightMotorPower);
+        dcmFLMotor.setPower(-dblFrontLeftMotorPower);
+        dcmFRMotor.setPower(dblFrontRightMotorPower);
+        dcmBLMotor.setPower(-dblBackLeftMotorPower);
+        dcmBRMotor.setPower(dblBackRightMotorPower);
 
         telemetry.addData("first", dblHeading);
-        telemetry.addData("second", angles.secondAngle);
-        telemetry.addData("third", angles.thirdAngle);
-
         telemetry.update();
     }
 

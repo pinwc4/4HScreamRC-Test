@@ -262,7 +262,7 @@ public class AutoFreightWarehouseSideRedDeep extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousDistanceForwardSegment(30, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
+        atsNewSegment = new AutonomousDistanceForwardSegment(25, 30, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 

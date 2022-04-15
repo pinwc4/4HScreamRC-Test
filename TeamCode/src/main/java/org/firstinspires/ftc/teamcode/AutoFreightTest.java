@@ -21,7 +21,6 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
 @Autonomous(name = "AutoFreightTest")
-@Disabled
 public class AutoFreightTest extends OpMode {
 
     private DcMotor dcmFrontLeftMotor;
@@ -136,70 +135,6 @@ public class AutoFreightTest extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-
-
-        if (strSecondNumber == 1) {
-
-                atsNewSegment = new AutonomousStrafeForwardSegment(1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-                atsNextSegment.setNextSegment(atsNewSegment);
-                atsNextSegment = atsNewSegment;
-
-
-        } else if (strSecondNumber == 2) {
-
-                atsNewSegment = new AutonomousStrafeForwardSegment(1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-                atsNextSegment.setNextSegment(atsNewSegment);
-                atsNextSegment = atsNewSegment;
-
-
-        } else {
-
-                atsNewSegment = new AutonomousStrafeForwardSegment(1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-                atsNextSegment.setNextSegment(atsNewSegment);
-                atsNextSegment = atsNewSegment;
-
-
-        }
-
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(40, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeForwardSegment(-12, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousCarouselSpinSegment(1, dcmCSMotor);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousWaitSegment(4000, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousCarouselSpinSegment(0, dcmCSMotor);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeForwardSegment(10, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(-20, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousCenterPivotSegment(-1, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(-10, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeForwardSegment(90, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
 
     }
 

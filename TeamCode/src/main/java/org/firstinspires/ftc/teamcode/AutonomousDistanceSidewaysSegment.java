@@ -39,8 +39,8 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
     private static final double REDUCED_POWER = 0.6;
     private double dblDesiredHeading = 0;
     private static final double HEADING_ERROR_RANGE = 3;
-    private static final double CORRECTION_AGGRESSION = 0.02;
-    static final double INCREMENT   = 0.015;
+    private static final double CORRECTION_AGGRESSION = 0.04;
+    static final double INCREMENT   = 0.02;
 
 
     Orientation angles;
@@ -51,10 +51,12 @@ public class AutonomousDistanceSidewaysSegment extends AutonomousSegment {
     private boolean bolinitialized;
     private boolean boldistReached;
 
+    private static final double TICKSTOINCHES = (384.5 * 1) / (Math.PI * 3.77953);
+
 
     public AutonomousDistanceSidewaysSegment(double distToTravelin, double sensorDist, double dblDesiredHeading, DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, BNO055IMU imu, DistanceSensor snsDistanceLeft, DistanceSensor snsDistanceRight) {
         // add approptiate comment for conversions
-        desiredEncoderTicks = distToTravelin * 68;
+        desiredEncoderTicks = distToTravelin * TICKSTOINCHES;
 
         this.sensorDist = sensorDist;
 
