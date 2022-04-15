@@ -118,6 +118,7 @@ public class FreightAttachment extends Object {
         dcmMagnetArm.setDirection(DcMotor.Direction.FORWARD);
 
         srvMagnetOrientation = hmpHardwareMap.servo.get("ServoMO");
+        srvMagnetOrientation.setPosition(0.05);
 
         //csrvMagnetOrientation = hmpHardwareMap.crservo.get("ServoMO");
 
@@ -382,7 +383,11 @@ public class FreightAttachment extends Object {
             bolDPadDownWasPressed = true;
             bolMCToggle = !bolMCToggle;
             if (bolMCToggle) {
-                    dblCapDist = 0.4; //2000
+                if(dcmMagnetArm.getCurrentPosition()>1000){
+                    dblCapDist = 0.05;
+                }else{
+                    dblCapDist = -0.05;
+                }
             } else {
                 dblCapDist=0;
             }
@@ -391,7 +396,12 @@ public class FreightAttachment extends Object {
             bolDPadDownWasPressed = false;
         }else{
 
-            srvMagnetOrientation.setPosition(dcmMagnetArm.getCurrentPosition()/3700f+dblCapDist);
+            if(intMagnetArmSpeed == 0 & dcmMagnetArm.getCurrentPosition() > 10){
+                srvMagnetOrientation.setPosition(((dcmMagnetArm.getCurrentPosition()/24000f+dblCapDist)-0.04)+0.05);
+            }else{
+                srvMagnetOrientation.setPosition((dcmMagnetArm.getCurrentPosition()/24000f+dblCapDist)+0.05);
+            }
+
 
             /*
             dblDesiredOrientation = (dcmMagnetArm.getCurrentPosition()*(5/3.2) + dblCapDist);
@@ -400,6 +410,9 @@ public class FreightAttachment extends Object {
 
             dblMagnetOrientation = dblHeadingCorrection;
             csrvMagnetOrientation.setPower(-dblMagnetOrientation);
+
+            else if (intMagnetArmSpeed > 0 & dcmMagnetArm.getCurrentPosition() > 3000){
+                srvMagnetOrientation.setPosition((dcmMagnetArm.getCurrentPosition()/24000f+dblCapDist)+0.04);
 
              */
 
@@ -467,6 +480,12 @@ public class FreightAttachment extends Object {
 
         telTelemetry.addData("Distance", snsDistanceBack.getDistance(DistanceUnit.INCH));
         telTelemetry.addData("Intake3", dcmIntake0.getCurrentPosition());
+
+        telTelemetry.addData("green", snsColor.green());
+        telTelemetry.addData("red", snsColor.red());
+        telTelemetry.addData("blue", snsColor.blue());
+        telTelemetry.addData("argb", snsColor.argb());
+        telTelemetry.addData("alpha", snsColor.alpha());
 
     }
 

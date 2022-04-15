@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
 @Autonomous(name = "AutoMoveToLineUG")
+
 public class AutoMoveToLineUG extends OpMode {
 
     private DcMotor dcmFrontLeftMotor;
@@ -30,6 +32,9 @@ public class AutoMoveToLineUG extends OpMode {
     private DcMotor dcmFTMotor;
     private DcMotor dcmSTMotor;
 
+    private DistanceSensor snsDistanceBack;
+    private DistanceSensor snsDistanceLeft;
+    private DistanceSensor snsDistanceRight;
 
     BNO055IMU imu;
 
@@ -45,7 +50,13 @@ public class AutoMoveToLineUG extends OpMode {
 
     public void ResetChassisEncoder(){
         dcmFrontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcmFrontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcmBackLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcmBackRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dcmFrontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        dcmFrontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        dcmBackLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        dcmBackLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void init(){
@@ -57,6 +68,10 @@ public class AutoMoveToLineUG extends OpMode {
         dcmFrontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmBackLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmBackRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        snsDistanceBack = hardwareMap.get(DistanceSensor.class, "DistanceBack");
+        snsDistanceLeft = hardwareMap.get(DistanceSensor.class, "DistanceLeft");
+        snsDistanceRight = hardwareMap.get(DistanceSensor.class, "DistanceRight");
 
 
         initImu();
@@ -72,20 +87,37 @@ public class AutoMoveToLineUG extends OpMode {
 
         AutonomousSegment atsNewSegment;
 
-        atsCurrentSegment = new AutonomousStrafeForwardSegment( 30, 0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsCurrentSegment = new AutonomousStrafeForwardSegment( 0, 0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
 
         atsNextSegment = atsCurrentSegment;
 
-        /*atsNewSegment = new AutonomousStrafeTurnSegment( 1, 1, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeSidewaysSegment(-23, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+/*
+        atsNewSegment = new AutonomousDistanceForwardSegment(5, 5, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+
+
+
+    atsNewSegment = new AutonomousStrafeTurnSegment(-90,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
          */
 
-        atsNewSegment = new AutonomousStrafeDiagonalWaitSegment(-0.12, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeDiagonalWaitSegment(1000, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
+        atsNewSegment = new AutonomousStrafeTurnSegment(0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+
+ */
 
 
     }
