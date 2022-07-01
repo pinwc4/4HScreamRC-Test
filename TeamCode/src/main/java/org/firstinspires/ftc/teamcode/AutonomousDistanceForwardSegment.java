@@ -38,7 +38,7 @@ public class AutonomousDistanceForwardSegment extends AutonomousSegment {
     private static final double NORMAL_POWER = 0.3;
     private static final double REDUCED_POWER = 0.525;
     private double dblDesiredHeading = 0;
-    private static final double CORRECTION_AGGRESSION = 0.02;
+    private static final double CORRECTION_AGGRESSION = 0.03;
     static final double INCREMENT   = 0.01;
 
     private static final double TICKSTOINCHES = (384.5 * 1) / (Math.PI * 3.77953);

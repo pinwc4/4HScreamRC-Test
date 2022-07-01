@@ -224,9 +224,9 @@ public class FreightAttachment extends Object {
             bolXWasPressed = true;
             bolSVToggle = !bolSVToggle;
             if (bolSVToggle) {
-                srvBucketServo.setPosition(0.15);
+                srvBucketServo.setPosition(0.15);//0.15
             } else {
-                srvBucketServo.setPosition(0.85);
+                srvBucketServo.setPosition(0.85);//0.85
             }
         } else if (!gmpGamepad2.x && bolXWasPressed) {
             bolXWasPressed = false;

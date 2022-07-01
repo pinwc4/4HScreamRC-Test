@@ -29,7 +29,7 @@ public class AutonomousCenterPivotSegment extends AutonomousSegment {
     private static final double NORMAL_POWER = 0.45;
     private static final double TURN_POWER = -0.5;
     private double dblDesiredHeading = 0;
-    private static final double HEADING_ERROR_RANGE = 7;
+    private static final double HEADING_ERROR_RANGE = 10;
 
     Orientation angles;
 
