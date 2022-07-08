@@ -4,7 +4,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -23,10 +22,9 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
-@Disabled
-        @Autonomous(name = "AutoFreightDuckSideRedWPark")
+@Autonomous(name = "DuckSideRedAvoid")
 
-public class AutoFreightDuckSideRedWPark extends OpMode {
+public class AutoFreightDuckSideRedAvoid extends OpMode {
 
     private DcMotor dcmFrontLeftMotor;
     private DcMotor dcmFrontRightMotor;
@@ -35,6 +33,8 @@ public class AutoFreightDuckSideRedWPark extends OpMode {
 
     private Servo srvBucketServo;
     private CRServo dcmCSMotor;
+    private Servo srvMSServo;
+    private Servo srvMOServo;
 
     private DcMotorEx dcmSlider1;
 
@@ -102,6 +102,10 @@ public class AutoFreightDuckSideRedWPark extends OpMode {
         srvBucketServo = hardwareMap.servo.get("BucketServo");
         srvBucketServo.setPosition(0.85);
 
+        srvMSServo = hardwareMap.servo.get("ServoMS");
+
+        srvMOServo = hardwareMap.servo.get("ServoMO");
+
         snsDistanceLeft = hardwareMap.get(DistanceSensor.class, "DistanceLeft");
         snsDistanceRight = hardwareMap.get(DistanceSensor.class, "DistanceRight");
         snsDistanceBack = hardwareMap.get(DistanceSensor.class, "DistanceBack");
@@ -166,16 +170,28 @@ public class AutoFreightDuckSideRedWPark extends OpMode {
 
         AutonomousSegment atsNewSegment;
 
-        atsCurrentSegment = new AutonomousDistanceForwardSegment(11, 11, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
-        /*new AutonomousStrafeForwardSegment(12, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);*/
+
+        atsCurrentSegment = new AutonomousMagnetServoSegment(0.15, srvMSServo);
 
         atsNextSegment = atsCurrentSegment;
 
-        atsNewSegment = new AutonomousDistanceSidewaysSegment(19, 3,0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceLeft, snsDistanceRight);
+        atsNewSegment = new AutonomousMagnetOrientationServoSegment(0.015, srvMOServo);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousDistanceForwardSegment(36, 36, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
+        atsNewSegment = new AutonomousDistanceForwardSegment(46, 46, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousMagnetServoSegment(0.85, srvMSServo);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousDistanceForwardSegment(43, -3, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousMagnetOrientationServoSegment(0.05, srvMOServo);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -183,11 +199,13 @@ public class AutoFreightDuckSideRedWPark extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousDistanceForwardSegment(34, 34, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
-        /*new AutonomousStrafeForwardSegment(34, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);*/
+        atsNewSegment = new AutonomousStrafeForwardSegment(3, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
+        atsNewSegment = new AutonomousStrafeForwardSegment(0, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
 
         if (strSecondNumber == 1) {
 
@@ -220,8 +238,7 @@ public class AutoFreightDuckSideRedWPark extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = //new AutonomousDistanceForwardSegment(-28, -28, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
-        new AutonomousStrafeForwardSegment(-28, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardSegment(-3, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -229,12 +246,28 @@ public class AutoFreightDuckSideRedWPark extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousDistanceSidewaysSegment(6, 2,0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceLeft, snsDistanceRight);
+        atsNewSegment = new AutonomousDistanceForwardSegment(10, -35, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousDistanceForwardSegment(11.5, -10, -3, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
-                //new AutonomousStrafeForwardSegment(-30, -5, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousCenterPivotSegment(1, 90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousDistanceSidewaysSegment(6, 2,90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceLeft, snsDistanceRight);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousWaitSegment(1000, telemetry);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousStrafeForwardSegment(-55, 88, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        /*
+        atsNewSegment = new AutonomousDistanceSidewaysSegment(6, 2,0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceLeft, snsDistanceRight);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
@@ -262,21 +295,12 @@ public class AutoFreightDuckSideRedWPark extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousDistanceForwardSegment(13, 27.5, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
+        atsNewSegment = new AutonomousDistanceForwardSegment(25, 27.5, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(-17, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousCenterPivotSegment(-1, -90, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeForwardSegment(19, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
+         */
 
     }
 

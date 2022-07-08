@@ -22,7 +22,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
-@Autonomous(name = "AutoFreightWarehouseSideBlueCycle")
+@Autonomous(name = "WarehouseSideBlueCycle")
 
 public class AutoFreightWarehouseSideBlueCycle extends OpMode {
 

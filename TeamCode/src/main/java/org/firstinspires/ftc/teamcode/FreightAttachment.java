@@ -64,6 +64,8 @@ public class FreightAttachment extends Object {
     private boolean bolMCToggle = false;
     private boolean bolAPToggle = false;
 
+    private boolean bolTSEToggle = false;
+
 
     private boolean bolAWasPressed = false;
     private boolean bolCarouselToggle = false;
@@ -76,6 +78,8 @@ public class FreightAttachment extends Object {
     private double dblDesiredOrientation;
     private double dblOrientationDifference;
     private double dblHeadingCorrection;
+
+    private double dblTSECap;
 
 
     private double dblMagnetOrientation;
@@ -336,7 +340,7 @@ public class FreightAttachment extends Object {
        //Manual Arm Control
 
         if(gmpGamepad2.right_stick_y != 0){
-            dblMagnetArmSpeed = dblMagnetArmSpeed + (-gmpGamepad2.right_stick_y*16);
+            dblMagnetArmSpeed = dblMagnetArmSpeed + (-gmpGamepad2.right_stick_y*32);
             intMagnetArmSpeed2 = (int) dblMagnetArmSpeed;
 
         }
@@ -378,13 +382,22 @@ public class FreightAttachment extends Object {
 
 
 
+
         //Arm Preset Capping
+
+        if(dcmMagnetArm.getCurrentPosition()<2400 && dcmMagnetArm.getCurrentPosition()>800){
+            dblTSECap = 0.02;
+        } else{
+            dblTSECap = 0;
+        }
+
         if (gmpGamepad2.dpad_down && !bolDPadDownWasPressed) {
             bolDPadDownWasPressed = true;
             bolMCToggle = !bolMCToggle;
             if (bolMCToggle) {
                 if(dcmMagnetArm.getCurrentPosition()>1000){
                     dblCapDist = 0.05;
+                    bolTSEToggle = true;
                 }else{
                     dblCapDist = -0.05;
                 }
@@ -397,9 +410,9 @@ public class FreightAttachment extends Object {
         }else{
 
             if(intMagnetArmSpeed == 0 & dcmMagnetArm.getCurrentPosition() > 10){
-                srvMagnetOrientation.setPosition(((dcmMagnetArm.getCurrentPosition()/24000f+dblCapDist)-0.04)+0.05);
+                srvMagnetOrientation.setPosition(((dcmMagnetArm.getCurrentPosition()/23000f+dblCapDist+dblTSECap)-0.04)+0.05);
             }else{
-                srvMagnetOrientation.setPosition((dcmMagnetArm.getCurrentPosition()/24000f+dblCapDist)+0.05);
+                srvMagnetOrientation.setPosition((dcmMagnetArm.getCurrentPosition()/23000f+dblCapDist+dblTSECap)+0.05);
             }
 
 
@@ -476,7 +489,7 @@ public class FreightAttachment extends Object {
 
         telTelemetry.addData("MagnetArm", dcmMagnetArm.getCurrentPosition());
 
- */
+
 
         telTelemetry.addData("Distance", snsDistanceBack.getDistance(DistanceUnit.INCH));
         telTelemetry.addData("Intake3", dcmIntake0.getCurrentPosition());
@@ -486,6 +499,12 @@ public class FreightAttachment extends Object {
         telTelemetry.addData("blue", snsColor.blue());
         telTelemetry.addData("argb", snsColor.argb());
         telTelemetry.addData("alpha", snsColor.alpha());
+
+         */
+
+        telTelemetry.addData("MagnetArm", dcmMagnetArm.getCurrentPosition());
+        telTelemetry.addData("TSE CAP", dblTSECap);
+        telTelemetry.addData("TSE CAP", dblTSECap);
 
     }
 
