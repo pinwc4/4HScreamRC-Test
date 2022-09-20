@@ -99,7 +99,7 @@ public class PowerAttachment extends Object {
             dblSlideSpeed = dblSlideSpeed + -gmpGamepad2.left_stick_y * 18;
 
             intSlideSpeed = (int) dblSlideSpeed;
-        }
+        } 
 
 
 
