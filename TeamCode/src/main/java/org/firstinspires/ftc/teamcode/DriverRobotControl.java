@@ -14,6 +14,7 @@ public class DriverRobotControl extends OpMode {
     private LauncherAttechment latLauncherAttachment;
     private LEDpattarn ledLedPattern;
     private FreightAttachment frtFreightAttechment;
+    private PowerAttachment pwrPowerAttachment;
 
     private TouchSensor snsChassis;
     private TouchSensor snsControlScheme;
@@ -32,6 +33,7 @@ public class DriverRobotControl extends OpMode {
         chsChassis.setCmpMoveParameters(((DroneControlScheme) ccsChassisControlScheme).getCmpMoveParameters());
         //atcDR4BAttachment = new DR4BAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
         latLauncherAttachment = new LauncherAttechment(gamepad1, gamepad2, hardwareMap, telemetry);
+        frtFreightAttechment = new FreightAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
 
 
  */
@@ -41,18 +43,20 @@ public class DriverRobotControl extends OpMode {
             chsChassis.setCmpMoveParameters(((DroneControlScheme) ccsChassisControlScheme).getCmpMoveParameters());
 
 
-           frtFreightAttechment = new FreightAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
-           ledLedPattern = new LEDpattarn(gamepad1, hardwareMap, telemetry);
+            pwrPowerAttachment = new PowerAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
+           //ledLedPattern = new LEDpattarn(gamepad1, hardwareMap, telemetry);
     }
 
     @Override
     public void loop() {
 
 
-        frtFreightAttechment.moveAttachments();
+        //frtFreightAttechment.moveAttachments();
+
+        pwrPowerAttachment.moveAttachments();
         ccsChassisControlScheme.updateControls();
         chsChassis.moveChassis();
-        ledLedPattern.lights(getRuntime());
+        //ledLedPattern.lights(getRuntime());
         /*
         if(!bolTest) {
             latLauncherAttachment.moveAttachments();

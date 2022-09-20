@@ -5,7 +5,9 @@ import android.hardware.Sensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -15,50 +17,31 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class ServoTest extends OpMode {
 
-    //private DcMotor dcmCarouselMotor1;
-   // private DcMotor dcmFrontRightMotor;
-  //  private DcMotor dcmBackLeftMotor;
-  //  private DcMotor dcmBackRightMotor;
-    private Servo srvArmServo;
+    private DcMotor dcmBenElven;
 
-    private static final double TICKSTOINCHES = (537.6 * 1) / (Math.PI * 3.77953);
+    private int intPreston;
 
-    private boolean bolGSToggle = false;
-    private boolean bolAWasPressed = false;
-    private boolean bolCarouselToggle = false;
-    private boolean bolXWasPressed = false;
-    private boolean bolRBumperWasPressed = false;
-    private boolean bolLBumperWasPressed = false;
-    private boolean bolBWasPressed = false;
-    private boolean bolYWasPressed = false;
+    private double dblOwen;
 
-    private double dblCarouselSpeed;
+    private boolean bolZach = true;
 
-    private double dblCarouselSpeedToggle;
 
-    public void init(){
-       // dcmCarouselMotor1 = hardwareMap.dcMotor.get("MotorFL");
-      //  dcmFrontRightMotor = hardwareMap.dcMotor.get("MotorFR");
-     //   dcmBackLeftMotor = hardwareMap.dcMotor.get("MotorBL");
-     //   dcmBackRightMotor = hardwareMap.dcMotor.get("MotorBR");
+    public void init() {
 
-        srvArmServo = hardwareMap.servo.get("ArmServo");
+
     }
 
-    public void loop(){
+    public void loop() {
 
-
-        if(gamepad1.a){
-            srvArmServo.setPosition(0.85);
+        if(gamepad1.left_stick_y == 1){
+            dcmBenElven.setPower(1);
         }
-        if(gamepad1.b){
-            srvArmServo.setPosition(0.15);
+        else{
+            dcmBenElven.setPower(0);
         }
 
 
-        telemetry.addData("Servo", srvArmServo.getPosition());
 
-        telemetry.update();
     }
 }
 
