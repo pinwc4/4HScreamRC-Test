@@ -78,7 +78,7 @@ public class PowerAttachment extends Object {
 
     public void moveAttachments() {
 
-        dcmFlipper.setPower(gmpGamepad2.right_stick_y/10);
+        dcmFlipper.setPower(gmpGamepad2.right_stick_y/2);
 
         if (gmpGamepad2.x && !bolXWasPressed) {
             bolXWasPressed = true;
@@ -96,7 +96,7 @@ public class PowerAttachment extends Object {
 
 
         if(gmpGamepad2.left_stick_y != 0) {
-            dblSlideSpeed = dblSlideSpeed + -gmpGamepad2.left_stick_y * 18;
+            dblSlideSpeed = dblSlideSpeed + gmpGamepad2.left_stick_y * 1.5;
 
             intSlideSpeed = (int) dblSlideSpeed;
         }
@@ -107,7 +107,7 @@ public class PowerAttachment extends Object {
             bolAWasPressed = true;
             bolGMAToggle = !bolGMAToggle;
             if (bolGMAToggle) {
-                intSlideSpeed = 250;
+                intSlideSpeed = -250;
 
             } else {
                 intSlideSpeed = 0;
@@ -121,7 +121,7 @@ public class PowerAttachment extends Object {
             bolBWasPressed = true;
             bolGMBToggle = !bolGMBToggle;
             if (bolGMBToggle) {
-                intSlideSpeed = 380;
+                intSlideSpeed = -380;
 
             } else {
                 intSlideSpeed = 0;
@@ -135,7 +135,7 @@ public class PowerAttachment extends Object {
             bolYWasPressed = true;
             bolGMYToggle = !bolGMYToggle;
             if (bolGMYToggle) {
-                intSlideSpeed = 620;
+                intSlideSpeed = -620;
 
             } else {
                 intSlideSpeed = 0;
