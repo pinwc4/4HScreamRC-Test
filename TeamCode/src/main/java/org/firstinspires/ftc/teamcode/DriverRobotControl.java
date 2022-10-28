@@ -36,12 +36,14 @@ public class DriverRobotControl extends OpMode {
         frtFreightAttechment = new FreightAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
 
 
- */
+
 
             ccsChassisControlScheme = new DroneControlScheme(gamepad1);
             chsChassis = new MecanumChassis(hardwareMap);
             chsChassis.setCmpMoveParameters(((DroneControlScheme) ccsChassisControlScheme).getCmpMoveParameters());
 
+
+ */
 
             pwrPowerAttachment = new PowerAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
            //ledLedPattern = new LEDpattarn(gamepad1, hardwareMap, telemetry);
@@ -54,8 +56,8 @@ public class DriverRobotControl extends OpMode {
         //frtFreightAttechment.moveAttachments();
 
         pwrPowerAttachment.moveAttachments();
-        ccsChassisControlScheme.updateControls();
-        chsChassis.moveChassis();
+        //ccsChassisControlScheme.updateControls();
+        //chsChassis.moveChassis();
         //ledLedPattern.lights(getRuntime());
         /*
         if(!bolTest) {

@@ -20,8 +20,10 @@ public class PowerAttachment extends Object {
 
     private DcMotorEx dcmSlider;
 
-    private Servo srvLeftClaw;
-    private Servo srvRightClaw;
+   // private Servo srvLeftClaw;
+    private Servo srvGrabber;
+    private Servo srvV4B;
+    
 
     private double dblSlideSpeed;
     private int intSlideSpeed;
@@ -43,6 +45,7 @@ public class PowerAttachment extends Object {
         this.gmpGamepad2 = gmpGamepad2;
         this.telTelemetry = telTelemetry;
 
+        /*
         dcmFlipper = hmpHardwareMap.get(DcMotor.class, "Flipper");
 
         dcmSlider = hmpHardwareMap.get(DcMotorEx.class, "Slider");
@@ -50,11 +53,10 @@ public class PowerAttachment extends Object {
         dcmSlider.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         dcmSlider.setDirection(DcMotor.Direction.FORWARD);
 
-        srvLeftClaw = hmpHardwareMap.servo.get("LeftClaw");
-        srvLeftClaw.setPosition(1);
+         */
 
-        srvRightClaw = hmpHardwareMap.servo.get("RightClaw");
-        srvRightClaw.setPosition(0);
+        srvGrabber = hmpHardwareMap.servo.get("Grabber");
+        srvGrabber.setPosition(0);
 
 
 
@@ -78,17 +80,16 @@ public class PowerAttachment extends Object {
 
     public void moveAttachments() {
 
-        dcmFlipper.setPower(gmpGamepad2.right_stick_y/2);
+
+       // dcmFlipper.setPower(gmpGamepad2.right_stick_y/2);
 
         if (gmpGamepad2.x && !bolXWasPressed) {
             bolXWasPressed = true;
             bolCLToggle = !bolCLToggle;
             if (bolCLToggle) {
-                srvLeftClaw.setPosition(1);//0.15
-                srvRightClaw.setPosition(0);//0.15
+                srvGrabber.setPosition(0);//0.6
             } else {
-                srvLeftClaw.setPosition(0.8);//0.85
-                srvRightClaw.setPosition(0.2);//0.85
+                srvGrabber.setPosition(0.65);//0.85
             }
         } else if (!gmpGamepad2.x && bolXWasPressed) {
             bolXWasPressed = false;
@@ -146,13 +147,15 @@ public class PowerAttachment extends Object {
         }
 
 
+
+/*
         dcmSlider.setTargetPosition(intSlideSpeed);
         dcmSlider.setPower(0.5);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        telTelemetry.addData("Slider", dcmSlider.getCurrentPosition());
-        telTelemetry.addData("LeftClaw", srvLeftClaw);
-        telTelemetry.addData("RightClaw", srvRightClaw);
+ */
+        //telTelemetry.addData("Slider", dcmSlider.getCurrentPosition());
+        telTelemetry.addData("Grabber", srvGrabber);
 
     }
 
