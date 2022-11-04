@@ -56,8 +56,8 @@ public class DriverRobotControl extends OpMode {
         //frtFreightAttechment.moveAttachments();
 
         pwrPowerAttachment.moveAttachments();
-        //ccsChassisControlScheme.updateControls();
-        //chsChassis.moveChassis();
+        ccsChassisControlScheme.updateControls();
+        chsChassis.moveChassis();
         //ledLedPattern.lights(getRuntime());
         /*
         if(!bolTest) {
