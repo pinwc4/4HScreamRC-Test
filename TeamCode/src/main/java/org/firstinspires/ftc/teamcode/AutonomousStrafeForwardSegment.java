@@ -35,7 +35,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
     private static final double CORRECTION_AGGRESSION = 0.05;
     static final double INCREMENT   = 0.02;
 
-    private static final double TICKSTOINCHES = (384.5 * 1) / (Math.PI * 3.77953);
+    private static final double TICKSTOINCHES = 0.689 * 2 * Math.PI / 8192;//(384.5 * 1) / (Math.PI * 3.77953);
     //                                           537.6 ppr
 
     Orientation angles;
@@ -118,7 +118,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
             init();
         }
 
-        double dblMotorPosition = (-dcmFLMotor.getCurrentPosition() + dcmFRMotor.getCurrentPosition() + -dcmBLMotor.getCurrentPosition() + dcmBRMotor.getCurrentPosition())/4;
+        double dblMotorPosition = dcmFLMotor.getCurrentPosition();
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 

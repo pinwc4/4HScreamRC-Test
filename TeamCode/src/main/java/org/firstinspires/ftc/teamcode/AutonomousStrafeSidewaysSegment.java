@@ -45,7 +45,7 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
     private boolean bolinitialized;
     private boolean boldistReached;
 
-    private static final double TICKSTOINCHES = (384.5 * 1) / (Math.PI * 3.77953);
+    private static final double TICKSTOINCHES = 0.689 * 2 * Math.PI / 8192;
 
 
     public AutonomousStrafeSidewaysSegment(double distToTravelin, double dblDesiredHeading, DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, BNO055IMU imu) {
@@ -88,7 +88,7 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
             init();
         }
 
-        double dblMotorPosition = (-dcmFLMotor.getCurrentPosition() + -dcmFRMotor.getCurrentPosition() + dcmBLMotor.getCurrentPosition() + dcmBRMotor.getCurrentPosition())/4;
+        double dblMotorPosition = dcmBLMotor.getCurrentPosition();
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 

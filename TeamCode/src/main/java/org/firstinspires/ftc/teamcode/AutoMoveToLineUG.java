@@ -70,10 +70,6 @@ public class AutoMoveToLineUG extends OpMode {
         dcmBackLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmBackRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        snsDistanceBack = hardwareMap.get(DistanceSensor.class, "DistanceBack");
-        snsDistanceLeft = hardwareMap.get(DistanceSensor.class, "DistanceLeft");
-        snsDistanceRight = hardwareMap.get(DistanceSensor.class, "DistanceRight");
-
 
         initImu();
 
@@ -88,34 +84,16 @@ public class AutoMoveToLineUG extends OpMode {
 
         AutonomousSegment atsNewSegment;
 
-        atsCurrentSegment = new AutonomousStrafeForwardSegment( 0, 0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsCurrentSegment = new AutonomousStrafeForwardSegment( 5, 0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
 
         atsNextSegment = atsCurrentSegment;
 
+        /*
         atsNewSegment = new AutonomousStrafeSidewaysSegment(-23, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-/*
-        atsNewSegment = new AutonomousDistanceForwardSegment(5, 5, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu, snsDistanceBack);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-
-
-
-    atsNewSegment = new AutonomousStrafeTurnSegment(-90,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
          */
-
-        atsNewSegment = new AutonomousStrafeDiagonalWaitSegment(1000, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
-        atsNewSegment = new AutonomousStrafeTurnSegment(0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
 
 
 
