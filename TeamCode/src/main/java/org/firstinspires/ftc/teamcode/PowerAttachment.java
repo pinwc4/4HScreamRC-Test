@@ -48,6 +48,8 @@ public class PowerAttachment extends Object {
     private boolean bolGMBToggle = false;
     private boolean bolGMYToggle = false;
     private boolean bolRBToggle = false;
+    private boolean bolTToggle = false;
+
 
     public PowerAttachment(Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry) {
 
@@ -119,7 +121,7 @@ public class PowerAttachment extends Object {
             bolGRB3Toggle = true;
         }
 
-        if(dcmSlider.getCurrentPosition() > -5 && bolGRB3Toggle){
+        if(dcmSlider.getCurrentPosition() > -3 && bolGRB3Toggle){
 
             srvV4B.setPosition(CENTERANGLE);
             bolGRB3Toggle = false;
@@ -187,7 +189,7 @@ public class PowerAttachment extends Object {
             if (bolGMAToggle) {
                 intSlidePosition = -150;
             }else {
-                intSlidePosition = 0;
+                bolTToggle = true;
                 srvV4B.setPosition(CENTERANGLE);
             }
         } else if (!gmpGamepad2.a && bolAWasPressed) {
@@ -223,6 +225,20 @@ public class PowerAttachment extends Object {
             bolYWasPressed = false;
         }
 
+
+        if(bolTToggle){
+            if(intNumSameRecognitions < 300){
+
+                intNumSameRecognitions++;
+                telTelemetry.addLine("One");
+            }
+            else {
+                intSlidePosition = 0;
+                intNumSameRecognitions = 0;
+                telTelemetry.addLine("Two");
+                bolTToggle = false;
+            }
+        }
 
 
 
