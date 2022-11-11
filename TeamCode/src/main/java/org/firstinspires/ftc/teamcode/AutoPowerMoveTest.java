@@ -48,7 +48,7 @@ public class AutoPowerMoveTest extends OpMode {
 
     private AutonomousScanForSleeve ascSleeve;
 
-    private static final String TFOD_MODEL_ASSET = "model_20221027_191633.tflite";
+    private static final String TFOD_MODEL_ASSET = "model_20221110_195128.tflite";
 
     private static final String[] LABELS = {
 /*
@@ -115,7 +115,7 @@ public class AutoPowerMoveTest extends OpMode {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(2.5, 16.0/9.0);
+            tfod.setZoom(1, 16.0/9.0);
         }
 
 
@@ -151,7 +151,7 @@ public class AutoPowerMoveTest extends OpMode {
 
         AutonomousSegment atsNewSegment;
 
-        atsCurrentSegment = new AutonomousStrafeForwardSegment(10, 10, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsCurrentSegment = new AutonomousStrafeForwardSegment(10, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         //new AutonomousStrafeForwardSegment(10,0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
 
         atsNextSegment = atsCurrentSegment;
@@ -190,11 +190,6 @@ public class AutoPowerMoveTest extends OpMode {
             atsNextSegment = atsNewSegment;
 
         }
-
-        atsNewSegment = new AutonomousWaitSegment(1000, telemetry);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
 
 
     }
