@@ -29,7 +29,7 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
     private double dblBackLeftMotorPower;
     private double dblBackRightMotorPower;
 
-    private static final double NORMAL_POWER = 0.8;
+    private static final double NORMAL_POWER = 0.4;
     private static final double REDUCED_POWER = 0.6;
     private double dblDesiredHeading = 0;
     private static final double HEADING_ERROR_RANGE = 3;
@@ -45,7 +45,7 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
     private boolean bolinitialized;
     private boolean boldistReached;
 
-    private static final double TICKSTOINCHES = 0.689 * 2 * Math.PI / 8192;
+    private static final double TICKSTOINCHES = 1906.25; //0.689 * 2 * Math.PI / 8192;
 
 
     public AutonomousStrafeSidewaysSegment(double distToTravelin, double dblDesiredHeading, DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, BNO055IMU imu) {
@@ -88,7 +88,7 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
             init();
         }
 
-        double dblMotorPosition = dcmBLMotor.getCurrentPosition();
+        double dblMotorPosition = -dcmFLMotor.getCurrentPosition();
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
@@ -103,42 +103,11 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
         // At the beginning of each telemetry update, grab a bunch of data
         // from the IMU that we will then display in separate lines.
 
-
-        //left
-        if (dblMotorPosition > (-desiredEncoderTicks) && desiredEncoderTicks > 0) {
-
-            if(dblMotorPosition < ((desiredEncoderTicks + dblRampDown)/2)){
-                dblFrontLeftMotorValue += INCREMENT;
-                dblFrontRightMotorValue += INCREMENT;
-                dblBackLeftMotorValue += INCREMENT;
-                dblBackRightMotorValue += INCREMENT;
-            } else if(dblMotorPosition > ((desiredEncoderTicks + dblRampDown)/2)){
-                dblFrontLeftMotorValue -= INCREMENT;
-                dblFrontRightMotorValue -= INCREMENT;
-                dblBackLeftMotorValue -= INCREMENT;
-                dblBackRightMotorValue -= INCREMENT;
-
-                if(dblFrontLeftMotorValue < 0 || dblFrontLeftMotorValue == 0){
-                    dblFrontLeftMotorPower = 0;
-                    dblFrontRightMotorPower = 0;
-                    dblBackLeftMotorPower = 0;
-                    dblBackRightMotorPower = 0;
-                    boldistReached = true;
-                }
-            }
-
-            if (dblFrontLeftMotorValue < NORMAL_POWER) {
-                dblFrontLeftMotorPower = dblFrontLeftMotorValue;
-                dblFrontRightMotorPower = dblFrontRightMotorValue;
-                dblBackLeftMotorPower = dblBackLeftMotorValue;
-                dblBackRightMotorPower = dblBackRightMotorValue;
-            }
-            if (dblFrontLeftMotorValue >= NORMAL_POWER) {
-                dblFrontLeftMotorPower = NORMAL_POWER;
-                dblFrontRightMotorPower = NORMAL_POWER;
-                dblBackLeftMotorPower = NORMAL_POWER;
-                dblBackRightMotorPower = NORMAL_POWER;
-            }
+        if(dblMotorPosition < (desiredEncoderTicks) && desiredEncoderTicks > 0){
+            dblFrontLeftMotorPower = NORMAL_POWER;
+            dblFrontRightMotorPower = NORMAL_POWER;
+            dblBackLeftMotorPower = NORMAL_POWER;
+            dblBackRightMotorPower = NORMAL_POWER;
 
             if(dblHeading > dblDesiredHeading){
                 dblFrontRightMotorPower -= (dblHeadingCorrection);
@@ -148,43 +117,11 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
                 dblBackLeftMotorPower -= (-dblHeadingCorrection);
             }
 
-            telemetry.addLine();
-
-            //right
-        } else if (dblMotorPosition < (-desiredEncoderTicks) && desiredEncoderTicks < 0) {
-
-            if(dblMotorPosition > ((desiredEncoderTicks - dblRampDown)/2)){
-                dblFrontLeftMotorValue -= INCREMENT;
-                dblFrontRightMotorValue -= INCREMENT;
-                dblBackLeftMotorValue -= INCREMENT;
-                dblBackRightMotorValue -= INCREMENT;
-            } else if(dblMotorPosition < ((desiredEncoderTicks - dblRampDown)/2)){
-                dblFrontLeftMotorValue += INCREMENT;
-                dblFrontRightMotorValue += INCREMENT;
-                dblBackLeftMotorValue += INCREMENT;
-                dblBackRightMotorValue += INCREMENT;
-
-                if(dblFrontLeftMotorValue > 0 || dblFrontLeftMotorValue == 0){
-                    dblFrontLeftMotorPower = 0;
-                    dblFrontRightMotorPower = 0;
-                    dblBackLeftMotorPower = 0;
-                    dblBackRightMotorPower = 0;
-                    boldistReached = true;
-                }
-            }
-
-            if (dblFrontLeftMotorValue > -NORMAL_POWER) {
-                dblFrontLeftMotorPower = dblFrontLeftMotorValue;
-                dblFrontRightMotorPower = dblFrontRightMotorValue;
-                dblBackLeftMotorPower = dblBackLeftMotorValue;
-                dblBackRightMotorPower = dblBackRightMotorValue;
-            }
-            if (dblFrontLeftMotorValue <= -NORMAL_POWER) {
-                dblFrontLeftMotorPower = -NORMAL_POWER;
-                dblFrontRightMotorPower = -NORMAL_POWER;
-                dblBackLeftMotorPower = -NORMAL_POWER;
-                dblBackRightMotorPower = -NORMAL_POWER;
-            }
+        } else if(dblMotorPosition > (desiredEncoderTicks) && desiredEncoderTicks < 0){
+            dblFrontLeftMotorPower = -NORMAL_POWER;
+            dblFrontRightMotorPower = -NORMAL_POWER;
+            dblBackLeftMotorPower = -NORMAL_POWER;
+            dblBackRightMotorPower = -NORMAL_POWER;
 
             if(dblHeading < dblDesiredHeading){
                 dblFrontRightMotorPower -= (dblHeadingCorrection);
@@ -194,8 +131,7 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
                 dblBackLeftMotorPower -= (-dblHeadingCorrection);
             }
 
-
-        } else {
+        } else{
 
             dblFrontLeftMotorPower = 0;
             dblFrontRightMotorPower = 0;
@@ -204,6 +140,10 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
 
             boldistReached = true;
         }
+
+
+
+
 
         dcmFLMotor.setPower(dblFrontLeftMotorPower);
         dcmFRMotor.setPower(dblFrontRightMotorPower);
@@ -221,6 +161,8 @@ public class AutonomousStrafeSidewaysSegment extends AutonomousSegment {
          */
 
         telemetry.addData("position", dblMotorPosition);
+
+        telemetry.addData("desired", desiredEncoderTicks);
 
         telemetry.addData("FL", dcmFLMotor.getCurrentPosition());
         telemetry.addData("FR", dcmFRMotor.getCurrentPosition());
