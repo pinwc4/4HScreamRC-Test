@@ -23,10 +23,10 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions = 0;
 
     private static final double CENTERANGLE = 0.5;
-    private static final double ANGLEMODIFIERLOW = 0.4365;
+    private static final double ANGLEMODIFIERLOW = 0.4565;
     private static final double ANGLEMODIFIERHIGH = 0.1;
     private double dblV4BAngleHigh = 0.6; //0.3755
-    private double dblV4BAngleLow = 0.0635; //0.9365
+    private double dblV4BAngleLow = 0.0435; //0.9365
 
     private double dblSlidePosition;
     private int intSlidePosition = 0;
@@ -114,14 +114,14 @@ public class PowerAttachment extends Object {
             bolGRB2Toggle = true;
         }
 
-        if(dcmSlider.getCurrentPosition() > -15 && bolGRB2Toggle){
+        if(dcmSlider.getCurrentPosition() > -20 && bolGRB2Toggle){
 
             srvGrabber.setPosition(0.65);
             bolGRB2Toggle = false;
             bolGRB3Toggle = true;
         }
 
-        if(dcmSlider.getCurrentPosition() > -3 && bolGRB3Toggle){
+        if(dcmSlider.getCurrentPosition() > -4 && bolGRB3Toggle){
 
             srvV4B.setPosition(CENTERANGLE);
             bolGRB3Toggle = false;
@@ -203,7 +203,7 @@ public class PowerAttachment extends Object {
             if (bolGMBToggle) {
                 intSlidePosition = -380;
             } else {
-                intSlidePosition = 0;
+                bolTToggle = true;
                 srvV4B.setPosition(CENTERANGLE);
             }
 
@@ -215,9 +215,9 @@ public class PowerAttachment extends Object {
             bolYWasPressed = true;
             bolGMYToggle = !bolGMYToggle;
             if (bolGMYToggle) {
-                intSlidePosition = -800;
+                intSlidePosition = -725;
             } else {
-                intSlidePosition = 0;
+                bolTToggle = true;
                 srvV4B.setPosition(CENTERANGLE);
             }
 
@@ -227,7 +227,7 @@ public class PowerAttachment extends Object {
 
 
         if(bolTToggle){
-            if(intNumSameRecognitions < 300){
+            if(intNumSameRecognitions < 15){
 
                 intNumSameRecognitions++;
                 telTelemetry.addLine("One");

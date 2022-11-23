@@ -21,7 +21,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
 @Autonomous(name = "AutoMoveToLineUG")
-@Disabled
+
 
 public class AutoMoveToLineUG extends OpMode {
 
@@ -84,16 +84,16 @@ public class AutoMoveToLineUG extends OpMode {
 
         AutonomousSegment atsNewSegment;
 
-        atsCurrentSegment = new AutonomousStrafeForwardSegment( 5, 0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsCurrentSegment = new AutonomousStrafeForwardSegment( 10, 0,  dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
 
         atsNextSegment = atsCurrentSegment;
 
-        /*
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(-23, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+
+        atsNewSegment = new AutonomousStrafeSidewaysSegment(10, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-         */
+
 
 
 

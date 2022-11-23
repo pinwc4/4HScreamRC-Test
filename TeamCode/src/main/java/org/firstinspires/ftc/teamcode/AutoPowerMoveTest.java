@@ -17,6 +17,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 
@@ -76,6 +77,8 @@ public class AutoPowerMoveTest extends OpMode {
     public void ResetChassisEncoder(){
         dcmFrontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dcmFrontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        dcmBackLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcmBackLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void init(){
@@ -115,7 +118,7 @@ public class AutoPowerMoveTest extends OpMode {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(1, 16.0/9.0);
+            tfod.setZoom(2, 9.0/16.0);
         }
 
 
@@ -140,10 +143,13 @@ public class AutoPowerMoveTest extends OpMode {
         double dblStartRuntime = getRuntime();
         double dblScanTime = 0;
 
+/*
         while(!ascSleeve.segmentComplete() && dblScanTime < 7){
             ascSleeve.runSegment();
             dblScanTime = getRuntime() - dblStartRuntime;
         }
+
+ */
 
         strSecondNumber = ascSleeve.getStrNumber();
 
@@ -151,17 +157,24 @@ public class AutoPowerMoveTest extends OpMode {
 
         AutonomousSegment atsNewSegment;
 
-        atsCurrentSegment = new AutonomousStrafeForwardSegment(10, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsCurrentSegment = new AutonomousStrafeForwardSegment(1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
         //new AutonomousStrafeForwardSegment(10,0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
 
         atsNextSegment = atsCurrentSegment;
 
-        atsNewSegment = new AutonomousStrafeSidewaysSegment(23, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        atsNextSegment.setNextSegment(atsNewSegment);
-        atsNextSegment = atsNewSegment;
-
 
         if (strSecondNumber.equals("Green tag")) {
+
+            atsNewSegment = new AutonomousStrafeSidewaysSegment(-17, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+            atsNextSegment.setNextSegment(atsNewSegment);
+            atsNextSegment = atsNewSegment;
+
+            atsNewSegment = new AutonomousStrafeForwardSegment(27, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+            atsNextSegment.setNextSegment(atsNewSegment);
+            atsNextSegment = atsNewSegment;
+
+
+        } else if (strSecondNumber.equals("Purple tag")) {
 
             atsNewSegment = new AutonomousStrafeSidewaysSegment(25, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
             atsNextSegment.setNextSegment(atsNewSegment);
@@ -172,16 +185,9 @@ public class AutoPowerMoveTest extends OpMode {
             atsNextSegment = atsNewSegment;
 
 
-        } else if (strSecondNumber.equals("Yellow tag")) {
-
-            atsNewSegment = new AutonomousStrafeForwardSegment(275, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-            atsNextSegment.setNextSegment(atsNewSegment);
-            atsNextSegment = atsNewSegment;
-
-
         } else {
 
-            atsNewSegment = new AutonomousStrafeSidewaysSegment(-25, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+            atsNewSegment = new AutonomousStrafeSidewaysSegment(2, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
             atsNextSegment.setNextSegment(atsNewSegment);
             atsNextSegment = atsNewSegment;
 
@@ -190,6 +196,8 @@ public class AutoPowerMoveTest extends OpMode {
             atsNextSegment = atsNewSegment;
 
         }
+
+
 
 
     }
@@ -228,7 +236,7 @@ public class AutoPowerMoveTest extends OpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.75f;
+        tfodParameters.minResultConfidence = 0.55f;
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);

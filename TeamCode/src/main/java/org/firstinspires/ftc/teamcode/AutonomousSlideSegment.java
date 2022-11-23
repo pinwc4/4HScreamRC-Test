@@ -11,11 +11,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class AutonomousSlideSegment extends AutonomousSegment {
     private double desiredEncoderTicks;
 
-    private DcMotorEx dcmSlider1;
+    private DcMotorEx dcmSlider;
 
-    private Servo srvBucketServo;
+    private Servo srvV4B;
 
-    private int intSlideSpeed;
+    private int intSlidePosition;
 
     private double dblServoPosition;
 
@@ -37,15 +37,15 @@ public class AutonomousSlideSegment extends AutonomousSegment {
     public AutonomousSlideSegment(int intSlideSpeed, double dblServoPosition, DcMotorEx dcmSlider1, Servo srvBucketServo, Telemetry telemetry) {
         //add appropriate comment for conversions
 
-        this.intSlideSpeed = intSlideSpeed;
+        this.intSlidePosition = intSlideSpeed;
 
         this.dblServoPosition = dblServoPosition;
 
         this.telemetry = telemetry;
 
-        this.dcmSlider1 = dcmSlider1;
+        this.dcmSlider = dcmSlider1;
 
-        this.srvBucketServo = srvBucketServo;
+        this.srvV4B = srvBucketServo;
 
         bolinitialized = false;
         boldistReached = false;
@@ -54,7 +54,7 @@ public class AutonomousSlideSegment extends AutonomousSegment {
     private void init() {
         //dcmSlider1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //dcmSlider1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        dcmSlider1.setDirection(DcMotor.Direction.FORWARD);
+        dcmSlider.setDirection(DcMotor.Direction.FORWARD);
 
         bolinitialized = true;
 
@@ -65,19 +65,19 @@ public class AutonomousSlideSegment extends AutonomousSegment {
             init();
         }
 
-        dcmSlider1.setTargetPosition(intSlideSpeed);
-        dcmSlider1.setPower(0.5);
-        dcmSlider1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dcmSlider.setTargetPosition(intSlidePosition);
+        dcmSlider.setPower(0.5);
+        dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        if (dcmSlider1.getCurrentPosition() > intSlideSpeed - 100) {
-            srvBucketServo.setPosition(dblServoPosition);
+        if (dcmSlider.getCurrentPosition() > intSlidePosition - 100) {
+            srvV4B.setPosition(dblServoPosition);
         }
 
-        if(dcmSlider1.getCurrentPosition() > intSlideSpeed -10 && dcmSlider1.getCurrentPosition() < intSlideSpeed + 10){
+        if(dcmSlider.getCurrentPosition() > intSlidePosition -10 && dcmSlider.getCurrentPosition() < intSlidePosition + 10){
             boldistReached = true;
         }
 
-        telemetry.addData("front left motor position", dcmSlider1.getCurrentPosition());
+        telemetry.addData("front left motor position", dcmSlider.getCurrentPosition());
         telemetry.addData("front left motor", dblServoPosition);
 
         telemetry.update();

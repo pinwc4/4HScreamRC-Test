@@ -33,16 +33,17 @@ public class AutonomousScanForSleeve extends AutonomousSegment {
             "Yellow Tag"
  */
             "Green tag",
-            "Purple tag",
-            "Yellow tag"
+            "Yellow tag",
+            "Purple tag"
+
     };
 
 
     //These are new labels for PowerPlay personal sleeve
     private int intNumSameRecognitions = 0;
 
-    public String strNumber = "None";
-    public String strNewNumber = "None";
+    public String strNumber;
+    public String strNumber2;
 
     private boolean bolEndSegment;
 
@@ -118,6 +119,8 @@ public class AutonomousScanForSleeve extends AutonomousSegment {
             if (updatedRecognitions != null) {
                 telemetry.addData("# Objects Detected", updatedRecognitions.size());
 
+                String strNewNumber = "no sleeve";
+
                 // step through the list of recognitions and display image position/size information for each one
                 // Note: "Image number" refers to the randomized image orientation/number
                 for (Recognition recognition : updatedRecognitions) {
@@ -131,19 +134,29 @@ public class AutonomousScanForSleeve extends AutonomousSegment {
                     telemetry.addData("- Position (Row/Col)","%.0f / %.0f", row, col);
                     telemetry.addData("- Size (Width/Height)","%.0f / %.0f", width, height);
 
-                    strNewNumber.equals(recognition.getLabel());
+                    strNewNumber = recognition.getLabel();
+
+                    //strNewNumber.equals(recognition.getLabel());
+
+                    //telemetry.addData("recognition Green", strNewNumber);
+
                 }
+
                 if (strNewNumber.equals("Green tag")) {
-                    telemetry.addLine("G");
-                } else if (strNewNumber.equals("Yellow tag")) {
-                    telemetry.addLine("Y");
+                    strNumber = "Green tag";
+
+                } else if (strNewNumber.equals("Purple tag")) {
+                    strNumber = "Purple tag";
+
                 } else {
-                    telemetry.addLine("P");
+                    strNumber = "Yellow tag";
+
                 }
-                telemetry.addData("recognition v", strNewNumber);
 
+                telemetry.addData("recognition Jay", strNewNumber);
 
-                if(strNumber.equals(strNewNumber)){
+/*
+                if(strNumber2.equals(strNumber)){
                     intNumSameRecognitions++;
                     if(intNumSameRecognitions > 50){ //add constant
                         bolEndSegment = true;
@@ -151,10 +164,16 @@ public class AutonomousScanForSleeve extends AutonomousSegment {
                 }
                 else {
                     intNumSameRecognitions = 0;
-                    strNumber = strNewNumber;
+                    strNumber2 = strNumber;
                     bolEndSegment = false;
                 }
                 telemetry.update();
+
+
+
+ */
+
+
             }
         }
     }
