@@ -15,6 +15,7 @@ public class DriverRobotControl extends OpMode {
     private LEDpattarn ledLedPattern;
     private FreightAttachment frtFreightAttechment;
     private PowerAttachment pwrPowerAttachment;
+    private PowerLights pwrPowerLights;
 
     private TouchSensor snsChassis;
     private TouchSensor snsControlScheme;
