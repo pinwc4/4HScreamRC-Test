@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -20,6 +21,11 @@ public class PowerAttachment extends Object {
     private Servo srvGrabber;
     private Servo srvV4B;
 
+    private DigitalChannel lteDirectionC1;
+    private DigitalChannel lteDirectionC2;
+    private DigitalChannel lteDirectionC3;
+    private DigitalChannel lteDirectionC4;
+
     private int intNumSameRecognitions = 0;
 
     private static final double CENTERANGLE = 0.5;
@@ -34,9 +40,10 @@ public class PowerAttachment extends Object {
     private boolean bolAWasPressed = false;
     private boolean bolBWasPressed = false;
     private boolean bolYWasPressed = false;
-    private boolean bolXWasPressed = false;
+    private boolean bolX2WasPressed = false;
     private boolean bolDPUWasPressed = false;
     private boolean bolRBWasPressed = false;
+    private boolean bolX1WasPressed = false;
 
     private boolean bolGRB1Toggle = false;
     private boolean bolGRB2Toggle = false;
@@ -49,7 +56,7 @@ public class PowerAttachment extends Object {
     private boolean bolGMYToggle = false;
     private boolean bolRBToggle = false;
     private boolean bolTToggle = false;
-
+    private boolean bolCHS = false;
 
     public PowerAttachment(Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry) {
 
@@ -74,7 +81,15 @@ public class PowerAttachment extends Object {
         srvGrabber = hmpHardwareMap.servo.get("Grabber");
         srvGrabber.setPosition(0.65);
 
+        lteDirectionC1 = hmpHardwareMap.get(DigitalChannel.class, "green1");
+        lteDirectionC2 = hmpHardwareMap.get(DigitalChannel.class, "red1");
+        lteDirectionC3 = hmpHardwareMap.get(DigitalChannel.class, "green2");
+        lteDirectionC4 = hmpHardwareMap.get(DigitalChannel.class, "red2");
 
+        lteDirectionC1.setMode(DigitalChannel.Mode.OUTPUT);
+        lteDirectionC2.setMode(DigitalChannel.Mode.OUTPUT);
+        lteDirectionC3.setMode(DigitalChannel.Mode.OUTPUT);
+        lteDirectionC4.setMode(DigitalChannel.Mode.OUTPUT);
 
     }
 
@@ -90,8 +105,8 @@ public class PowerAttachment extends Object {
 
 // GRABBER
 
-        if (gmpGamepad2.x && !bolXWasPressed) {
-            bolXWasPressed = true;
+        if (gmpGamepad2.x && !bolX2WasPressed) {
+            bolX2WasPressed = true;
             bolCLToggle = !bolCLToggle;
             if (bolCLToggle) {
 
@@ -103,8 +118,8 @@ public class PowerAttachment extends Object {
             } else {
                 srvGrabber.setPosition(0);//0.85
             }
-        } else if (!gmpGamepad2.x && bolXWasPressed) {
-            bolXWasPressed = false;
+        } else if (!gmpGamepad2.x && bolX2WasPressed) {
+            bolX2WasPressed = false;
         }
 
         if(dcmSlider.getCurrentPosition() < -140 && bolGRB1Toggle){
@@ -164,7 +179,51 @@ public class PowerAttachment extends Object {
         }
 
 
+
 // HEADING SWITCH
+       /* if (gmpGamepad1.x) {
+            bolCHS = !bolCHS;
+
+        }
+
+            if (bolCHS == true) {
+
+                lteDirectionC1.setState(true);
+                lteDirectionC4.setState(true);
+                lteDirectionC2.setState(false);
+                lteDirectionC3.setState(false);
+            }
+            if (bolCHS == false) {
+                lteDirectionC2.setState(true);
+                lteDirectionC3.setState(true);
+                lteDirectionC1.setState(false);
+                lteDirectionC4.setState(false);
+
+            }
+
+        */
+        if (gmpGamepad1.x) {
+            bolCHS = !bolCHS;
+
+        }
+
+        if (bolCHS == true) {
+
+            lteDirectionC1.setState(true);
+            lteDirectionC4.setState(true);
+            lteDirectionC2.setState(false);
+            lteDirectionC3.setState(false);
+        }
+        if (bolCHS == false) {
+            lteDirectionC2.setState(true);
+            lteDirectionC3.setState(true);
+            lteDirectionC1.setState(false);
+            lteDirectionC4.setState(false);
+        }
+
+
+
+
         if (gmpGamepad2.dpad_up && !bolDPUWasPressed) {
             bolDPUWasPressed = true;
             bolSideToggle = !bolSideToggle;
@@ -260,12 +319,12 @@ public class PowerAttachment extends Object {
 
 
 
+        telTelemetry.addData("bolCHS", bolCHS);
         telTelemetry.addData("Slider", dcmSlider.getCurrentPosition());
         telTelemetry.addData("intSlider", intSlidePosition);
         telTelemetry.addData("Grabber", srvGrabber.getPosition());
         telTelemetry.addData("V4B", srvV4B.getPosition());
-
-    }
+        }
 
 
 }
