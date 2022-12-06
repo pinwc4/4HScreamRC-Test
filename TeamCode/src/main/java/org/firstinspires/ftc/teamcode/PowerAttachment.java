@@ -90,7 +90,7 @@ public class PowerAttachment extends Object {
 
 // GRABBER
 
-        if (gmpGamepad2.x && !bolXWasPressed) {
+        if (gmpGamepad1.right_bumper && !bolXWasPressed) {
             bolXWasPressed = true;
             bolCLToggle = !bolCLToggle;
             if (bolCLToggle) {
@@ -103,7 +103,7 @@ public class PowerAttachment extends Object {
             } else {
                 srvGrabber.setPosition(0);//0.85
             }
-        } else if (!gmpGamepad2.x && bolXWasPressed) {
+        } else if (!gmpGamepad1.right_bumper && bolXWasPressed) {
             bolXWasPressed = false;
         }
 
