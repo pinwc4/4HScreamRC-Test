@@ -112,8 +112,9 @@ public class PowerAttachment extends Object {
 
 // GRABBER
 
-        if (gmpGamepad2.x && !bolX2WasPressed) {
+        if (gmpGamepad1.right_bumper && !bolXWasPressed) {
             bolX2WasPressed = true;
+            bolXWasPressed = true;
             bolCLToggle = !bolCLToggle;
             if (bolCLToggle) {
 
@@ -125,8 +126,8 @@ public class PowerAttachment extends Object {
             } else {
                 srvGrabber.setPosition(0);//0.85
             }
-        } else if (!gmpGamepad2.x && bolX2WasPressed) {
-            bolX2WasPressed = false;
+        } else if (!gmpGamepad1.right_bumper && bolXWasPressed) {
+            bolXWasPressed = false;
         }
 
         if(dcmSlider.getCurrentPosition() < -140 && bolGRB1Toggle){
