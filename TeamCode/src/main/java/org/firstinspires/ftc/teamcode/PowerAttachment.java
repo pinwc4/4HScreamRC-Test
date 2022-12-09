@@ -31,8 +31,10 @@ public class PowerAttachment extends Object {
     private static final double CENTERANGLE = 0.5;
     private static final double ANGLEMODIFIERLOW = 0.4565;
     private static final double ANGLEMODIFIERHIGH = 0.1;
+    private static final double ANGLEMODIFIERLOWEST = 0.451;
     private double dblV4BAngleHigh = 0.6; //0.3755
-    private double dblV4BAngleLow = 0.0435; //0.9365
+    private double dblV4BAngleLow = 0.0435;
+    private double dblV4BAngleLowest = 0.049;//0.9365
 
     private double dblSlidePosition;
     private int intSlidePosition = 0;
@@ -91,6 +93,11 @@ public class PowerAttachment extends Object {
         lteDirectionC3.setMode(DigitalChannel.Mode.OUTPUT);
         lteDirectionC4.setMode(DigitalChannel.Mode.OUTPUT);
 
+        lteDirectionC1.setState(false);
+        lteDirectionC4.setState(false);
+        lteDirectionC2.setState(true);
+        lteDirectionC3.setState(true);
+
     }
 
 
@@ -131,7 +138,7 @@ public class PowerAttachment extends Object {
 
         if(dcmSlider.getCurrentPosition() > -20 && bolGRB2Toggle){
 
-            srvGrabber.setPosition(0.65);
+            srvGrabber.setPosition(0.325);
             bolGRB2Toggle = false;
             bolGRB3Toggle = true;
         }
@@ -162,9 +169,11 @@ public class PowerAttachment extends Object {
             bolRBWasPressed = true;
             bolRBToggle = !bolRBToggle;
             if (bolRBToggle) {
+                intSlidePosition = -150;
                 srvV4B.setPosition(CENTERANGLE);
             } else{
-                srvV4B.setPosition(dblV4BAngleLow);
+                intSlidePosition = 0;
+                srvV4B.setPosition(dblV4BAngleLowest);
             }
         } else if (!gmpGamepad2.right_bumper && bolRBWasPressed) {
             bolRBWasPressed = false;
@@ -180,49 +189,31 @@ public class PowerAttachment extends Object {
 
 
 
-// HEADING SWITCH
-       /* if (gmpGamepad1.x) {
+//   CHASSIS HEADING SWITCH
+
+        if (gmpGamepad1.x && !bolX1WasPressed) {
+            bolX1WasPressed = true;
             bolCHS = !bolCHS;
-
+        } else if (!gmpGamepad1.x) {
+            bolX1WasPressed = false;
         }
-
-            if (bolCHS == true) {
-
+/*
+            if (bolCHS == false) {
                 lteDirectionC1.setState(true);
                 lteDirectionC4.setState(true);
                 lteDirectionC2.setState(false);
                 lteDirectionC3.setState(false);
-            }
-            if (bolCHS == false) {
+            } else {
                 lteDirectionC2.setState(true);
                 lteDirectionC3.setState(true);
                 lteDirectionC1.setState(false);
                 lteDirectionC4.setState(false);
-
             }
-
-        */
-        if (gmpGamepad1.x) {
-            bolCHS = !bolCHS;
-
-        }
-
-        if (bolCHS == true) {
-
-            lteDirectionC1.setState(true);
-            lteDirectionC4.setState(true);
-            lteDirectionC2.setState(false);
-            lteDirectionC3.setState(false);
-        }
-        if (bolCHS == false) {
-            lteDirectionC2.setState(true);
-            lteDirectionC3.setState(true);
-            lteDirectionC1.setState(false);
-            lteDirectionC4.setState(false);
-        }
+ */
 
 
 
+//   CHASSIS V4B SWITCH
 
         if (gmpGamepad2.dpad_up && !bolDPUWasPressed) {
             bolDPUWasPressed = true;
@@ -230,11 +221,21 @@ public class PowerAttachment extends Object {
             if (bolSideToggle) {
                 dblV4BAngleHigh = CENTERANGLE - ANGLEMODIFIERHIGH;
                 dblV4BAngleLow = CENTERANGLE + ANGLEMODIFIERLOW;
+                dblV4BAngleLowest = CENTERANGLE + ANGLEMODIFIERLOWEST;
                 telTelemetry.addLine("front");
+                lteDirectionC1.setState(true);
+                lteDirectionC4.setState(true);
+                lteDirectionC2.setState(false);
+                lteDirectionC3.setState(false);
             } else {
                 dblV4BAngleHigh = CENTERANGLE + ANGLEMODIFIERHIGH;
                 dblV4BAngleLow = CENTERANGLE - ANGLEMODIFIERLOW;
+                dblV4BAngleLowest = CENTERANGLE - ANGLEMODIFIERLOWEST;
                 telTelemetry.addLine("back");
+                lteDirectionC1.setState(false);
+                lteDirectionC4.setState(false);
+                lteDirectionC2.setState(true);
+                lteDirectionC3.setState(true);
             }
         } else if (!gmpGamepad2.dpad_up && bolDPUWasPressed) {
             bolDPUWasPressed = false;
@@ -244,6 +245,8 @@ public class PowerAttachment extends Object {
 // ARM PRESETS
         if (gmpGamepad2.a && !bolAWasPressed) {
             bolAWasPressed = true;
+            bolGMBToggle = false;
+            bolGMYToggle = false;
             bolGMAToggle = !bolGMAToggle;
             if (bolGMAToggle) {
                 intSlidePosition = -150;
@@ -258,6 +261,8 @@ public class PowerAttachment extends Object {
 
         if (gmpGamepad2.b && !bolBWasPressed) {
             bolBWasPressed = true;
+            bolGMAToggle = false;
+            bolGMYToggle = false;
             bolGMBToggle = !bolGMBToggle;
             if (bolGMBToggle) {
                 intSlidePosition = -430;
@@ -272,6 +277,8 @@ public class PowerAttachment extends Object {
 
         if (gmpGamepad2.y && !bolYWasPressed) {
             bolYWasPressed = true;
+            bolGMAToggle = false;
+            bolGMBToggle =false;
             bolGMYToggle = !bolGMYToggle;
             if (bolGMYToggle) {
                 intSlidePosition = -775;
