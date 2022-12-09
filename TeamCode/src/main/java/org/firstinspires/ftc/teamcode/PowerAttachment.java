@@ -81,7 +81,7 @@ public class PowerAttachment extends Object {
 
 
         srvGrabber = hmpHardwareMap.servo.get("Grabber");
-        srvGrabber.setPosition(0.65);
+        srvGrabber.setPosition(0.325);
 
         lteDirectionC1 = hmpHardwareMap.get(DigitalChannel.class, "green1");
         lteDirectionC2 = hmpHardwareMap.get(DigitalChannel.class, "red1");
@@ -112,9 +112,8 @@ public class PowerAttachment extends Object {
 
 // GRABBER
 
-        if (gmpGamepad1.right_bumper && !bolXWasPressed) {
+        if (gmpGamepad1.right_bumper && !bolX2WasPressed) {
             bolX2WasPressed = true;
-            bolXWasPressed = true;
             bolCLToggle = !bolCLToggle;
             if (bolCLToggle) {
 
@@ -126,8 +125,8 @@ public class PowerAttachment extends Object {
             } else {
                 srvGrabber.setPosition(0);//0.85
             }
-        } else if (!gmpGamepad1.right_bumper && bolXWasPressed) {
-            bolXWasPressed = false;
+        } else if (!gmpGamepad1.right_bumper && bolX2WasPressed) {
+            bolX2WasPressed = false;
         }
 
         if(dcmSlider.getCurrentPosition() < -140 && bolGRB1Toggle){
@@ -266,7 +265,7 @@ public class PowerAttachment extends Object {
             bolGMYToggle = false;
             bolGMBToggle = !bolGMBToggle;
             if (bolGMBToggle) {
-                intSlidePosition = -430;
+                intSlidePosition = -450;
             } else {
                 bolTToggle = true;
                 srvV4B.setPosition(dblV4BAngleLow);
@@ -295,7 +294,6 @@ public class PowerAttachment extends Object {
 
         if(bolTToggle){
             if(intNumSameRecognitions < 15){
-
                 intNumSameRecognitions++;
                 telTelemetry.addLine("One");
             }
@@ -304,6 +302,7 @@ public class PowerAttachment extends Object {
                 intNumSameRecognitions = 0;
                 telTelemetry.addLine("Two");
                 bolTToggle = false;
+                bolRBToggle = false;
             }
         }
 
@@ -311,7 +310,7 @@ public class PowerAttachment extends Object {
 
 
         dcmSlider.setTargetPosition(intSlidePosition);
-        dcmSlider.setPower(0.5);
+        dcmSlider.setPower(0.65);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
