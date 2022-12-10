@@ -32,10 +32,12 @@ public class AutoPowerMoveTest extends OpMode {
     private DcMotor dcmBackLeftMotor;
     private DcMotor dcmBackRightMotor;
 
-    private Servo srvBucketServo;
+    private Servo srvGrabber;
     private CRServo dcmCSMotor;
 
     private DcMotorEx dcmSlider1;
+
+    private Servo srvV4B;
 
     private long dblWaitParameter;
 
@@ -86,6 +88,10 @@ public class AutoPowerMoveTest extends OpMode {
         dcmFrontRightMotor = hardwareMap.dcMotor.get("MotorFR");
         dcmBackLeftMotor = hardwareMap.dcMotor.get("MotorBL");
         dcmBackRightMotor = hardwareMap.dcMotor.get("MotorBR");
+
+        srvGrabber = hardwareMap.servo.get("Grabber");
+
+        srvV4B = hardwareMap.servo.get("V4B");
 
         /*
         dcmSlider1 = hardwareMap.get(DcMotorEx.class, "MotorGM");
@@ -157,10 +163,17 @@ public class AutoPowerMoveTest extends OpMode {
 
         AutonomousSegment atsNewSegment;
 
-        atsCurrentSegment = new AutonomousStrafeForwardSegment(1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
-        //new AutonomousStrafeForwardSegment(10,0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsCurrentSegment = new AutonomousGrabberSegment(0.5, srvGrabber);
 
         atsNextSegment = atsCurrentSegment;
+
+        atsNewSegment = new AutonomousV4BSegment(0.5, srvV4B);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
+
+        atsNewSegment = new AutonomousStrafeForwardSegment(1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNextSegment.setNextSegment(atsNewSegment);
+        atsNextSegment = atsNewSegment;
 
 
         if (strSecondNumber.equals("Green tag")) {

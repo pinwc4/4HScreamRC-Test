@@ -29,12 +29,12 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions = 0;
 
     private static final double CENTERANGLE = 0.5;
-    private static final double ANGLEMODIFIERLOW = 0.4565;
+    private static final double ANGLEMODIFIERLOW = 0.452;
     private static final double ANGLEMODIFIERHIGH = 0.1;
     private static final double ANGLEMODIFIERLOWEST = 0.451;
     private double dblV4BAngleHigh = 0.6; //0.3755
-    private double dblV4BAngleLow = 0.0435;
-    private double dblV4BAngleLowest = 0.049;//0.9365
+    private double dblV4BAngleLow = 0.048;
+    private double dblV4BAngleLowest = 0.951;//0.9365
 
     private double dblSlidePosition;
     private int intSlidePosition = 0;
@@ -81,7 +81,7 @@ public class PowerAttachment extends Object {
 
 
         srvGrabber = hmpHardwareMap.servo.get("Grabber");
-        srvGrabber.setPosition(0.325);
+        srvGrabber.setPosition(0.5);
 
         lteDirectionC1 = hmpHardwareMap.get(DigitalChannel.class, "green1");
         lteDirectionC2 = hmpHardwareMap.get(DigitalChannel.class, "red1");
@@ -138,7 +138,7 @@ public class PowerAttachment extends Object {
 
         if(dcmSlider.getCurrentPosition() > -20 && bolGRB2Toggle){
 
-            srvGrabber.setPosition(0.325);
+            srvGrabber.setPosition(0.5);
             bolGRB2Toggle = false;
             bolGRB3Toggle = true;
         }
