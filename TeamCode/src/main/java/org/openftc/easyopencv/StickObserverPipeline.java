@@ -20,6 +20,7 @@ public class StickObserverPipeline extends OpenCvPipeline {
     public static double strictLowS = 140;
     public static double strictHighS = 255;
 
+    
     public StickObserverPipeline() {
         frameList = new ArrayList<>();
     }
