@@ -43,13 +43,14 @@ public class PowerAttachment extends Object {
     private boolean bolBWasPressed = false;
     private boolean bolYWasPressed = false;
     private boolean bolX2WasPressed = false;
-    private boolean bolDPUWasPressed = false;
+    private boolean bolLBWasPressed = false;
     private boolean bolRBWasPressed = false;
     private boolean bolX1WasPressed = false;
 
     private boolean bolGRB1Toggle = false;
     private boolean bolGRB2Toggle = false;
     private boolean bolGRB3Toggle = false;
+    private boolean bolHToggle = false;
 
     private boolean bolSideToggle = false;
     private boolean bolCLToggle = true;
@@ -215,8 +216,8 @@ public class PowerAttachment extends Object {
 
 //   CHASSIS V4B SWITCH
 
-        if (gmpGamepad2.dpad_up && !bolDPUWasPressed) {
-            bolDPUWasPressed = true;
+        if (gmpGamepad2.left_bumper && !bolLBWasPressed) {
+            bolLBWasPressed = true;
             bolSideToggle = !bolSideToggle;
             if (bolSideToggle) {
                 dblV4BAngleHigh = CENTERANGLE - ANGLEMODIFIERHIGH;
@@ -237,8 +238,8 @@ public class PowerAttachment extends Object {
                 lteDirectionC2.setState(true);
                 lteDirectionC3.setState(true);
             }
-        } else if (!gmpGamepad2.dpad_up && bolDPUWasPressed) {
-            bolDPUWasPressed = false;
+        } else if (!gmpGamepad2.dpad_up && bolLBWasPressed) {
+            bolLBWasPressed = false;
         }
 
 
@@ -250,6 +251,7 @@ public class PowerAttachment extends Object {
             bolGMAToggle = !bolGMAToggle;
             if (bolGMAToggle) {
                 intSlidePosition = -150;
+                srvV4B.setPosition(CENTERANGLE);
             }else {
                 bolTToggle = true;
                 srvV4B.setPosition(dblV4BAngleLow);
@@ -266,6 +268,7 @@ public class PowerAttachment extends Object {
             bolGMBToggle = !bolGMBToggle;
             if (bolGMBToggle) {
                 intSlidePosition = -450;
+                srvV4B.setPosition(CENTERANGLE);
             } else {
                 bolTToggle = true;
                 srvV4B.setPosition(dblV4BAngleLow);
@@ -281,7 +284,8 @@ public class PowerAttachment extends Object {
             bolGMBToggle =false;
             bolGMYToggle = !bolGMYToggle;
             if (bolGMYToggle) {
-                intSlidePosition = -775;
+                intSlidePosition = -810;
+                srvV4B.setPosition(CENTERANGLE);
             } else {
                 bolTToggle = true;
                 srvV4B.setPosition(dblV4BAngleLow);
@@ -320,9 +324,11 @@ public class PowerAttachment extends Object {
         if (dcmSlider.getCurrentPosition() < -300 && bolGMBToggle) {
             srvV4B.setPosition(dblV4BAngleHigh);
         }
-        if (dcmSlider.getCurrentPosition() < -700 && bolGMYToggle) {
+        if (dcmSlider.getCurrentPosition() < -750 && bolGMYToggle) {
             srvV4B.setPosition(dblV4BAngleHigh);
         }
+
+
 
 
 
