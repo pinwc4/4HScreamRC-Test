@@ -28,16 +28,18 @@ import java.util.List;
 @Config
 public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 8192;
-    public static double WHEEL_RADIUS = 0.689; // in
+    public static double WHEEL_RADIUS = 0.683071; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 13.25; // in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = 0; // in; offset of the lateral wheel
-
-    public static double X_MULTIPLIER = 1.00998163; // Multiplier in the X direction
+    public static double LATERAL_DISTANCE = 12.7643; // in; distance between the left and right wheels
 
 
-    public static double Y_MULTIPLIER = 1.01755835; // Multiplier in the Y direction
+    public static double FORWARD_OFFSET = -0.15; // in; offset of the lateral wheel
+
+    public static double X_MULTIPLIER = 1.012; // Multiplier in the X direction
+
+
+    public static double Y_MULTIPLIER = 1.0294; // Multiplier in the Y direction
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
@@ -48,11 +50,13 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
                 new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
         ));
 
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "MotorFL"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "MotorBL"));
-        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "MotorBR"));
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "MotorBL"));
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "MotorBR"));
+        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "MotorFL"));
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
+
+        rightEncoder.setDirection(Encoder.Direction.REVERSE);
 
         //frontEncoder.setDirection(Encoder.Direction.REVERSE);
         //frontEncoder.setDirection(Encoder.Direction.REVERSE);
