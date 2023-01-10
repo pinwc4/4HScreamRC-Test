@@ -8,17 +8,16 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 public class AutonomousStrafeForwardSegment extends AutonomousSegment {
     private double desiredEncoderTicks;
 
-    private DcMotor dcmFLMotor;
-    private DcMotor dcmFRMotor;
-    private DcMotor dcmBRMotor;
-    private DcMotor dcmBLMotor;
+    private DcMotor leftFront;
+    private DcMotor rightFront;
+    private DcMotor rightRear;
+    private DcMotor leftRear;
 
     private double dblFrontLeftMotorValue;
     private double dblFrontRightMotorValue;
@@ -55,7 +54,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
     private double disttoTravelin;
 
 
-    public AutonomousStrafeForwardSegment(double distToTravelin, double dblDesiredHeading, DcMotor dcmFLMotor, DcMotor dcmFRMotor, DcMotor dcmBLMotor, DcMotor dcmBRMotor, Telemetry telemetry, BNO055IMU imu) {
+    public AutonomousStrafeForwardSegment(double distToTravelin, double dblDesiredHeading, DcMotor leftFront, DcMotor rightFront, DcMotor leftRear, DcMotor rightRear, Telemetry telemetry, BNO055IMU imu) {
         //add appropriate comment for conversions
         desiredEncoderTicks = (distToTravelin * TICKSTOINCHES);
 
@@ -63,10 +62,10 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
 
         this.imu = imu;
 
-        this.dcmFLMotor = dcmFLMotor;
-        this.dcmFRMotor = dcmFRMotor;
-        this.dcmBLMotor = dcmBLMotor;
-        this.dcmBRMotor = dcmBRMotor;
+        this.leftFront = leftFront;
+        this.rightFront = rightFront;
+        this.leftRear = leftRear;
+        this.rightRear = rightRear;
 
         this.dblDesiredHeading = dblDesiredHeading;
 
@@ -95,14 +94,14 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
 
  */
     private void init() {
-        dcmFLMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcmFRMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcmBLMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcmBRMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcmFLMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        dcmFRMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        dcmBLMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        dcmBRMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         if (msdMeasuredDistance != null){
             desiredEncoderTicks = desiredEncoderTicks + msdMeasuredDistance.getDistance();
@@ -119,7 +118,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
             init();
         }
 
-        double dblMotorPosition = -dcmBLMotor.getCurrentPosition();
+        double dblMotorPosition = -leftRear.getCurrentPosition();
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
@@ -173,20 +172,20 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
 
         //1358.29
 
-        dcmFLMotor.setPower(-dblFrontLeftMotorPower);
-        dcmFRMotor.setPower(dblFrontRightMotorPower);
-        dcmBLMotor.setPower(-dblBackLeftMotorPower);
-        dcmBRMotor.setPower(dblBackRightMotorPower);
+        leftFront.setPower(-dblFrontLeftMotorPower);
+        rightFront.setPower(dblFrontRightMotorPower);
+        leftRear.setPower(-dblBackLeftMotorPower);
+        rightRear.setPower(dblBackRightMotorPower);
 
         //telemetry.addData("first",angles.firstAngle);
         //telemetry.addData("HEADING", dblDesiredHeading);
         telemetry.addData("position", dblMotorPosition);
         telemetry.addData("desired", desiredEncoderTicks);
 
-        telemetry.addData("FL", dcmFLMotor.getCurrentPosition());
-        telemetry.addData("FR", dcmFRMotor.getCurrentPosition());
-        telemetry.addData("BL", dcmBLMotor.getCurrentPosition());
-        telemetry.addData("BR", dcmBRMotor.getCurrentPosition());
+        telemetry.addData("FL", leftFront.getCurrentPosition());
+        telemetry.addData("FR", rightFront.getCurrentPosition());
+        telemetry.addData("BL", leftRear.getCurrentPosition());
+        telemetry.addData("BR", rightRear.getCurrentPosition());
 
         /*
         telemetry.addData("Value", dblFrontLeftMotorValue);

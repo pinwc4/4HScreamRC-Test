@@ -21,7 +21,7 @@ import java.util.List;
 
 public class AutonomousScanForSleeve extends AutonomousSegment {
 
-    private static final String TFOD_MODEL_ASSET = "model_20221110_195128.tflite";
+    private static final String TFOD_MODEL_ASSET = "model_20230108_141944.tflite";
 
     private static final String[] LABELS = {
 /*
@@ -148,12 +148,15 @@ public class AutonomousScanForSleeve extends AutonomousSegment {
                 } else if (strNewNumber.equals("Purple tag")) {
                     strNumber = "Purple tag";
 
-                } else {
+                } else if (strNewNumber.equals("Yellow tag")){
                     strNumber = "Yellow tag";
 
+                } else {
+                    strNumber = "none";
                 }
 
-                telemetry.addData("recognition Jay", strNewNumber);
+                telemetry.addData("recognition 1", strNewNumber);
+                telemetry.addData("recognition 2", strNumber);
 
 /*
                 if(strNumber2.equals(strNumber)){

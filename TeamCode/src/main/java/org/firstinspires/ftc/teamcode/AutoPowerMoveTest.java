@@ -6,10 +6,8 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -17,7 +15,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 
@@ -27,10 +24,10 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 public class AutoPowerMoveTest extends OpMode {
 
-    private DcMotor dcmFrontLeftMotor;
-    private DcMotor dcmFrontRightMotor;
-    private DcMotor dcmBackLeftMotor;
-    private DcMotor dcmBackRightMotor;
+    private DcMotor leftFront;
+    private DcMotor rightFront;
+    private DcMotor leftRear;
+    private DcMotor rightRear;
 
     private Servo srvGrabber;
     private CRServo dcmCSMotor;
@@ -51,7 +48,7 @@ public class AutoPowerMoveTest extends OpMode {
 
     private AutonomousScanForSleeve ascSleeve;
 
-    private static final String TFOD_MODEL_ASSET = "model_20221110_195128.tflite";
+    private static final String TFOD_MODEL_ASSET = "model_20230108_141944.tflite";
 
     private static final String[] LABELS = {
 /*
@@ -77,17 +74,17 @@ public class AutoPowerMoveTest extends OpMode {
 
 
     public void ResetChassisEncoder(){
-        dcmFrontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcmFrontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        dcmBackLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcmBackLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void init(){
-        dcmFrontLeftMotor = hardwareMap.dcMotor.get("MotorFL");
-        dcmFrontRightMotor = hardwareMap.dcMotor.get("MotorFR");
-        dcmBackLeftMotor = hardwareMap.dcMotor.get("MotorBL");
-        dcmBackRightMotor = hardwareMap.dcMotor.get("MotorBR");
+        leftFront = hardwareMap.dcMotor.get("leftFront");
+        rightFront = hardwareMap.dcMotor.get("rightFront");
+        leftRear = hardwareMap.dcMotor.get("leftRear");
+        rightRear = hardwareMap.dcMotor.get("rightRear");
 
         srvGrabber = hardwareMap.servo.get("Grabber");
 
@@ -171,40 +168,40 @@ public class AutoPowerMoveTest extends OpMode {
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
-        atsNewSegment = new AutonomousStrafeForwardSegment(1, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+        atsNewSegment = new AutonomousStrafeForwardSegment(1, 0, leftFront, rightFront, leftRear, rightRear, telemetry, imu);
         atsNextSegment.setNextSegment(atsNewSegment);
         atsNextSegment = atsNewSegment;
 
 
         if (strSecondNumber.equals("Green tag")) {
 
-            atsNewSegment = new AutonomousStrafeSidewaysSegment(-17, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+            atsNewSegment = new AutonomousStrafeSidewaysSegment(-17, 0, leftFront, rightFront, leftRear, rightRear, telemetry, imu);
             atsNextSegment.setNextSegment(atsNewSegment);
             atsNextSegment = atsNewSegment;
 
-            atsNewSegment = new AutonomousStrafeForwardSegment(27, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+            atsNewSegment = new AutonomousStrafeForwardSegment(27, 0, leftFront, rightFront, leftRear, rightRear, telemetry, imu);
             atsNextSegment.setNextSegment(atsNewSegment);
             atsNextSegment = atsNewSegment;
 
 
         } else if (strSecondNumber.equals("Purple tag")) {
 
-            atsNewSegment = new AutonomousStrafeSidewaysSegment(25, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+            atsNewSegment = new AutonomousStrafeSidewaysSegment(25, 0, leftFront, rightFront, leftRear, rightRear, telemetry, imu);
             atsNextSegment.setNextSegment(atsNewSegment);
             atsNextSegment = atsNewSegment;
 
-            atsNewSegment = new AutonomousStrafeForwardSegment(27, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+            atsNewSegment = new AutonomousStrafeForwardSegment(27, 0, leftFront, rightFront, leftRear, rightRear, telemetry, imu);
             atsNextSegment.setNextSegment(atsNewSegment);
             atsNextSegment = atsNewSegment;
 
 
         } else {
 
-            atsNewSegment = new AutonomousStrafeSidewaysSegment(2, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+            atsNewSegment = new AutonomousStrafeSidewaysSegment(2, 0, leftFront, rightFront, leftRear, rightRear, telemetry, imu);
             atsNextSegment.setNextSegment(atsNewSegment);
             atsNextSegment = atsNewSegment;
 
-            atsNewSegment = new AutonomousStrafeForwardSegment(27, 0, dcmFrontLeftMotor, dcmFrontRightMotor, dcmBackLeftMotor, dcmBackRightMotor, telemetry, imu);
+            atsNewSegment = new AutonomousStrafeForwardSegment(27, 0, leftFront, rightFront, leftRear, rightRear, telemetry, imu);
             atsNextSegment.setNextSegment(atsNewSegment);
             atsNextSegment = atsNewSegment;
 
@@ -249,7 +246,7 @@ public class AutoPowerMoveTest extends OpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.55f;
+        tfodParameters.minResultConfidence = 0.35f;
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);

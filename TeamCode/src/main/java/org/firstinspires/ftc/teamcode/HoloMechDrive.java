@@ -23,10 +23,10 @@ public class HoloMechDrive {
     private ChassisMoveParameters cmpMoveParameters;
 
     public HoloMechDrive(HardwareMap hmpHardwareMap, float fltXReverse) {
-        dcmFrontLeftMotor = hmpHardwareMap.dcMotor.get("MotorFL");
-        dcmFrontRightMotor = hmpHardwareMap.dcMotor.get("MotorFR");
-        dcmBackLeftMotor = hmpHardwareMap.dcMotor.get("MotorBL");
-        dcmBackRightMotor = hmpHardwareMap.dcMotor.get("MotorBR");
+        dcmFrontLeftMotor = hmpHardwareMap.dcMotor.get("leftFront");
+        dcmFrontRightMotor = hmpHardwareMap.dcMotor.get("rightFront");
+        dcmBackLeftMotor = hmpHardwareMap.dcMotor.get("leftRear");
+        dcmBackRightMotor = hmpHardwareMap.dcMotor.get("rightRear");
         dcmFrontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmFrontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dcmBackLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -56,10 +56,15 @@ public class HoloMechDrive {
             fltYDirection = fltYDirection * 1;
         }
 
-        double dblFlMotorPower = (-(((-fltXDirection) + fltYDirection) + -(fltCenterPivot * 2)));
-        double dblFrMotorPower = ((fltYDirection - (-fltXDirection)) - -(fltCenterPivot * 2));
-        double dblBlMotorPower = (-((fltYDirection - (-fltXDirection)) + -(fltCenterPivot * 2)));
-        double dblBrMotorPower = (((-fltXDirection) + fltYDirection) - -(fltCenterPivot * 2));
+        double dblFlMotorPower2 = (-(((-fltXDirection) + fltYDirection) + -(fltCenterPivot * 2)));
+        double dblFrMotorPower2 = ((fltYDirection - (-fltXDirection)) - -(fltCenterPivot * 2));
+        double dblBlMotorPower2 = (-((fltYDirection - (-fltXDirection)) + -(fltCenterPivot * 2)));
+        double dblBrMotorPower2 = (((-fltXDirection) + fltYDirection) - -(fltCenterPivot * 2));
+
+        double dblFlMotorPower = (Math.abs(dblFlMotorPower2))*(dblFlMotorPower2);
+        double dblFrMotorPower = (Math.abs(dblFrMotorPower2))*(dblFrMotorPower2);
+        double dblBlMotorPower = (Math.abs(dblBlMotorPower2))*(dblBlMotorPower2);
+        double dblBrMotorPower = (Math.abs(dblBrMotorPower2))*(dblBrMotorPower2);
 
         if (bolXButton && !bolXWasPressed) {
             bolXWasPressed = true;
