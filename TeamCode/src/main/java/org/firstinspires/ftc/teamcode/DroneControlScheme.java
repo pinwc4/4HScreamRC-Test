@@ -6,14 +6,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class DroneControlScheme extends ChassisControlScheme {
 
     private Gamepad gmpGamepad1;
+    private Gamepad gmpGamepad2;
     private boolean bolStickWasPressed = false;
     private boolean bolSDToggle = false;
 
 
     private ChassisMoveParameters cmpMoveParameters;
 
-    public DroneControlScheme(Gamepad gmpGamepad1) {
+    public DroneControlScheme(Gamepad gmpGamepad1, Gamepad gmpGamepad2) {
         this.gmpGamepad1 = gmpGamepad1;
+        this.gmpGamepad2 = gmpGamepad2;
         cmpMoveParameters = new ChassisMoveParameters();
 
     }
@@ -41,6 +43,8 @@ public class DroneControlScheme extends ChassisControlScheme {
             cmpMoveParameters.setYDirection(gmpGamepad1.right_stick_y);
             cmpMoveParameters.setCenterPivot(-gmpGamepad1.left_stick_x / 2);
             cmpMoveParameters.setXButton(gmpGamepad1.x);
+            cmpMoveParameters.setBButton(gmpGamepad1.b);
+            cmpMoveParameters.setLBButton(gmpGamepad2.left_bumper);
         }
     }
 }

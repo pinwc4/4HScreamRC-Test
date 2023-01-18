@@ -48,7 +48,7 @@ public class AutoPowerMoveTest extends OpMode {
 
     private AutonomousScanForSleeve ascSleeve;
 
-    private static final String TFOD_MODEL_ASSET = "model_20230108_141944.tflite";
+    private static final String TFOD_MODEL_ASSET = "model_20221110_195128.tflite";
 
     private static final String[] LABELS = {
 /*
