@@ -21,10 +21,10 @@ public class StraferTest extends OpMode {
     private DcMotor dcmBackRightMotor;
 
     public void init(){
-        dcmFrontLeftMotor = hardwareMap.dcMotor.get("MotorFL");
-        dcmFrontRightMotor = hardwareMap.dcMotor.get("MotorFR");
-        dcmBackLeftMotor = hardwareMap.dcMotor.get("MotorBL");
-        dcmBackRightMotor = hardwareMap.dcMotor.get("MotorBR");
+        dcmFrontLeftMotor = hardwareMap.dcMotor.get("leftFront");
+        dcmFrontRightMotor = hardwareMap.dcMotor.get("rightFront");
+        dcmBackLeftMotor = hardwareMap.dcMotor.get("leftRear");
+        dcmBackRightMotor = hardwareMap.dcMotor.get("rightRear");
 
         dcmFrontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dcmFrontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

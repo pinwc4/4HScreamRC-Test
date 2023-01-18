@@ -3,34 +3,65 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 public class HoloMechDrive {
 
 
-    private DcMotor dcmFrontLeftMotor;
-    private DcMotor dcmFrontRightMotor;
-    private DcMotor dcmBackLeftMotor;
-    private DcMotor dcmBackRightMotor;
+    private DcMotor leftFront;
+    private DcMotor rightFront;
+    private DcMotor leftRear;
+    private DcMotor rightRear;
+
+    private double dblFlMotorPower;
+    private double dblFrMotorPower;
+    private double dblBlMotorPower;
+    private double dblBrMotorPower;
+
+    private double dblFlMotorPower2;
+    private double dblFrMotorPower2;
+    private double dblBlMotorPower2;
+    private double dblBrMotorPower2;
+
+    private double dblMotorInstance;
+
+    private int intDirection = 1;
 
     private static final double DBL_SQRT_OF_2 = Math.sqrt(2);
     private float fltXReverse;
 
+    private static final double NORMAL_POWER = 0.25;
+
     private boolean bolXWasPressed = false;
+    private boolean bolBWasPressed = false;
+    private boolean bolLBWasPressed = false;
+
     private boolean bolDirectionToggle = false;
+    private boolean bolDirection = false;
+    private boolean bolBackwardsToggle = false;
+    private boolean bolSideToggle = false;
+    private boolean bolFalse = false;
 
 
     private ChassisMoveParameters cmpMoveParameters;
 
     public HoloMechDrive(HardwareMap hmpHardwareMap, float fltXReverse) {
-        dcmFrontLeftMotor = hmpHardwareMap.dcMotor.get("leftFront");
-        dcmFrontRightMotor = hmpHardwareMap.dcMotor.get("rightFront");
-        dcmBackLeftMotor = hmpHardwareMap.dcMotor.get("leftRear");
-        dcmBackRightMotor = hmpHardwareMap.dcMotor.get("rightRear");
-        dcmFrontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        dcmFrontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        dcmBackLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        dcmBackRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront = hmpHardwareMap.dcMotor.get("leftFront");
+        rightFront = hmpHardwareMap.dcMotor.get("rightFront");
+        leftRear = hmpHardwareMap.dcMotor.get("leftRear");
+        rightRear = hmpHardwareMap.dcMotor.get("rightRear");
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         this.fltXReverse = fltXReverse;
     }
@@ -41,12 +72,16 @@ public class HoloMechDrive {
 
     public void moveChassis() {
 
+        double dblMotorPosition = leftRear.getCurrentPosition();
+
         float fltThrottle = cmpMoveParameters.getThrottle();
         float fltDiffThrottle = cmpMoveParameters.getDiffThrottle();
         float fltCenterPivot = cmpMoveParameters.getCenterPivot();
         float fltXDirection = cmpMoveParameters.getXDirection() * fltXReverse;
         float fltYDirection = cmpMoveParameters.getYDirection();
         boolean bolXButton = cmpMoveParameters.getXButton();
+        boolean bolBButton = cmpMoveParameters.getBButton();
+        boolean bolLBButton = cmpMoveParameters.getLBButton();
 
         if (bolDirectionToggle) {
             fltXDirection = fltXDirection * -1;
@@ -56,15 +91,29 @@ public class HoloMechDrive {
             fltYDirection = fltYDirection * 1;
         }
 
-        double dblFlMotorPower2 = (-(((-fltXDirection) + fltYDirection) + -(fltCenterPivot * 2)));
-        double dblFrMotorPower2 = ((fltYDirection - (-fltXDirection)) - -(fltCenterPivot * 2));
-        double dblBlMotorPower2 = (-((fltYDirection - (-fltXDirection)) + -(fltCenterPivot * 2)));
-        double dblBrMotorPower2 = (((-fltXDirection) + fltYDirection) - -(fltCenterPivot * 2));
+        dblFlMotorPower2 = (-(((-fltXDirection) + fltYDirection) + -(fltCenterPivot * 2)));
+        dblFrMotorPower2 = ((fltYDirection - (-fltXDirection)) - -(fltCenterPivot * 2));
+        dblBlMotorPower2 = (-((fltYDirection - (-fltXDirection)) + -(fltCenterPivot * 2)));
+        dblBrMotorPower2 = (((-fltXDirection) + fltYDirection) - -(fltCenterPivot * 2));
 
-        double dblFlMotorPower = (Math.abs(dblFlMotorPower2))*(dblFlMotorPower2);
-        double dblFrMotorPower = (Math.abs(dblFrMotorPower2))*(dblFrMotorPower2);
-        double dblBlMotorPower = (Math.abs(dblBlMotorPower2))*(dblBlMotorPower2);
-        double dblBrMotorPower = (Math.abs(dblBrMotorPower2))*(dblBrMotorPower2);
+        dblFlMotorPower = (Math.abs(dblFlMotorPower2))*(dblFlMotorPower2);
+        dblFrMotorPower = (Math.abs(dblFrMotorPower2))*(dblFrMotorPower2);
+        dblBlMotorPower = (Math.abs(dblBlMotorPower2))*(dblBlMotorPower2);
+        dblBrMotorPower = (Math.abs(dblBrMotorPower2))*(dblBrMotorPower2);
+
+        if (bolLBButton && !bolLBWasPressed) {
+            bolLBWasPressed = true;
+            bolSideToggle = !bolSideToggle;
+            if (bolSideToggle) {
+
+                bolDirection = true;
+            } else {
+
+                bolDirection = false;
+            }
+        } else if (!bolLBButton && bolLBWasPressed) {
+            bolLBWasPressed = false;
+        }
 
         if (bolXButton && !bolXWasPressed) {
             bolXWasPressed = true;
@@ -73,10 +122,63 @@ public class HoloMechDrive {
             bolXWasPressed = false;
         }
 
-            dcmFrontLeftMotor.setPower(dblFlMotorPower);
-            dcmFrontRightMotor.setPower(dblFrMotorPower);
-            dcmBackLeftMotor.setPower(dblBlMotorPower);
-            dcmBackRightMotor.setPower(dblBrMotorPower);
+        if (bolBButton && !bolBWasPressed) {
+            bolBWasPressed = true;
+            bolBackwardsToggle = true;
+            dblMotorInstance = dblMotorPosition;
+        } else if (!bolBButton) {
+            bolBWasPressed = false;
+        }
+
+
+
+
+        if(bolBackwardsToggle) {
+
+            if(!bolDirection){
+
+                dblFlMotorPower = NORMAL_POWER;
+                dblFrMotorPower = -NORMAL_POWER;
+                dblBlMotorPower = NORMAL_POWER;
+                dblBrMotorPower = -NORMAL_POWER;
+
+                if(dblMotorPosition < dblMotorInstance - 700){
+                    bolBackwardsToggle = false;
+                }
+
+                if(dblFlMotorPower2 > 0){
+                    bolBackwardsToggle = false;
+                }
+
+            }
+
+            if(bolDirection){
+
+                dblFlMotorPower = -NORMAL_POWER;
+                dblFrMotorPower = NORMAL_POWER;
+                dblBlMotorPower = -NORMAL_POWER;
+                dblBrMotorPower = NORMAL_POWER;
+
+                if(dblMotorPosition > dblMotorInstance + 700){
+                    bolBackwardsToggle = false;
+                }
+
+                if(dblFlMotorPower2 > 0){
+                    bolBackwardsToggle = false;
+                }
+
+            }
+
+
+
+        }
+
+            leftFront.setPower(dblFlMotorPower);
+            rightFront.setPower(dblFrMotorPower);
+            leftRear.setPower(dblBlMotorPower);
+            rightRear.setPower(dblBrMotorPower);
+
+
 
     }
 }

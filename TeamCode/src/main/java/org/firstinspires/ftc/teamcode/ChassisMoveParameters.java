@@ -8,6 +8,8 @@ public class ChassisMoveParameters extends Object {
     private float fltXDirection = 0;
     private float fltYDirection = 0;
     private boolean bolXButton = false;
+    private boolean bolBButton = false;
+    private boolean bolLBButton = false;
 
 
     public float getThrottle() {
@@ -27,6 +29,10 @@ public class ChassisMoveParameters extends Object {
     public float getXDirection() { return fltXDirection; }
 
     public boolean getXButton() { return bolXButton; }
+
+    public boolean getBButton() { return bolBButton; }
+
+    public boolean getLBButton() { return bolLBButton; }
 
 
 
@@ -48,4 +54,7 @@ public class ChassisMoveParameters extends Object {
 
     public void setXButton(boolean bolXButton) {this.bolXButton = bolXButton; }
 
+    public void setBButton(boolean bolBButton) {this.bolBButton = bolBButton; }
+
+    public void setLBButton(boolean bolLBButton) {this.bolLBButton = bolLBButton; }
 }
