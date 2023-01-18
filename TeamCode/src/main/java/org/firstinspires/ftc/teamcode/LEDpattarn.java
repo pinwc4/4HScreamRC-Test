@@ -185,7 +185,7 @@ public class LEDpattarn extends Object {
             bolGM1LBWasPressed = true;
             bolGM1LBToggle = !bolGM1LBToggle;
 
-        } else if (!gmpGamepad1.x) {
+        } else if (!gmpGamepad1.left_bumper) {
             bolGM1LBWasPressed = false;
         }
 

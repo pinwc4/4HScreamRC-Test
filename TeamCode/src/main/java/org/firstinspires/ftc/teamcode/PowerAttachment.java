@@ -68,6 +68,7 @@ public class PowerAttachment extends Object {
     private boolean bolSGRB3Toggle = false;
 
 
+    private boolean bolRSBWasPressed = false;
     private boolean bolSideToggle = false;
     private boolean bolCLToggle = true;
     private boolean bolGMAToggle = false;
@@ -132,22 +133,58 @@ public class PowerAttachment extends Object {
 
 // GRABBER
 
+        if (gmpGamepad2.right_stick_button && !bolRSBWasPressed) {
+            bolRSBWasPressed = true;
+            bolSTToggle = !bolSTToggle;
+
+        } else if (!gmpGamepad1.left_bumper && bolLB1WasPressed) {
+            bolLB1WasPressed = false;
+        }
+
+
         if (gmpGamepad1.right_bumper && !bolRB1WasPressed) {
             bolRB1WasPressed = true;
             bolCLToggle = !bolCLToggle;
             if (bolCLToggle) {
 
-                intSlidePosition = -150;
-                dblServoPosition = dblV4BAngleLow;
+                if (bolSTToggle) {
 
-                bolGRB1Toggle = true;
+                    intSlidePosition = intConeStack1;
+                    dblServoPosition = dblV4BAngleLowStack;
+
+                    bolSGRB1Toggle = true;
+
+                } else {
+
+                    intSlidePosition = -150;
+                    dblServoPosition = dblV4BAngleLow;
+
+                    bolGRB1Toggle = true;
+
+                }
 
             } else {
-                srvGrabber.setPosition(0);//0.85
+
+                if (bolSTToggle) {
+
+                    srvGrabber.setPosition(0);//0.85
+                    intConeStack1 = intConeStack1 + 52;
+
+                } else {
+
+                    srvGrabber.setPosition(0);//0.85
+
+                }
+
             }
         } else if (!gmpGamepad1.right_bumper && bolRB1WasPressed) {
             bolRB1WasPressed = false;
         }
+
+
+
+
+        // GROUND PICK UP CHAIN
 
         if(dcmSlider.getCurrentPosition() < -140 && bolGRB1Toggle){
 
@@ -169,6 +206,33 @@ public class PowerAttachment extends Object {
             bolGRB3Toggle = false;
         }
 
+
+
+
+        //STACK PICK UP CHAIN
+
+        if(dcmSlider.getCurrentPosition() > intConeStack1 - 20 && bolSGRB1Toggle){
+
+            srvGrabber.setPosition(0.5);
+            bolSGRB1Toggle = false;
+            bolSGRB2Toggle = true;
+
+            bolT2Toggle = true;
+        }
+
+        if(bolT2Toggle){
+            if(intNumSameRecognitions2 < 20){
+                intNumSameRecognitions2++;
+                telTelemetry.addLine("One");
+            }
+            else {
+                intSlidePosition = -350;
+                intNumSameRecognitions2 = 0;
+                telTelemetry.addLine("Two");
+                bolT2Toggle = false;
+                bolSGRB2Toggle = true;
+            }
+        }
 
 
 
@@ -196,47 +260,6 @@ public class PowerAttachment extends Object {
 
 
 
-
-        if (gmpGamepad1.left_bumper && !bolLB1WasPressed) {
-            bolLB1WasPressed = true;
-            bolSTToggle = !bolSTToggle;
-            if (bolSTToggle) {
-
-                intSlidePosition = intConeStack1;
-                dblServoPosition = dblV4BAngleLowStack;
-
-                bolSGRB1Toggle = true;
-
-            } else {
-                srvGrabber.setPosition(0);//0.85
-                intConeStack1 = intConeStack1 + 52;
-            }
-        } else if (!gmpGamepad1.left_bumper && bolLB1WasPressed) {
-            bolLB1WasPressed = false;
-        }
-
-        if(dcmSlider.getCurrentPosition() > intConeStack1 - 20 && bolSGRB1Toggle){
-
-            srvGrabber.setPosition(0.5);
-            bolSGRB1Toggle = false;
-            bolSGRB2Toggle = true;
-
-            bolT2Toggle = true;
-        }
-
-        if(bolT2Toggle){
-            if(intNumSameRecognitions2 < 20){
-                intNumSameRecognitions2++;
-                telTelemetry.addLine("One");
-            }
-            else {
-                intSlidePosition = -350;
-                intNumSameRecognitions2 = 0;
-                telTelemetry.addLine("Two");
-                bolT2Toggle = false;
-                bolSGRB2Toggle = true;
-            }
-        }
 
 
 
@@ -380,9 +403,13 @@ public class PowerAttachment extends Object {
                 //srvV4B.setPosition(CENTERANGLE);
             } else {
                 bolTToggle = true;
-                dblServoPosition = dblV4BAngleLow;
-            }
 
+                if(bolSTToggle){
+                    dblServoPosition = dblV4BAngleLowStack;
+                } else {
+                    dblServoPosition = dblV4BAngleLow;
+                }
+            }
         } else if (!gmpGamepad2.y && bolYWasPressed) {
             bolYWasPressed = false;
         }
@@ -394,11 +421,17 @@ public class PowerAttachment extends Object {
                 telTelemetry.addLine("One");
             }
             else {
-                intSlidePosition = -150;
-                intNumSameRecognitions = 0;
-                telTelemetry.addLine("Two");
-                bolTToggle = false;
-                bolRBToggle = false;
+
+                if(bolSTToggle){
+                    intSlidePosition = -150;
+                }else {
+                    intSlidePosition = -150;
+                }
+                    intNumSameRecognitions = 0;
+                    telTelemetry.addLine("Two");
+                    bolTToggle = false;
+                    bolRBToggle = false;
+
             }
         }
 

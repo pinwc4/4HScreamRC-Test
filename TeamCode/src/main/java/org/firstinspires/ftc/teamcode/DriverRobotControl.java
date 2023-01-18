@@ -49,7 +49,7 @@ public class DriverRobotControl extends OpMode {
 
 
             pwrPowerAttachment = new PowerAttachment(gamepad1, gamepad2, hardwareMap, telemetry);
-           //ledLedPattern = new LEDpattarn(gamepad1, hardwareMap, telemetry);
+         //  ledLedPattern = new LEDpattarn(gamepad1, hardwareMap, telemetry);
     }
 
     @Override
@@ -61,7 +61,10 @@ public class DriverRobotControl extends OpMode {
         pwrPowerAttachment.moveAttachments();
         ccsChassisControlScheme.updateControls();
         chsChassis.moveChassis();
-        //ledLedPattern.lights(getRuntime());
+      //  ledLedPattern.lights(getRuntime());
+
+
+
         /*
         if(!bolTest) {
             latLauncherAttachment.moveAttachments();
