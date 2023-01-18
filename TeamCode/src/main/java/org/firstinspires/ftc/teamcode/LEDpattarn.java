@@ -58,8 +58,8 @@ public class LEDpattarn extends Object {
 
     private boolean bolStickWasPressed;
     private boolean bolSDToggle;
-    private boolean bolGMXWasPressed = false;
-    private boolean bolGMXToggle = false;
+    private boolean bolGM1LBWasPressed = false;
+    private boolean bolGM1LBToggle = false;
     private double dblGetRunTime;
 
     /*
@@ -181,12 +181,12 @@ public class LEDpattarn extends Object {
 
         }
 
-        if (gmpGamepad1.x && !bolGMXWasPressed) {
-            bolGMXWasPressed = true;
-            bolGMXToggle = !bolGMXToggle;
+        if (gmpGamepad1.left_bumper && !bolGM1LBWasPressed) {
+            bolGM1LBWasPressed = true;
+            bolGM1LBToggle = !bolGM1LBToggle;
 
         } else if (!gmpGamepad1.x) {
-            bolGMXWasPressed = false;
+            bolGM1LBWasPressed = false;
         }
 
         boolean on = true;
@@ -203,7 +203,7 @@ public class LEDpattarn extends Object {
         }
 
         if(intGetRunTime < 105){
-            if(bolGMXToggle == true){
+            if(bolGM1LBToggle == true){
                 srvlightRow2.setPosition(2200);
                 srvLightRow1.setPosition(0);
             }
@@ -214,7 +214,7 @@ public class LEDpattarn extends Object {
         }
         else{
             if(on == true) {
-                if (bolGMXToggle == true) {
+                if (bolGM1LBToggle == true) {
                     srvlightRow2.setPosition(2200);
                     srvLightRow1.setPosition(0);
                 } else {
@@ -223,7 +223,7 @@ public class LEDpattarn extends Object {
                 }
             }
             else if(on == false){
-                if (bolGMXToggle == true) {
+                if (bolGM1LBToggle == true) {
                     srvlightRow2.setPosition(0);
                     srvLightRow1.setPosition(0);
                 } else {
