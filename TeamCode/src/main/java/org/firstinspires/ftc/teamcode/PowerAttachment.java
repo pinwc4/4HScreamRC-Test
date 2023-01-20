@@ -28,13 +28,14 @@ public class PowerAttachment extends Object {
 
     private int intNumSameRecognitions = 0;
     private int intNumSameRecognitions2 = 0;
+    private int intNumSameRecognitions3 = 0;
 
-    private static final double CENTERANGLE = 0.488;
+    private static final double CENTERANGLE = 0.51;
     private static final double ANGLEMODIFIERLOW = 0.452;
     private static final double ANGLEMODIFIERHIGH = 0.1;
     private static final double ANGLEMODIFIERLOWEST = 0.451;
     private static final double ANGLEMODIFIERLOWSTACK = 0.37;
-    private double dblV4BAngleHigh = 0.6; //0.3755
+    private double dblV4BAngleHigh = 0.7; //0.3755
     private double dblV4BAngleLow = 0.048;
     private double dblV4BAngleLowStack = 0.13;
     private double dblV4BAngleLowest = 0.951;//0.9365
@@ -62,6 +63,7 @@ public class PowerAttachment extends Object {
     private boolean bolGRB1Toggle = false;
     private boolean bolGRB2Toggle = false;
     private boolean bolGRB3Toggle = false;
+    private boolean bolGRB4Toggle = false;
 
     private boolean bolSGRB1Toggle = false;
     private boolean bolSGRB2Toggle = false;
@@ -77,8 +79,10 @@ public class PowerAttachment extends Object {
     private boolean bolRBToggle = false;
     private boolean bolTToggle = false;
     private boolean bolT2Toggle = false;
+    private boolean bolT3Toggle = false;
     private boolean bolSTToggle = false;
     private boolean bolSHToggle = false;
+    private boolean bolLFToggle = false;
     private boolean bolCHS = false;
 
     public PowerAttachment(Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry) {
@@ -102,7 +106,7 @@ public class PowerAttachment extends Object {
 
 
         srvGrabber = hmpHardwareMap.servo.get("Grabber");
-        srvGrabber.setPosition(0.5);
+        srvGrabber.setPosition(0.35);
 
         lteDirectionC1 = hmpHardwareMap.get(DigitalChannel.class, "green1");
         lteDirectionC2 = hmpHardwareMap.get(DigitalChannel.class, "red1");
@@ -148,37 +152,45 @@ public class PowerAttachment extends Object {
             if (bolCLToggle) {
 
                 if (bolSTToggle) {
-
                     intSlidePosition = intConeStack1;
                     dblServoPosition = dblV4BAngleLowStack;
-
                     bolSGRB1Toggle = true;
-
                 } else {
-
                     intSlidePosition = -150;
                     dblServoPosition = dblV4BAngleLow;
-
                     bolGRB1Toggle = true;
-
                 }
 
             } else {
-
                 if (bolSTToggle) {
-
+                    dblServoPosition = dblV4BAngleHigh;
                     srvGrabber.setPosition(0);//0.85
                     intConeStack1 = intConeStack1 + 52;
-
                 } else {
-
-                    srvGrabber.setPosition(0);//0.85
-
+                    dblServoPosition = dblV4BAngleHigh;
+                    bolT3Toggle = true;
                 }
-
             }
         } else if (!gmpGamepad1.right_bumper && bolRB1WasPressed) {
             bolRB1WasPressed = false;
+        }
+
+        if(bolT3Toggle){
+            if(intNumSameRecognitions3 < 50){
+                intNumSameRecognitions3++;
+            }
+            else {
+                srvGrabber.setPosition(0);//0.85
+                intNumSameRecognitions3 = 0;
+                bolLFToggle = true;
+                bolT3Toggle = false;
+            }
+        }
+
+
+        if(bolLFToggle){
+            dblServoPosition = CENTERANGLE;
+            bolLFToggle = false;
         }
 
 
@@ -195,7 +207,7 @@ public class PowerAttachment extends Object {
 
         if(dcmSlider.getCurrentPosition() > -20 && bolGRB2Toggle){
 
-            srvGrabber.setPosition(0.5);
+            srvGrabber.setPosition(0.35);
             bolGRB2Toggle = false;
             bolGRB3Toggle = true;
         }
@@ -204,6 +216,14 @@ public class PowerAttachment extends Object {
 
             intSlidePosition = -150;
             bolGRB3Toggle = false;
+            bolGRB4Toggle = true;
+        }
+
+        if(dcmSlider.getCurrentPosition() < -120 && bolGRB4Toggle){
+
+            dblServoPosition = CENTERANGLE;
+            bolGRB4Toggle = false;
+
         }
 
 
@@ -213,7 +233,7 @@ public class PowerAttachment extends Object {
 
         if(dcmSlider.getCurrentPosition() > intConeStack1 - 20 && bolSGRB1Toggle){
 
-            srvGrabber.setPosition(0.5);
+            srvGrabber.setPosition(0.35);
             bolSGRB1Toggle = false;
             bolSGRB2Toggle = true;
 
@@ -285,7 +305,7 @@ public class PowerAttachment extends Object {
             bolRBToggle = !bolRBToggle;
             if (bolRBToggle) {
                 intSlidePosition = -150;
-                dblServoPosition = CENTERANGLE;
+                dblServoPosition = dblV4BAngleLow;
             } else{
                 intSlidePosition = 0;
                 dblServoPosition = dblV4BAngleLowest;
@@ -365,7 +385,7 @@ public class PowerAttachment extends Object {
             bolGMYToggle = false;
             bolGMAToggle = !bolGMAToggle;
             if (bolGMAToggle) {
-                intSlidePosition = -150;
+                intSlidePosition = -80;
                 //srvV4B.setPosition(CENTERANGLE);
             }else {
                 bolTToggle = true;
@@ -445,6 +465,8 @@ public class PowerAttachment extends Object {
         srvV4B.setPosition(dblServoPosition);
 
 
+        /*
+
         if (dcmSlider.getCurrentPosition() < -50 && bolGMAToggle) {
             dblServoPosition = dblV4BAngleHigh;
         }
@@ -464,6 +486,8 @@ public class PowerAttachment extends Object {
                 dblServoPosition = dblV4BAngleHigh;
             }
         }
+
+         */
 
 
 

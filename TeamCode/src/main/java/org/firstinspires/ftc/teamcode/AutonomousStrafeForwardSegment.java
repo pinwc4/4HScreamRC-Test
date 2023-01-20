@@ -118,7 +118,7 @@ public class AutonomousStrafeForwardSegment extends AutonomousSegment {
             init();
         }
 
-        double dblMotorPosition = -leftRear.getCurrentPosition();
+        double dblMotorPosition = leftRear.getCurrentPosition();
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
