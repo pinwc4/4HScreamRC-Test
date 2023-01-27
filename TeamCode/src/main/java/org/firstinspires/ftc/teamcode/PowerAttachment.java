@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class PowerAttachment extends Object {
@@ -21,10 +21,10 @@ public class PowerAttachment extends Object {
     private Servo srvGrabber;
     private Servo srvV4B;
 
-    private DigitalChannel lteDirectionC1;
-    private DigitalChannel lteDirectionC2;
-    private DigitalChannel lteDirectionC3;
-    private DigitalChannel lteDirectionC4;
+    private SensorDigitalTouch tsLSGrabber;
+
+    private DcMotorEx lteDirectionV4B;
+    private DcMotorEx lteDirectionCHS;
 
     private int intNumSameRecognitions = 0;
     private int intNumSameRecognitions2 = 0;
@@ -108,20 +108,16 @@ public class PowerAttachment extends Object {
         srvGrabber = hmpHardwareMap.servo.get("Grabber");
         srvGrabber.setPosition(0.35);
 
-        lteDirectionC1 = hmpHardwareMap.get(DigitalChannel.class, "green1");
-        lteDirectionC2 = hmpHardwareMap.get(DigitalChannel.class, "red1");
-        lteDirectionC3 = hmpHardwareMap.get(DigitalChannel.class, "green2");
-        lteDirectionC4 = hmpHardwareMap.get(DigitalChannel.class, "red2");
 
-        lteDirectionC1.setMode(DigitalChannel.Mode.OUTPUT);
-        lteDirectionC2.setMode(DigitalChannel.Mode.OUTPUT);
-        lteDirectionC3.setMode(DigitalChannel.Mode.OUTPUT);
-        lteDirectionC4.setMode(DigitalChannel.Mode.OUTPUT);
+        lteDirectionV4B = hmpHardwareMap.get(DcMotorEx.class, "lteV4B");
+        lteDirectionCHS = hmpHardwareMap.get(DcMotorEx.class, "lteCHS");
 
-        lteDirectionC1.setState(false);
-        lteDirectionC4.setState(false);
-        lteDirectionC2.setState(true);
-        lteDirectionC3.setState(true);
+
+      //  lteDirection.setMode(DcMotorEx.);
+
+
+        lteDirectionV4B.setPower(100);
+        lteDirectionCHS.setPower(100);
 
     }
 
@@ -332,19 +328,17 @@ public class PowerAttachment extends Object {
         } else if (!gmpGamepad1.x) {
             bolX1WasPressed = false;
         }
-/*
+
             if (bolCHS == false) {
-                lteDirectionC1.setState(true);
-                lteDirectionC4.setState(true);
-                lteDirectionC2.setState(false);
-                lteDirectionC3.setState(false);
+
+                lteDirectionCHS.setPower(100);
+
             } else {
-                lteDirectionC2.setState(true);
-                lteDirectionC3.setState(true);
-                lteDirectionC1.setState(false);
-                lteDirectionC4.setState(false);
+
+                lteDirectionCHS.setPower(-100);
+
             }
- */
+
 
 
 
@@ -358,20 +352,14 @@ public class PowerAttachment extends Object {
                 dblV4BAngleLow = CENTERANGLE + ANGLEMODIFIERLOW;
                 dblV4BAngleLowStack = CENTERANGLE + ANGLEMODIFIERLOWSTACK;
                 telTelemetry.addLine("NOT WIRE");
-                lteDirectionC1.setState(true);
-                lteDirectionC4.setState(true);
-                lteDirectionC2.setState(false);
-                lteDirectionC3.setState(false);
+                lteDirectionV4B.setPower(100);
             } else {
                 dblV4BAngleHigh = CENTERANGLE + ANGLEMODIFIERHIGH;
                 dblV4BAngleLow = CENTERANGLE - ANGLEMODIFIERLOW;
                 dblV4BAngleLowest = CENTERANGLE - ANGLEMODIFIERLOWEST;
                 dblV4BAngleLowStack = CENTERANGLE - ANGLEMODIFIERLOWSTACK;
                 telTelemetry.addLine("WIRE");
-                lteDirectionC1.setState(false);
-                lteDirectionC4.setState(false);
-                lteDirectionC2.setState(true);
-                lteDirectionC3.setState(true);
+                lteDirectionV4B.setPower(-100);
             }
         } else if (!gmpGamepad2.left_bumper && bolLBWasPressed) {
             bolLBWasPressed = false;
