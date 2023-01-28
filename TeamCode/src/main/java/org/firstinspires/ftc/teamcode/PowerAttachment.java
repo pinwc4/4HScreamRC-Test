@@ -31,12 +31,12 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions3 = 0;
 
     private static final double CENTERANGLE = 0.51;
-    private static final double ANGLEMODIFIERLOW = 0.452;
-    private static final double ANGLEMODIFIERHIGH = 0.1;
+    private static final double ANGLEMODIFIERLOW = 0.467;
+    private static final double ANGLEMODIFIERHIGH = 0.175;
     private static final double ANGLEMODIFIERLOWEST = 0.451;
     private static final double ANGLEMODIFIERLOWSTACK = 0.37;
-    private double dblV4BAngleHigh = 0.7; //0.3755
-    private double dblV4BAngleLow = 0.048;
+    private double dblV4BAngleHigh = 0.675; //0.3755
+    private double dblV4BAngleLow = 0.043;
     private double dblV4BAngleLowStack = 0.13;
     private double dblV4BAngleLowest = 0.951;//0.9365
 
@@ -80,6 +80,7 @@ public class PowerAttachment extends Object {
     private boolean bolTToggle = false;
     private boolean bolT2Toggle = false;
     private boolean bolT3Toggle = false;
+    private boolean bolT4Toggle = false;
     private boolean bolSTToggle = false;
     private boolean bolSHToggle = false;
     private boolean bolLFToggle = false;
@@ -106,7 +107,7 @@ public class PowerAttachment extends Object {
 
 
         srvGrabber = hmpHardwareMap.servo.get("Grabber");
-        srvGrabber.setPosition(0.35);
+        srvGrabber.setPosition(1);
 
 
         lteDirectionV4B = hmpHardwareMap.get(DcMotorEx.class, "lteV4B");
@@ -172,21 +173,28 @@ public class PowerAttachment extends Object {
         }
 
         if(bolT3Toggle){
-            if(intNumSameRecognitions3 < 50){
+            if(intNumSameRecognitions3 < 25){
                 intNumSameRecognitions3++;
             }
             else {
                 srvGrabber.setPosition(0);//0.85
                 intNumSameRecognitions3 = 0;
-                bolLFToggle = true;
+                bolT4Toggle = true;
                 bolT3Toggle = false;
             }
         }
 
 
-        if(bolLFToggle){
-            dblServoPosition = CENTERANGLE;
-            bolLFToggle = false;
+
+        if(bolT4Toggle){
+            if(intNumSameRecognitions3 < 25){
+                intNumSameRecognitions3++;
+            }
+            else {
+                dblServoPosition = CENTERANGLE;
+                intNumSameRecognitions3 = 0;
+                bolT4Toggle = false;
+            }
         }
 
 
@@ -201,14 +209,14 @@ public class PowerAttachment extends Object {
             bolGRB2Toggle = true;
         }
 
-        if(dcmSlider.getCurrentPosition() > -20 && bolGRB2Toggle){
+        if(dcmSlider.getCurrentPosition() > -15 && bolGRB2Toggle){
 
-            srvGrabber.setPosition(0.35);
+            srvGrabber.setPosition(1);
             bolGRB2Toggle = false;
             bolGRB3Toggle = true;
         }
 
-        if(dcmSlider.getCurrentPosition() > -4 && bolGRB3Toggle){
+        if(dcmSlider.getCurrentPosition() > -3 && bolGRB3Toggle){
 
             intSlidePosition = -150;
             bolGRB3Toggle = false;
@@ -229,7 +237,7 @@ public class PowerAttachment extends Object {
 
         if(dcmSlider.getCurrentPosition() > intConeStack1 - 20 && bolSGRB1Toggle){
 
-            srvGrabber.setPosition(0.35);
+            srvGrabber.setPosition(1);
             bolSGRB1Toggle = false;
             bolSGRB2Toggle = true;
 
@@ -247,6 +255,7 @@ public class PowerAttachment extends Object {
                 telTelemetry.addLine("Two");
                 bolT2Toggle = false;
                 bolSGRB2Toggle = true;
+                dblServoPosition = CENTERANGLE;
             }
         }
 
@@ -407,7 +416,7 @@ public class PowerAttachment extends Object {
             bolGMBToggle =false;
             bolGMYToggle = !bolGMYToggle;
             if (bolGMYToggle) {
-                intSlidePosition = -820;
+                intSlidePosition = -830;
                 //srvV4B.setPosition(CENTERANGLE);
             } else {
                 bolTToggle = true;
@@ -447,7 +456,7 @@ public class PowerAttachment extends Object {
 
 
         dcmSlider.setTargetPosition(intSlidePosition);
-        dcmSlider.setPower(0.7);
+        dcmSlider.setPower(0.85);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         srvV4B.setPosition(dblServoPosition);
