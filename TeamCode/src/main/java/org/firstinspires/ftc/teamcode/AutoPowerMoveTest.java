@@ -160,7 +160,7 @@ public class AutoPowerMoveTest extends OpMode {
 
         AutonomousSegment atsNewSegment;
 
-        atsCurrentSegment = new AutonomousGrabberSegment(0.5, srvGrabber);
+        atsCurrentSegment = new AutonomousGrabberSegment(1, srvGrabber);
 
         atsNextSegment = atsCurrentSegment;
 
