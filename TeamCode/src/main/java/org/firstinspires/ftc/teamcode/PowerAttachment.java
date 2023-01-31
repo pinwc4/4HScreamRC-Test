@@ -70,7 +70,6 @@ public class PowerAttachment extends Object {
     private boolean bolSGRB3Toggle = false;
 
 
-    private boolean bolRSBWasPressed = false;
     private boolean bolSideToggle = false;
     private boolean bolCLToggle = true;
     private boolean bolGMAToggle = false;
@@ -134,8 +133,8 @@ public class PowerAttachment extends Object {
 
 // GRABBER
 
-        if (gmpGamepad2.right_stick_button && !bolRSBWasPressed) {
-            bolRSBWasPressed = true;
+        if (gmpGamepad2.x && !bolX2WasPressed) {
+            bolX2WasPressed = true;
             bolSTToggle = !bolSTToggle;
 
         } else if (!gmpGamepad1.left_bumper && bolLB1WasPressed) {

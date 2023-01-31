@@ -46,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 public class LEDpattarn extends Object {
 
     private Gamepad gmpGamepad1;
+    private Gamepad gmpGamepad2;
     private Telemetry telTelemetry;
 
     private Servo srvLightRow1;
@@ -56,7 +57,7 @@ public class LEDpattarn extends Object {
     private int intTimespan = 4;
     private int intGetRunTime;
 
-    private boolean bolStickWasPressed;
+    private boolean bolX2WasPressed;
     private boolean bolSDToggle;
     private boolean bolGM1LBWasPressed = false;
     private boolean bolGM1LBToggle = false;
@@ -86,7 +87,7 @@ public class LEDpattarn extends Object {
         AUTO
     }
 
-    public LEDpattarn (Gamepad gmpGamepad1, HardwareMap hmpHardwareMap, Telemetry telTelemetry)
+    public LEDpattarn (Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry)
     {
         this.gmpGamepad1 = gmpGamepad1;
         this.telTelemetry = telTelemetry;
@@ -124,12 +125,12 @@ public class LEDpattarn extends Object {
         }
 
 
-        if (gmpGamepad1.left_stick_button && !bolStickWasPressed) {
-            bolStickWasPressed = true;
+        if (gmpGamepad2.x && !bolX2WasPressed) {
+            bolX2WasPressed = true;
             bolSDToggle = !bolSDToggle;
 
-        } else if (!gmpGamepad1.left_stick_button) {
-            bolStickWasPressed = false;
+        } else if (!gmpGamepad2.x) {
+            bolX2WasPressed = false;
         }
 
 
@@ -180,7 +181,7 @@ public class LEDpattarn extends Object {
             }*/
 
         }
-
+/*
         if (gmpGamepad1.left_bumper && !bolGM1LBWasPressed) {
             bolGM1LBWasPressed = true;
             bolGM1LBToggle = !bolGM1LBToggle;
@@ -188,11 +189,11 @@ public class LEDpattarn extends Object {
         } else if (!gmpGamepad1.left_bumper) {
             bolGM1LBWasPressed = false;
         }
-
+*/
         boolean on = true;
 
         //double dblFunction = Math.sin(dblGetRunTime*(intTimespan*(180)));
-
+/*
         intGetRunTime = ((int) dblGetRunTime);
 
         if (intGetRunTime % 2 == 0){
@@ -232,7 +233,7 @@ public class LEDpattarn extends Object {
                 }
             }
         }
-
+*/
 
 
 
