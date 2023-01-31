@@ -21,11 +21,11 @@ public class RoadRunnerTest extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         Trajectory traj1 = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(20, 9), Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(20, 50, Math.toRadians(45)), Math.toRadians(0))
                 .build();
 
         Trajectory traj2 = drive.trajectoryBuilder(traj1.end())
-                .splineTo(new Vector2d(20, 9), Math.toRadians(45))
+                .lineToLinearHeading(new Pose2d(20, 90, Math.toRadians(45)))
                 .build();
 
         drive.followTrajectory(traj1);
