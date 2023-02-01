@@ -17,9 +17,13 @@ public class MeepMeep1 {
                                 .splineToLinearHeading(new Pose2d(-34, -60, Math.toRadians(270)), Math.toRadians(0))
                                 .lineToLinearHeading(new Pose2d(-35, -9, Math.toRadians(270)))
                                 .splineToLinearHeading(new Pose2d(-27, -19, Math.toRadians(315)), Math.toRadians(-20))
-                                .lineToLinearHeading(new Pose2d(-30, -16, Math.toRadians(315)))
-                                .splineToLinearHeading(new Pose2d(-52, -11, Math.toRadians(360)), Math.toRadians(-60))
+
+                                .lineToLinearHeading(new Pose2d(-36, -11, Math.toRadians(315)))
+                                .splineToLinearHeading(new Pose2d(-52, -11, Math.toRadians(360)), Math.toRadians(-220))
                                 .lineToLinearHeading(new Pose2d(-62, -11, Math.toRadians(360)))
+
+                                .lineToLinearHeading(new Pose2d(-40, -11, Math.toRadians(360)))
+                                .splineToLinearHeading(new Pose2d(-27, -19, Math.toRadians(315)), Math.toRadians(0))
                                 .build()
                 );
 
