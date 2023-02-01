@@ -137,8 +137,8 @@ public class PowerAttachment extends Object {
             bolX2WasPressed = true;
             bolSTToggle = !bolSTToggle;
 
-        } else if (!gmpGamepad1.left_bumper && bolLB1WasPressed) {
-            bolLB1WasPressed = false;
+        } else if (!gmpGamepad2.x && bolX2WasPressed) {
+            bolX2WasPressed = false;
         }
 
 
@@ -360,14 +360,14 @@ public class PowerAttachment extends Object {
                 dblV4BAngleLow = CENTERANGLE + ANGLEMODIFIERLOW;
                 dblV4BAngleLowStack = CENTERANGLE + ANGLEMODIFIERLOWSTACK;
                 telTelemetry.addLine("NOT WIRE");
-                lteDirectionV4B.setPower(100);
+                lteDirectionV4B.setPower(65);
             } else {
                 dblV4BAngleHigh = CENTERANGLE + ANGLEMODIFIERHIGH;
                 dblV4BAngleLow = CENTERANGLE - ANGLEMODIFIERLOW;
                 dblV4BAngleLowest = CENTERANGLE - ANGLEMODIFIERLOWEST;
                 dblV4BAngleLowStack = CENTERANGLE - ANGLEMODIFIERLOWSTACK;
                 telTelemetry.addLine("WIRE");
-                lteDirectionV4B.setPower(-100);
+                lteDirectionV4B.setPower(-65);
             }
         } else if (!gmpGamepad2.left_bumper && bolLBWasPressed) {
             bolLBWasPressed = false;
