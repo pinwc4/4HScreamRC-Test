@@ -194,7 +194,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         );
     }
 
-    public void followTrajectory(Trajectory trajectory) {
+    public void followTrajectorySequence(Trajectory trajectory) {
         followTrajectoryAsync(trajectory);
         waitForIdle();
     }

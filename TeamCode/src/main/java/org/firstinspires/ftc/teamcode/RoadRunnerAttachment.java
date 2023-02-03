@@ -114,36 +114,20 @@ public class RoadRunnerAttachment extends Object {
 
 
     public void moveSlidesM(){
-        dcmSlider.setTargetPosition(-350);
+        dcmSlider.setTargetPosition(-450);
         dcmSlider.setPower(0.85);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void moveDropOff(){
+
+
+    public void moveJoeTest() throws InterruptedException{
 
         srvV4B.setPosition(0.325);
-
-        if(intNumSameRecognitions3 < 25){
-            intNumSameRecognitions3++;
-        }
-        else {
-            srvGrabber.setPosition(0);//0.85
-            intNumSameRecognitions3 = 0;
-            bolT4Toggle = true;
-            bolT3Toggle = false;
-        }
-
-        if(bolT4Toggle){
-            if(intNumSameRecognitions3 < 25){
-                intNumSameRecognitions3++;
-            }
-            else {
-                srvV4B.setPosition(CENTERANGLE);
-                intNumSameRecognitions3 = 0;
-                bolT4Toggle = false;
-            }
-        }
-
+        Thread.sleep(500);
+        srvGrabber.setPosition(0);
+        Thread.sleep(500);
+        srvV4B.setPosition(CENTERANGLE);
     }
 
     public void movePickUpPosition(){
@@ -157,11 +141,17 @@ public class RoadRunnerAttachment extends Object {
 
     }
 
-    public void movePickUpCone(int intConeStack1){
+    public void movePickUpCone(int intConeStack1) throws InterruptedException{
 
         this.intConeStack1 = intConeStack1;
 
         intSlidePosition = intConeStack1;
+        Thread.sleep(500);
+        srvGrabber.setPosition(1);
+        Thread.sleep(500);
+        intSlidePosition = -350;
+
+        /*
         bolSGRB1Toggle = true;
 
         if(dcmSlider.getCurrentPosition() > intConeStack1 - 20 && bolSGRB1Toggle){
@@ -187,6 +177,8 @@ public class RoadRunnerAttachment extends Object {
                 dblServoPosition = CENTERANGLE;
             }
         }
+
+         */
 
     }
 
