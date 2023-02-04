@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -26,9 +27,14 @@ public class RoadRunnerAttachment extends Object {
     private DcMotorEx lteDirectionV4B;
     private DcMotorEx lteDirectionCHS;
 
+    private ColorSensor snsColor2;
+
     private int intNumSameRecognitions = 0;
     private int intNumSameRecognitions2 = 0;
     private int intNumSameRecognitions3 = 0;
+
+
+    public int intColorLevel = 0;
 
     private static final double CENTERANGLE = 0.51;
     private static final double ANGLEMODIFIERLOW = 0.467;
@@ -45,45 +51,9 @@ public class RoadRunnerAttachment extends Object {
 
     private double dblServoPosition = 0.5;
 
-    private int intConeStack1 = -115;
-    private int intConeStack2 = -150;
-
-    private boolean bolAWasPressed = false;
-    private boolean bolBWasPressed = false;
-    private boolean bolYWasPressed = false;
-    private boolean bolX2WasPressed = false;
-    private boolean bolLBWasPressed = false;
-    private boolean bolRB2WasPressed = false;
-    private boolean bolRB1WasPressed = false;
-    private boolean bolX1WasPressed = false;
-    private boolean bolLB1WasPressed = false;
-    private boolean bolDPadDownWasPressed = false;
-    private boolean bolDPadUpWasPressed = false;
-
-    private boolean bolGRB1Toggle = false;
-    private boolean bolGRB2Toggle = false;
-    private boolean bolGRB3Toggle = false;
-    private boolean bolGRB4Toggle = false;
-
-    private boolean bolSGRB1Toggle = false;
-    private boolean bolSGRB2Toggle = false;
-    private boolean bolSGRB3Toggle = false;
+    private int intConeStack1;
 
 
-    private boolean bolSideToggle = false;
-    private boolean bolCLToggle = true;
-    private boolean bolGMAToggle = false;
-    private boolean bolGMBToggle = false;
-    private boolean bolGMYToggle = false;
-    private boolean bolRBToggle = false;
-    private boolean bolTToggle = false;
-    private boolean bolT2Toggle = false;
-    private boolean bolT3Toggle = false;
-    private boolean bolT4Toggle = false;
-    private boolean bolSTToggle = false;
-    private boolean bolSHToggle = false;
-    private boolean bolLFToggle = false;
-    private boolean bolCHS = false;
 
     public RoadRunnerAttachment(HardwareMap hmpHardwareMap, Telemetry telTelemetry) {
 
@@ -107,13 +77,27 @@ public class RoadRunnerAttachment extends Object {
         srvGrabber = hmpHardwareMap.servo.get("Grabber");
         srvGrabber.setPosition(1);
 
+        snsColor2 = hmpHardwareMap.get(ColorSensor.class, "color_sensor2");
+
 
 
     }
 
 
+    public void senseSleeve(){
+        if(snsColor2.red() > (snsColor2.blue())){
+            intColorLevel = 1;
+        } else if(snsColor2.blue() > (snsColor2.green())){
+            intColorLevel = 3;
+        } else {
+            intColorLevel = 2;
+        }
+
+
+    }
 
     public void moveSlidesM(){
+        srvV4B.setPosition(CENTERANGLE);
         dcmSlider.setTargetPosition(-450);
         dcmSlider.setPower(0.85);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -145,50 +129,28 @@ public class RoadRunnerAttachment extends Object {
 
         this.intConeStack1 = intConeStack1;
 
-        intSlidePosition = intConeStack1;
-        Thread.sleep(500);
+        dcmSlider.setTargetPosition(intConeStack1);
+        dcmSlider.setPower(0.85);
+        dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        Thread.sleep(400);
+
         srvGrabber.setPosition(1);
-        Thread.sleep(500);
-        intSlidePosition = -350;
 
-        /*
-        bolSGRB1Toggle = true;
+        Thread.sleep(250);
 
-        if(dcmSlider.getCurrentPosition() > intConeStack1 - 20 && bolSGRB1Toggle){
+        dcmSlider.setTargetPosition(-350);
+        dcmSlider.setPower(0.85);
+        dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            srvGrabber.setPosition(1);
-            bolSGRB1Toggle = false;
-            bolSGRB2Toggle = true;
+        Thread.sleep(250);
 
-            bolT2Toggle = true;
-        }
-
-        if(bolT2Toggle){
-            if(intNumSameRecognitions2 < 20){
-                intNumSameRecognitions2++;
-                telTelemetry.addLine("One");
-            }
-            else {
-                intSlidePosition = -350;
-                intNumSameRecognitions2 = 0;
-                telTelemetry.addLine("Two");
-                bolT2Toggle = false;
-                bolSGRB2Toggle = true;
-                dblServoPosition = CENTERANGLE;
-            }
-        }
-
-         */
 
     }
 
-
-
-
-
-
-
-
+    public int getintColorLevel() {
+        return intColorLevel;
+    }
 
 
 

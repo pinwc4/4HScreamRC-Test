@@ -23,8 +23,12 @@ public class MeepMeep1 {
                                 .setReversed(true)
 
                                 //.lineToLinearHeading(new Pose2d(-36, -11, Math.toRadians(315)))
-                                .lineToLinearHeading(new Pose2d(-58, -11, Math.toRadians(360)))
-                                .lineToLinearHeading(new Pose2d(-61, -11, Math.toRadians(360)))
+                                .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
+                                .lineToLinearHeading(new Pose2d(-60.5, -11, Math.toRadians(360)))
+
+                                .setReversed(false)
+                                .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
+                                .splineToLinearHeading(new Pose2d(-27, -21, Math.toRadians(325)), Math.toRadians(-20))
 
                                 /*
                                 .splineToLinearHeading(new Pose2d(-34, -60, Math.toRadians(270)), Math.toRadians(0))
