@@ -23,7 +23,8 @@ public class PowerAttachment extends Object {
 
     private SensorDigitalTouch tsLSGrabber;
 
-    private DcMotorEx lteDirectionV4B;
+    private DcMotorEx lteDirectionV4B1;
+    private DcMotorEx lteDirectionV4B2;
     private DcMotorEx lteDirectionCHS;
 
     private int intNumSameRecognitions = 0;
@@ -71,7 +72,7 @@ public class PowerAttachment extends Object {
 
 
     private boolean bolSideToggle = false;
-    private boolean bolCLToggle = true;
+    private boolean bolCLToggle = false;
     private boolean bolGMAToggle = false;
     private boolean bolGMBToggle = false;
     private boolean bolGMYToggle = false;
@@ -106,17 +107,18 @@ public class PowerAttachment extends Object {
 
 
         srvGrabber = hmpHardwareMap.servo.get("Grabber");
-        srvGrabber.setPosition(1);
+        srvGrabber.setPosition(0);
 
 
-        lteDirectionV4B = hmpHardwareMap.get(DcMotorEx.class, "lteV4B");
+        lteDirectionV4B1 = hmpHardwareMap.get(DcMotorEx.class, "lteV4B1");
+        lteDirectionV4B2 = hmpHardwareMap.get(DcMotorEx.class, "lteV4B2");
         lteDirectionCHS = hmpHardwareMap.get(DcMotorEx.class, "lteCHS");
 
 
       //  lteDirection.setMode(DcMotorEx.);
 
 
-        lteDirectionV4B.setPower(100);
+        lteDirectionV4B1.setPower(100);
         lteDirectionCHS.setPower(100);
 
     }
@@ -360,14 +362,16 @@ public class PowerAttachment extends Object {
                 dblV4BAngleLow = CENTERANGLE + ANGLEMODIFIERLOW;
                 dblV4BAngleLowStack = CENTERANGLE + ANGLEMODIFIERLOWSTACK;
                 telTelemetry.addLine("NOT WIRE");
-                lteDirectionV4B.setPower(65);
+                lteDirectionV4B1.setPower(65);
+                lteDirectionV4B2.setPower(65);
             } else {
                 dblV4BAngleHigh = CENTERANGLE + ANGLEMODIFIERHIGH;
                 dblV4BAngleLow = CENTERANGLE - ANGLEMODIFIERLOW;
                 dblV4BAngleLowest = CENTERANGLE - ANGLEMODIFIERLOWEST;
                 dblV4BAngleLowStack = CENTERANGLE - ANGLEMODIFIERLOWSTACK;
                 telTelemetry.addLine("WIRE");
-                lteDirectionV4B.setPower(-65);
+                lteDirectionV4B1.setPower(-65);
+                lteDirectionV4B2.setPower(-65);
             }
         } else if (!gmpGamepad2.left_bumper && bolLBWasPressed) {
             bolLBWasPressed = false;

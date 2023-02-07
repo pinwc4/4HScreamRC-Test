@@ -103,14 +103,14 @@ public class LEDpattarn extends Object {
 
         ledCycleDeadline = new Deadline(LED_PERIOD, TimeUnit.SECONDS);
         gamepadRateLimit = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
-
+/*
         srvLightRow1 = hmpHardwareMap.servo.get("RedLights");
         srvLightRow1.setPosition(0);
         srvlightRow2 = hmpHardwareMap.servo.get("WhiteLights");
         srvlightRow2.setPosition(2200);
 
         snsColor = hmpHardwareMap.get(ColorSensor.class, "Color");
-
+*/
     }
 
     public void lights(double dblGetRunTime) {
