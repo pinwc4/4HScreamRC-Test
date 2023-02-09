@@ -142,7 +142,7 @@ public class HoloMechDrive {
                 dblBlMotorPower = NORMAL_POWER;
                 dblBrMotorPower = -NORMAL_POWER;
 
-                if(dblMotorPosition < dblMotorInstance - 700){
+                if(dblMotorPosition > dblMotorInstance + 700){
                     bolBackwardsToggle = false;
                 }
 
@@ -159,7 +159,7 @@ public class HoloMechDrive {
                 dblBlMotorPower = -NORMAL_POWER;
                 dblBrMotorPower = NORMAL_POWER;
 
-                if(dblMotorPosition > dblMotorInstance + 700){
+                if(dblMotorPosition < dblMotorInstance - 700){
                     bolBackwardsToggle = false;
                 }
 

@@ -31,7 +31,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -49,11 +49,6 @@ public class LEDpattarn extends Object {
     private Gamepad gmpGamepad2;
     private Telemetry telTelemetry;
 
-    private Servo srvLightRow1;
-    private Servo srvlightRow2;
-
-    private ColorSensor snsColor;
-
     private int intTimespan = 4;
     private int intGetRunTime;
 
@@ -62,6 +57,7 @@ public class LEDpattarn extends Object {
     private boolean bolGM1LBWasPressed = false;
     private boolean bolGM1LBToggle = false;
     private double dblGetRunTime;
+    private boolean on = false;
 
     /*
      * Change the pattern every 10 seconds in AUTO mode.
@@ -90,6 +86,7 @@ public class LEDpattarn extends Object {
     public LEDpattarn (Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry)
     {
         this.gmpGamepad1 = gmpGamepad1;
+        this.gmpGamepad2 = gmpGamepad2;
         this.telTelemetry = telTelemetry;
 
         displayKind = DisplayKind.AUTO;
@@ -109,7 +106,6 @@ public class LEDpattarn extends Object {
         srvlightRow2 = hmpHardwareMap.servo.get("WhiteLights");
         srvlightRow2.setPosition(2200);
 
-        snsColor = hmpHardwareMap.get(ColorSensor.class, "Color");
 */
     }
 
@@ -117,12 +113,6 @@ public class LEDpattarn extends Object {
         handleGamepad();
 
         this.dblGetRunTime = dblGetRunTime;
-
-        if(snsColor.red() > (snsColor.green()/2)){
-            bolSDToggle = true;
-        } else {
-            bolSDToggle = false;
-        }
 
 
         if (gmpGamepad2.x && !bolX2WasPressed) {
@@ -151,7 +141,7 @@ public class LEDpattarn extends Object {
                 displayPattern();
             }
 
-            /*else if(dblGetRunTime >= 75 && dblGetRunTime < 90){
+            else if(dblGetRunTime >= 75 && dblGetRunTime < 90){
                 if(on == true){
                     pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
                     displayPattern();
@@ -162,14 +152,14 @@ public class LEDpattarn extends Object {
                 }
             }
 
-             */
+
 
             else if(dblGetRunTime >= 90){
                 pattern = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
                 displayPattern();
             }
 
-            /*else {
+            else {
                 if(on == true){
                     pattern = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
                     displayPattern();
@@ -178,7 +168,7 @@ public class LEDpattarn extends Object {
                     pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
                     displayPattern();
                 }
-            }*/
+            }
 
         }
 /*
@@ -249,7 +239,7 @@ public class LEDpattarn extends Object {
                 displayPattern();
             }
 
-            /*else if(dblGetRunTime >= 75 && dblGetRunTime < 90){
+            else if(dblGetRunTime >= 75 && dblGetRunTime < 90){
                 if(on == true){
                     pattern = RevBlinkinLedDriver.BlinkinPattern.ORANGE;
                     displayPattern();
@@ -260,14 +250,14 @@ public class LEDpattarn extends Object {
                 }
             }
 
-             */
+
 
             else if(dblGetRunTime >= 90){
                 pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
                 displayPattern();
             }
 
-            /*else {
+            else {
                 if(on == true){
                     pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
                     displayPattern();
@@ -278,7 +268,7 @@ public class LEDpattarn extends Object {
                 }
             }
 
-             */
+
         }
 
         telTelemetry.addData("runtime", dblGetRunTime);

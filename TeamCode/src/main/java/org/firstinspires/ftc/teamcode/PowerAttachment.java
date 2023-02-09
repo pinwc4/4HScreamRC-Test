@@ -118,7 +118,8 @@ public class PowerAttachment extends Object {
       //  lteDirection.setMode(DcMotorEx.);
 
 
-        lteDirectionV4B1.setPower(100);
+        lteDirectionV4B1.setPower(-65);
+        lteDirectionV4B2.setPower(-65);
         lteDirectionCHS.setPower(100);
 
     }
@@ -134,14 +135,6 @@ public class PowerAttachment extends Object {
 
 
 // GRABBER
-
-        if (gmpGamepad2.x && !bolX2WasPressed) {
-            bolX2WasPressed = true;
-            bolSTToggle = !bolSTToggle;
-
-        } else if (!gmpGamepad2.x && bolX2WasPressed) {
-            bolX2WasPressed = false;
-        }
 
 
         if (gmpGamepad1.right_bumper && !bolRB1WasPressed) {
@@ -275,9 +268,13 @@ public class PowerAttachment extends Object {
 
                 dblServoPosition = dblV4BAngleLowStack;
 
+                bolSTToggle = true;
+
             } else {
 
                 intSlidePosition = -150;
+
+                bolSTToggle = false;
 
             }
         } else if (!gmpGamepad2.x && bolX2WasPressed) {
