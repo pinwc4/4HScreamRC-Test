@@ -459,7 +459,7 @@ public class PowerAttachment extends Object {
 
 
         dcmSlider.setTargetPosition(intSlidePosition);
-        dcmSlider.setPower(0.85);
+        dcmSlider.setPower(0.65);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         srvV4B.setPosition(dblServoPosition);
