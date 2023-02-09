@@ -103,14 +103,21 @@ public class RoadRunnerAttachment extends Object {
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void moveSlidesDown(){
+        srvV4B.setPosition(CENTERANGLE);
+        dcmSlider.setTargetPosition(0);
+        dcmSlider.setPower(0.85);
+        dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
 
 
     public void moveJoeTest() throws InterruptedException{
 
         srvV4B.setPosition(0.325);
-        Thread.sleep(500);
+        Thread.sleep(250);
         srvGrabber.setPosition(0);
-        Thread.sleep(500);
+        Thread.sleep(250);
         srvV4B.setPosition(CENTERANGLE);
     }
 
@@ -137,13 +144,13 @@ public class RoadRunnerAttachment extends Object {
 
         srvGrabber.setPosition(1);
 
-        Thread.sleep(250);
+        Thread.sleep(200);
 
         dcmSlider.setTargetPosition(-350);
         dcmSlider.setPower(0.85);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        Thread.sleep(250);
+        Thread.sleep(100);
 
 
     }
