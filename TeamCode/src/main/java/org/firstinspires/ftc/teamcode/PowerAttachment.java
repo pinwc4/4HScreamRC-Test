@@ -210,7 +210,7 @@ public class PowerAttachment extends Object {
             bolGRB3Toggle = true;
         }
 
-        if(dcmSlider.getCurrentPosition() > -3 && bolGRB3Toggle){
+        if(dcmSlider.getCurrentPosition() > -4 && bolGRB3Toggle){
 
             intSlidePosition = -150;
             bolGRB3Toggle = false;
@@ -317,13 +317,15 @@ public class PowerAttachment extends Object {
             bolRB2WasPressed = false;
         }
 
-
+/*
         //MANUAL CONTROL
         if(gmpGamepad2.left_stick_y != 0) {
             dblSlidePosition = dblSlidePosition + gmpGamepad2.left_stick_y * 1.5;
 
             intSlidePosition = (int) dblSlidePosition;
         }
+
+ */
 
 
 

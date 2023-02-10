@@ -2,19 +2,16 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "RoadRunnerTest")
+@Autonomous(name = "LEFT SIDE Road Runner")
 
-public class RoadRunnerTest extends LinearOpMode {
+public class RoadRunnerLEFTSIDE extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException{
@@ -25,7 +22,7 @@ public class RoadRunnerTest extends LinearOpMode {
         MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(50, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
 
         int intColorLevel = 0;
-        int intConeStack1 = -95;
+        int intConeStack1 = -90;
         int intCycleCounter = 0;
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -43,7 +40,7 @@ public class RoadRunnerTest extends LinearOpMode {
                 .addTemporalMarker(1.5, () -> {
                     attachment.moveSlidesM();
                 })
-                .addTemporalMarker(1, () -> {
+                .addTemporalMarker(2, () -> {
                     attachment.senseSleeve();
                 })
 
@@ -58,8 +55,8 @@ public class RoadRunnerTest extends LinearOpMode {
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
-                .lineToLinearHeading(new Pose2d(-60, -11, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(-56, -11.75, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(-60, -11.75, Math.toRadians(360)))
                 .waitSeconds(0.25)
 
                 .build();
@@ -82,7 +79,7 @@ public class RoadRunnerTest extends LinearOpMode {
 
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
-                .lineToLinearHeading(new Pose2d(-60, -10, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(-60, -11.3, Math.toRadians(360)))
                 .waitSeconds(0.25)
 
                 .build();
@@ -91,7 +88,7 @@ public class RoadRunnerTest extends LinearOpMode {
 
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
-                .lineToLinearHeading(new Pose2d(-60, -9, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(-59.5, -10.9, Math.toRadians(360)))
                 .waitSeconds(0.25)
 
                 .build();
@@ -107,7 +104,7 @@ public class RoadRunnerTest extends LinearOpMode {
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj3.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-53, -10, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(-57, -10, Math.toRadians(360)))
 
 
                 .build();
@@ -166,10 +163,12 @@ public class RoadRunnerTest extends LinearOpMode {
 
             attachment.moveJoeTest();
 
-            intConeStack1 = intConeStack1 + 40;//52
+            intConeStack1 = intConeStack1 + 52;//52
             intCycleCounter++;
 
         }
+
+
 
         attachment.moveSlidesDown();
 
