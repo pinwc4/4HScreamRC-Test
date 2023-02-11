@@ -104,7 +104,7 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj3.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-57, -10, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(-57, -12, Math.toRadians(360)))
 
 
                 .build();

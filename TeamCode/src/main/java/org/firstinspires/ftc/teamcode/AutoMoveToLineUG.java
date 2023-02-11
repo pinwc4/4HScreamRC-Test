@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 //start robot with camera facing toward the center of the field and as close to the Skybridge as possible
 
-@Autonomous(name = "AutoMoveToLineUG")
+//@Autonomous(name = "AutoMoveToLineUG")
 
 
 public class AutoMoveToLineUG extends OpMode {

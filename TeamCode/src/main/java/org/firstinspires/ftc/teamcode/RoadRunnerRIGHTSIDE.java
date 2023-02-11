@@ -68,7 +68,7 @@ public class RoadRunnerRIGHTSIDE extends LinearOpMode {
                 })
                 .setReversed(false)
                 .lineToLinearHeading(new Pose2d(56, -11, Math.toRadians(180)))
-                .splineToLinearHeading(new Pose2d(30, -21, Math.toRadians(215)), Math.toRadians(20))
+                .splineToLinearHeading(new Pose2d(30, -21, Math.toRadians(225)), Math.toRadians(20))
 
                 .build();
 
@@ -88,7 +88,7 @@ public class RoadRunnerRIGHTSIDE extends LinearOpMode {
 
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(56, -13, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(60, -13, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(60 -13, Math.toRadians(180)))
                 .waitSeconds(0.25)
 
                 .build();
@@ -105,7 +105,7 @@ public class RoadRunnerRIGHTSIDE extends LinearOpMode {
 
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(12, -10, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(12, -12, Math.toRadians(180)))
 
 
                 .build();

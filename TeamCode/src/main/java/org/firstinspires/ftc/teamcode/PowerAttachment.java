@@ -20,6 +20,8 @@ public class PowerAttachment extends Object {
 
     private Servo srvGrabber;
     private Servo srvV4B;
+    private Servo srvConeRighter1;
+    private Servo srvConeRighter2;
 
     private SensorDigitalTouch tsLSGrabber;
 
@@ -100,6 +102,10 @@ public class PowerAttachment extends Object {
         dcmSlider.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         dcmSlider.setDirection(DcMotor.Direction.FORWARD);
 
+        srvConeRighter1 = hmpHardwareMap.servo.get("ConeRighter1");
+        srvConeRighter1.setPosition(0);
+        srvConeRighter2 = hmpHardwareMap.servo.get("ConeRighter2");
+        srvConeRighter2.setPosition(0);
 
 
         srvV4B = hmpHardwareMap.servo.get("V4B");
@@ -131,7 +137,10 @@ public class PowerAttachment extends Object {
 
 
 // FLIPPER
-        // dcmFlipper.setPower(gmpGamepad2.right_stick_y/2);
+
+        srvConeRighter1.setPosition(gmpGamepad1.right_trigger);
+
+        srvConeRighter2.setPosition(gmpGamepad1.right_trigger);
 
 
 // GRABBER
