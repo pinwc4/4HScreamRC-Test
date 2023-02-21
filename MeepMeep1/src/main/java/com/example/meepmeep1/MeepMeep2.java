@@ -5,11 +5,7 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-<<<<<<<< HEAD:MeepMeep1/src/main/java/com/example/meepmeep1/BlueRight.java
-public class BlueRight {
-========
-public class RedRight {
->>>>>>>> 9ca6c0f253f822cf0827f08756247ef759ce5c00:MeepMeep1/src/main/java/com/example/meepmeep1/RedRight.java
+public class MeepMeep2 {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
@@ -17,8 +13,8 @@ public class RedRight {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-63, -39, 0))
-                                .splineToLinearHeading(new Pose2d(-11, -35, Math.toRadians(45)), Math.toRadians(0))
+                        drive.trajectorySequenceBuilder(new Pose2d(0, 0, 0))
+                                .splineToLinearHeading(new Pose2d(10, 50, Math.toRadians(45)), Math.toRadians(0))
                                 //.lineToLinearHeading(new Pose2d(50, -20, Math.toRadians(45)))
                                 .build()
                 );

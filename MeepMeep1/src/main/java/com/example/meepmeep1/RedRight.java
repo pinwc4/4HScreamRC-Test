@@ -5,7 +5,11 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
+<<<<<<<< HEAD:MeepMeep1/src/main/java/com/example/meepmeep1/RedRight.java
 public class RedRight {
+========
+public class BlueRight {
+>>>>>>>> 9ca6c0f253f822cf0827f08756247ef759ce5c00:MeepMeep1/src/main/java/com/example/meepmeep1/BlueRight.java
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
