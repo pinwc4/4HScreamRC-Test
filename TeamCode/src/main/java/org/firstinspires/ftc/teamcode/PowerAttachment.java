@@ -1,13 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class PowerAttachment extends Object {
 
@@ -23,7 +28,8 @@ public class PowerAttachment extends Object {
     private Servo srvConeRighter1;
     private Servo srvConeRighter2;
 
-    private SensorDigitalTouch tsLSGrabber;
+    private DigitalChannel digitalTouch;
+    private ColorSensor snsDistanceStack;
 
     private DcMotorEx lteDirectionV4B1;
     private DcMotorEx lteDirectionV4B2;
@@ -96,7 +102,6 @@ public class PowerAttachment extends Object {
 
 
 
-
         dcmSlider = hmpHardwareMap.get(DcMotorEx.class, "Slider");
         dcmSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dcmSlider.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -121,6 +126,11 @@ public class PowerAttachment extends Object {
         lteDirectionCHS = hmpHardwareMap.get(DcMotorEx.class, "lteCHS");
 
 
+        digitalTouch = hmpHardwareMap.get(DigitalChannel.class, "sensor_digital");
+        digitalTouch.setMode(DigitalChannel.Mode.INPUT);
+
+        snsDistanceStack = hmpHardwareMap.get(ColorSensor.class, "Distance");
+
       //  lteDirection.setMode(DcMotorEx.);
 
 
@@ -140,7 +150,21 @@ public class PowerAttachment extends Object {
 
         srvConeRighter1.setPosition(gmpGamepad1.right_trigger);
 
-        srvConeRighter2.setPosition(gmpGamepad1.right_trigger);
+        if(gmpGamepad1.left_trigger > 0){
+            srvConeRighter2.setPosition(0.67);
+        }else {
+            srvConeRighter2.setPosition(0);
+        }
+
+        if (digitalTouch.getState() == true) {
+            telTelemetry.addData("Digital Touch", "Is Not Pressed");
+            telTelemetry.addData("Digital Touch", digitalTouch.getState());
+        } else {
+            telTelemetry.addData("Digital Touch", "Is Pressed");
+            telTelemetry.addData("Digital Touch", digitalTouch.getState());
+        }
+
+
 
 
 // GRABBER
@@ -246,6 +270,8 @@ public class PowerAttachment extends Object {
 
             bolT2Toggle = true;
         }
+
+
 
         if(bolT2Toggle){
             if(intNumSameRecognitions2 < 20){
@@ -506,6 +532,7 @@ public class PowerAttachment extends Object {
         telTelemetry.addData("intSlider", intSlidePosition);
         telTelemetry.addData("Grabber", srvGrabber.getPosition());
         telTelemetry.addData("V4B", srvV4B.getPosition());
+        telTelemetry.addData("V4B", ((DistanceSensor) snsDistanceStack).getDistance(DistanceUnit.CM));
         }
 
 

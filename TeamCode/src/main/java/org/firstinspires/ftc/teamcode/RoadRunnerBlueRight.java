@@ -9,9 +9,9 @@ import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "LEFT SIDE Road Runner")
+@Autonomous(name = "BlueRight")
 
-public class RoadRunnerLEFTSIDE extends LinearOpMode {
+public class RoadRunnerBlueRight extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException{
@@ -30,7 +30,7 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
 
 
         // We want to start the bot at x: 10, y: -8, heading: 90 degrees
-        Pose2d startPose = new Pose2d(-39, -63, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(39, -63, Math.toRadians(270));
 
         drive.setPoseEstimate(startPose);
 
@@ -44,19 +44,19 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
                     attachment.senseSleeve();
                 })
 
-                .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(35, -60, Math.toRadians(270)), Math.toRadians(0))
                 .setVelConstraint(slowMode)
-                .lineToLinearHeading(new Pose2d(-35, -9, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(270)))
                 .setVelConstraint(normalMode)
-                .splineToLinearHeading(new Pose2d(-27, -19, Math.toRadians(315)), Math.toRadians(-20))
+                .splineToLinearHeading(new Pose2d(28, -20, Math.toRadians(225)), Math.toRadians(20))
 
                 .build();
 
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-56, -11.75, Math.toRadians(360)))
-                .lineToLinearHeading(new Pose2d(-60, -11.75, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(56, -12, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(60.75, -12, Math.toRadians(180)))
                 .waitSeconds(0.25)
 
                 .build();
@@ -67,8 +67,8 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
                     attachment.moveSlidesM();
                 })
                 .setReversed(false)
-                .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
-                .splineToLinearHeading(new Pose2d(-27, -21, Math.toRadians(325)), Math.toRadians(-20))
+                .lineToLinearHeading(new Pose2d(56, -11, Math.toRadians(180)))
+                .splineToLinearHeading(new Pose2d(29.5, -20, Math.toRadians(225)), Math.toRadians(20))
 
                 .build();
 
@@ -78,8 +78,8 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
-                .lineToLinearHeading(new Pose2d(-60, -11.3, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(56, -12.5, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(60.75, -12.5, Math.toRadians(180)))
                 .waitSeconds(0.25)
 
                 .build();
@@ -87,8 +87,8 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
-                .lineToLinearHeading(new Pose2d(-59.5, -10.9, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(56, -13, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(60.75, -13, Math.toRadians(180)))
                 .waitSeconds(0.25)
 
                 .build();
@@ -96,7 +96,7 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(traj3.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(270)))
 
 
                 .build();
@@ -104,7 +104,8 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj3.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-57, -12, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(12, -12, Math.toRadians(180)))
 
 
                 .build();
@@ -112,9 +113,9 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(traj3.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(36, -13, Math.toRadians(180)))
                 .setReversed(false)
-                .lineToLinearHeading(new Pose2d(-12, -12, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(58, -13, Math.toRadians(180)))
 
 
                 .build();
@@ -124,6 +125,8 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
 
         resetRuntime();
 
+        attachment.moveV4B();
+
         drive.followTrajectorySequence(traj1);
         drive.update();
 
@@ -131,6 +134,7 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
 
         intColorLevel = attachment.getintColorLevel();
 
+        /*
 
         while (getRuntime() < 23) {
 
@@ -168,6 +172,8 @@ public class RoadRunnerLEFTSIDE extends LinearOpMode {
 
         }
 
+
+         */
 
 
         attachment.moveSlidesDown();
