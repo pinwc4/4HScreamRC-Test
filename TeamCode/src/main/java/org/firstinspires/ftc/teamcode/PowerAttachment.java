@@ -457,8 +457,15 @@ public class PowerAttachment extends Object {
                 //srvV4B.setPosition(CENTERANGLE);
             }else {
                 bolTToggle = true;
-                dblServoPosition = dblV4BAngleLow;
+
+                if(bolSTToggle){
+                    dblServoPosition = dblV4BAngleLowStack;
+                } else {
+                    dblServoPosition = dblV4BAngleLow;
+                }
+
             }
+
         } else if (!gmpGamepad2.a && bolAWasPressed) {
             bolAWasPressed = false;
         }
@@ -474,7 +481,11 @@ public class PowerAttachment extends Object {
                 //srvV4B.setPosition(CENTERANGLE);
             } else {
                 bolTToggle = true;
-                dblServoPosition = dblV4BAngleLow;
+                if(bolSTToggle){
+                    dblServoPosition = dblV4BAngleLowStack;
+                } else {
+                    dblServoPosition = dblV4BAngleLow;
+                }
             }
 
         } else if (!gmpGamepad2.b && bolBWasPressed) {

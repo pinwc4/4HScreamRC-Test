@@ -20,7 +20,6 @@ public class SensorTest extends OpMode {
 
     public void init(){
 
-        snsColor1 = hardwareMap.get(ColorSensor.class, "color_sensor1");
         snsColor2 = hardwareMap.get(ColorSensor.class, "color_sensor2");
 
     }
