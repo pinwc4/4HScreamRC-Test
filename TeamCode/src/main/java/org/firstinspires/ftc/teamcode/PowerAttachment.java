@@ -8,9 +8,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -25,8 +23,8 @@ public class PowerAttachment extends Object {
 
     private Servo srvGrabber;
     private Servo srvV4B;
-    private Servo srvConeRighter1;
-    private Servo srvConeRighter2;
+    private Servo srvConeRighter;
+    private Servo srvWallSpacer;
 
     private DigitalChannel digitalTouch;
     private ColorSensor snsDistanceStack;
@@ -107,10 +105,10 @@ public class PowerAttachment extends Object {
         dcmSlider.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         dcmSlider.setDirection(DcMotor.Direction.FORWARD);
 
-        srvConeRighter1 = hmpHardwareMap.servo.get("ConeRighter1");
-        srvConeRighter1.setPosition(0);
-        srvConeRighter2 = hmpHardwareMap.servo.get("ConeRighter2");
-        srvConeRighter2.setPosition(0);
+        srvConeRighter = hmpHardwareMap.servo.get("ConeRighter");
+        srvConeRighter.setPosition(0);
+        srvWallSpacer = hmpHardwareMap.servo.get("WallSpacer");
+        srvWallSpacer.setPosition(0);
 
 
         srvV4B = hmpHardwareMap.servo.get("V4B");
@@ -148,13 +146,15 @@ public class PowerAttachment extends Object {
 
 // FLIPPER
 
-        srvConeRighter1.setPosition(gmpGamepad1.right_trigger);
+        srvConeRighter.setPosition(gmpGamepad1.right_trigger);
 
-        if(gmpGamepad1.left_trigger > 0){
-            srvConeRighter2.setPosition(0.67);
+/*
+        if(bolSTToggle){
+            srvWallSpacer.setPosition(0.67);
         }else {
-            srvConeRighter2.setPosition(0);
+            srvWallSpacer.setPosition(0);
         }
+*/
 
         if (digitalTouch.getState() == true) {
             telTelemetry.addData("Digital Touch", "Is Not Pressed");
@@ -169,10 +169,18 @@ public class PowerAttachment extends Object {
 
 // GRABBER
 
+        if (digitalTouch.getState() == true) {
+            bolCLToggle = true;
+
+        }
+        else {
+            bolCLToggle = false;
+        }
+
+
 
         if (gmpGamepad1.right_bumper && !bolRB1WasPressed) {
             bolRB1WasPressed = true;
-            bolCLToggle = !bolCLToggle;
             if (bolCLToggle) {
 
                 if (bolSTToggle) {
@@ -184,11 +192,11 @@ public class PowerAttachment extends Object {
                     dblServoPosition = dblV4BAngleLow;
                     bolGRB1Toggle = true;
                 }
-
+ 
             } else {
                 if (bolSTToggle) {
                     dblServoPosition = dblV4BAngleHigh;
-                    srvGrabber.setPosition(0);//0.85
+                    bolT3Toggle = true;
                     intConeStack1 = intConeStack1 + 52;
                 } else {
                     dblServoPosition = dblV4BAngleHigh;
@@ -238,16 +246,20 @@ public class PowerAttachment extends Object {
 
         if(dcmSlider.getCurrentPosition() > -15 && bolGRB2Toggle){
 
-            srvGrabber.setPosition(1);
-            bolGRB2Toggle = false;
-            bolGRB3Toggle = true;
+
+                srvGrabber.setPosition(1);
+                bolGRB2Toggle = false;
+                bolGRB3Toggle = true;
+
         }
 
         if(dcmSlider.getCurrentPosition() > -4 && bolGRB3Toggle){
 
-            intSlidePosition = -150;
-            bolGRB3Toggle = false;
-            bolGRB4Toggle = true;
+
+                intSlidePosition = -150;
+                bolGRB3Toggle = false;
+                bolGRB4Toggle = true;
+
         }
 
         if(dcmSlider.getCurrentPosition() < -120 && bolGRB4Toggle){
@@ -270,6 +282,19 @@ public class PowerAttachment extends Object {
 
             bolT2Toggle = true;
         }
+        /*
+
+        }  this is hypothetical code that i want to test (Ben)
+
+        if (digitalTouch.getState() == false && !bolLMSIsDown) {
+        srvGrabber.setPosition(1);
+        bolLMSIsDown = true;
+        }
+        else if (digitalTouch.getState() == true && bolLMSIsDown){
+        bolLMSIsDown = false;
+        }
+
+        */
 
 
 
@@ -419,7 +444,7 @@ public class PowerAttachment extends Object {
             bolGMYToggle = false;
             bolGMAToggle = !bolGMAToggle;
             if (bolGMAToggle) {
-                intSlidePosition = -80;
+                intSlidePosition = -100;
                 //srvV4B.setPosition(CENTERANGLE);
             }else {
                 bolTToggle = true;
@@ -436,7 +461,7 @@ public class PowerAttachment extends Object {
             bolGMYToggle = false;
             bolGMBToggle = !bolGMBToggle;
             if (bolGMBToggle) {
-                intSlidePosition = -450;
+                intSlidePosition = -470;
                 //srvV4B.setPosition(CENTERANGLE);
             } else {
                 bolTToggle = true;
@@ -453,7 +478,7 @@ public class PowerAttachment extends Object {
             bolGMBToggle =false;
             bolGMYToggle = !bolGMYToggle;
             if (bolGMYToggle) {
-                intSlidePosition = -830;
+                intSlidePosition = -850;
                 //srvV4B.setPosition(CENTERANGLE);
             } else {
                 bolTToggle = true;
@@ -477,7 +502,7 @@ public class PowerAttachment extends Object {
             else {
 
                 if(bolSTToggle){
-                    intSlidePosition = -150;
+                    intSlidePosition = -350;
                 }else {
                     intSlidePosition = -150;
                 }
