@@ -88,7 +88,7 @@ public class RoadRunnerAttachment extends Object {
         dcmSlider.setDirection(DcMotor.Direction.FORWARD);
 
         srvV4B = hmpHardwareMap.servo.get("V4B");
-        srvWallSpacer = hmpHardwareMap.servo.get("ConeRighter2");
+        srvWallSpacer = hmpHardwareMap.servo.get("WallSpacer");
         srvWallSpacer.setPosition(0);
 
         srvGrabber = hmpHardwareMap.servo.get("Grabber");
@@ -167,7 +167,7 @@ public class RoadRunnerAttachment extends Object {
 
     public void moveStackCenter() throws InterruptedException{
 
-        lteDirectionV4B1.setPower(65);
+        lteDirectionV4B1.setPower(65)  ;
 
         leftFront.setPower(-0.3);
         rightFront.setPower(-0.3);
