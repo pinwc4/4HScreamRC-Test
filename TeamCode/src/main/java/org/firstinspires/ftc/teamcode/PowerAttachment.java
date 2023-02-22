@@ -192,7 +192,7 @@ public class PowerAttachment extends Object {
                     dblServoPosition = dblV4BAngleLow;
                     bolGRB1Toggle = true;
                 }
- 
+
             } else {
                 if (bolSTToggle) {
                     dblServoPosition = dblV4BAngleHigh;
