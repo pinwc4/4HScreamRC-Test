@@ -27,7 +27,8 @@ public class PowerAttachment extends Object {
     private Servo srvWallSpacer;
 
     private DigitalChannel digitalTouch;
-    private ColorSensor snsDistanceStack;
+    private ColorSensor snsDistanceStackLeft;
+    private ColorSensor snsDistanceStackRight;
 
     private DcMotorEx lteDirectionV4B1;
     private DcMotorEx lteDirectionV4B2;
@@ -47,10 +48,14 @@ public class PowerAttachment extends Object {
     private double dblV4BAngleLowStack = 0.13;
     private double dblV4BAngleLowest = 0.951;//0.9365
 
+    private double dblDistanceSensorLeft;
+    private double dblDistanceSensorRight;
+
     private double dblSlidePosition;
     private int intSlidePosition = 0;
 
     private double dblServoPosition = 0.5;
+
 
     private int intConeStack1 = -115;
     private int intConeStack2 = -150;
@@ -127,7 +132,8 @@ public class PowerAttachment extends Object {
         digitalTouch = hmpHardwareMap.get(DigitalChannel.class, "sensor_digital");
         digitalTouch.setMode(DigitalChannel.Mode.INPUT);
 
-        snsDistanceStack = hmpHardwareMap.get(ColorSensor.class, "Distance");
+        snsDistanceStackLeft = hmpHardwareMap.get(ColorSensor.class, "DistanceLeft");
+        snsDistanceStackRight = hmpHardwareMap.get(ColorSensor.class, "DistanceRight");
 
       //  lteDirection.setMode(DcMotorEx.);
 
@@ -163,6 +169,9 @@ public class PowerAttachment extends Object {
             telTelemetry.addData("Digital Touch", "Is Pressed");
             telTelemetry.addData("Digital Touch", digitalTouch.getState());
         }
+
+        dblDistanceSensorLeft = ( (DistanceSensor) snsDistanceStackLeft).getDistance(DistanceUnit.CM);
+        dblDistanceSensorRight = ( (DistanceSensor) snsDistanceStackRight).getDistance(DistanceUnit.CM);
 
 
 
@@ -557,7 +566,8 @@ public class PowerAttachment extends Object {
         telTelemetry.addData("intSlider", intSlidePosition);
         telTelemetry.addData("Grabber", srvGrabber.getPosition());
         telTelemetry.addData("V4B", srvV4B.getPosition());
-        telTelemetry.addData("V4B", ((DistanceSensor) snsDistanceStack).getDistance(DistanceUnit.CM));
+        telTelemetry.addData("Left", dblDistanceSensorLeft);
+        telTelemetry.addData("Right", dblDistanceSensorRight);
         }
 
 

@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class RoadRunnerAttachment extends Object {
 
 
+
     private Gamepad gmpGamepad1;
     private Gamepad gmpGamepad2;
     private Telemetry telTelemetry;
@@ -37,7 +38,8 @@ public class RoadRunnerAttachment extends Object {
     private DcMotorEx lteDirectionCHS;
 
     private ColorSensor snsColor2;
-    private ColorSensor snsDistanceStack;
+    private ColorSensor snsDistanceStackLeft;
+    private ColorSensor snsDistanceStackRight;
 
     private DigitalChannel digitalTouch;
 
@@ -63,6 +65,9 @@ public class RoadRunnerAttachment extends Object {
     private int intSlidePosition = 0;
 
     private double dblServoPosition = 0.5;
+    private double dblDistanceSensorLeft;
+    private double dblDistanceSensorRight;
+    private double dblDirection;
 
     private int intConeStack1;
 
@@ -90,7 +95,8 @@ public class RoadRunnerAttachment extends Object {
         srvGrabber.setPosition(1);
 
         snsColor2 = hmpHardwareMap.get(ColorSensor.class, "color_sensor2");
-        snsDistanceStack = hmpHardwareMap.get(ColorSensor.class, "Distance");
+        snsDistanceStackLeft = hmpHardwareMap.get(ColorSensor.class, "DistanceLeft");
+        snsDistanceStackRight = hmpHardwareMap.get(ColorSensor.class, "DistanceRight");
 
         digitalTouch = hmpHardwareMap.get(DigitalChannel.class, "sensor_digital");
         digitalTouch.setMode(DigitalChannel.Mode.INPUT);
@@ -159,30 +165,54 @@ public class RoadRunnerAttachment extends Object {
 
     }
 
-    public void moveStackCenter(){
+    public void moveStackCenter() throws InterruptedException{
 
-        while( ( (DistanceSensor) snsDistanceStack).getDistance(DistanceUnit.CM) < 2.2 || ( (DistanceSensor) snsDistanceStack).getDistance(DistanceUnit.CM) > 3.2){
+        lteDirectionV4B1.setPower(65);
 
-            if(((DistanceSensor) snsDistanceStack).getDistance(DistanceUnit.CM) > 2.7){
+        leftFront.setPower(-0.3);
+        rightFront.setPower(-0.3);
+        leftRear.setPower(-0.3);
+        rightRear.setPower(-0.3);
+
+        Thread.sleep(500);
+
+        dblDistanceSensorLeft = ( (DistanceSensor) snsDistanceStackLeft).getDistance(DistanceUnit.CM);
+        dblDistanceSensorRight = ( (DistanceSensor) snsDistanceStackRight).getDistance(DistanceUnit.CM);
+
+        while(Math.abs(dblDistanceSensorLeft - dblDistanceSensorRight) > 0.5){
+
+            lteDirectionV4B1.setPower(0);
+
+            dblDirection = (dblDistanceSensorLeft - dblDistanceSensorRight);
+
+
+            if(dblDirection < 0){
                 leftFront.setPower(0.125);
                 rightFront.setPower(-0.3);
                 leftRear.setPower(-0.3);
                 rightRear.setPower(0.13);
-            } else if (((DistanceSensor) snsDistanceStack).getDistance(DistanceUnit.CM) < 2.7){
+            } else if (dblDirection > 0){
                 leftFront.setPower(-0.3);
                 rightFront.setPower(0.125);
                 leftRear.setPower(0.125);
                 rightRear.setPower(-0.3);
             }
 
+            dblDistanceSensorLeft = ( (DistanceSensor) snsDistanceStackLeft).getDistance(DistanceUnit.CM);
+            dblDistanceSensorRight = ( (DistanceSensor) snsDistanceStackRight).getDistance(DistanceUnit.CM);
+
         }
 
-        leftFront.setPower(0);
-        rightFront.setPower(0);
-        leftRear.setPower(0);
-        rightRear.setPower(0);
 
-    }
+            leftFront.setPower(0);
+            rightFront.setPower(0);
+            leftRear.setPower(0);
+            rightRear.setPower(0);
+
+        }
+
+
+
 
     public void movePickUpCone(int intConeStack1) throws InterruptedException{
 
