@@ -27,7 +27,7 @@ public class SlideManualControl extends OpMode {
 
     public void loop(){
 
-        dcmSlider.setPower(-gamepad2.right_stick_y/8);
+        dcmSlider.setPower(gamepad2.right_stick_y/2);
 
         if (gamepad2.right_bumper){
             srvV4B.setPosition(0.51);

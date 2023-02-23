@@ -40,6 +40,7 @@ public class HoloMechDrive {
     private boolean bolBackwardsToggle = false;
     private boolean bolSideToggle = false;
     private boolean bolSTToggle = false;
+    private boolean bolSHToggle = false;
     private boolean bolFalse = false;
 
 
@@ -132,10 +133,13 @@ public class HoloMechDrive {
             bolX2WasPressed = false;
         }
 
-        if (bolRBButton && !bolBWasPressed && bolXButton2) {
+        if (bolRBButton && !bolBWasPressed && bolSTToggle) {
             bolBWasPressed = true;
-            bolBackwardsToggle = true;
-            dblMotorInstance = dblMotorPosition;
+            bolSHToggle = !bolSHToggle;
+            if (bolSHToggle) {
+                bolBackwardsToggle = true;
+                dblMotorInstance = dblMotorPosition;
+            }
         } else if (!bolRBButton) {
             bolBWasPressed = false;
         }
