@@ -18,8 +18,9 @@ public class RoadRunnerRedLeft extends LinearOpMode {
 
 
 
-        MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(20, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
+        MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(25, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(50, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
+        //MecanumVelocityConstraint expoMode = new
 
         int intColorLevel = 0;
         int intConeStack1 = -90;
@@ -42,13 +43,27 @@ public class RoadRunnerRedLeft extends LinearOpMode {
                 })
                 .addTemporalMarker(2, () -> {
                     attachment.senseSleeve();
+
+                })
+
+                .addTemporalMarker(0.92, 0.1, () -> {
+                    attachment.moveV4BOut();
+                })
+
+                .addTemporalMarker(0.95, 1.5, () -> {
+                    attachment.moveGrabber();
+                })
+
+                .addTemporalMarker(0.99, 4, () -> {
+                    attachment.moveV4BIn();
                 })
 
                 .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
                 .setVelConstraint(slowMode)
-                .lineToLinearHeading(new Pose2d(-35, -9, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-35, -27, Math.toRadians(270)))
                 .setVelConstraint(normalMode)
-                .splineToLinearHeading(new Pose2d(-27, -19, Math.toRadians(315)), Math.toRadians(-20))
+                .splineToSplineHeading(new Pose2d(-35, -9, Math.toRadians(290)), 310)
+                .splineToLinearHeading(new Pose2d(-26, -19, Math.toRadians(315)), Math.toRadians(-20))
 
                 .build();
 
@@ -62,9 +77,22 @@ public class RoadRunnerRedLeft extends LinearOpMode {
 
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
 
-                .addTemporalMarker(0.5, () -> {
+                .addTemporalMarker(0.25, () -> {
                     attachment.moveSlidesM();
                 })
+
+                .addTemporalMarker(0.85, 0.1, () -> {
+                    attachment.moveV4BOut();
+                })
+
+                .addTemporalMarker(0.93, 2, () -> {
+                    attachment.moveGrabber();
+                })
+
+                .addTemporalMarker(0.99, 4, () -> {
+                    attachment.moveV4BIn();
+                })
+
                 .setReversed(false)
                 .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
                 .splineToLinearHeading(new Pose2d(-27, -21, Math.toRadians(325)), Math.toRadians(-20))
@@ -126,8 +154,6 @@ public class RoadRunnerRedLeft extends LinearOpMode {
         drive.followTrajectorySequence(traj1);
         drive.update();
 
-        attachment.moveJoeTest();
-
         intColorLevel = attachment.getintColorLevel();
 
 
@@ -163,9 +189,7 @@ public class RoadRunnerRedLeft extends LinearOpMode {
             attachment.movePickUpCone2();
 
             drive.followTrajectorySequence(traj3);
-            //drive.update();
-
-            attachment.moveJoeTest();
+            drive.update();
 
             intConeStack1 = intConeStack1 + 52;//52
             intCycleCounter++;

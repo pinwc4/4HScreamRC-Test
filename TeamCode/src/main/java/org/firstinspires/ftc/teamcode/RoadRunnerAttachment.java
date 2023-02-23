@@ -108,6 +108,9 @@ public class RoadRunnerAttachment extends Object {
 
 
     public void senseSleeve(){
+
+        lteDirectionV4B1.setPower(65);
+
         if(snsColor2.red() > (snsColor2.blue())){
             intColorLevel = 1;
         } else if(snsColor2.blue() > (snsColor2.green())){
@@ -116,6 +119,7 @@ public class RoadRunnerAttachment extends Object {
             intColorLevel = 2;
         }
 
+        lteDirectionV4B1.setPower(0);
 
     }
 
@@ -152,6 +156,24 @@ public class RoadRunnerAttachment extends Object {
         srvGrabber.setPosition(0);
         Thread.sleep(300);
         srvV4B.setPosition(CENTERANGLE);
+    }
+
+    public void moveV4BOut() {
+
+        srvV4B.setPosition(0.325);
+
+    }
+
+    public void moveGrabber() {
+
+        srvGrabber.setPosition(0);
+
+    }
+
+    public void moveV4BIn() {
+
+        srvV4B.setPosition(CENTERANGLE);
+
     }
 
     public void movePickUpPosition(){
