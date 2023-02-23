@@ -221,10 +221,11 @@ public class PowerAttachment extends Object {
                 intNumSameRecognitions3++;
             }
             else {
-                srvGrabber.setPosition(0);//0.85
+                srvGrabber.setPosition(0);
                 intNumSameRecognitions3 = 0;
-                bolT4Toggle = true;
                 bolT3Toggle = false;
+                bolT4Toggle = true;
+
             }
         }
 
@@ -304,7 +305,6 @@ public class PowerAttachment extends Object {
         }
 
         */
-
 
 
         if(bolT2Toggle){
@@ -428,6 +428,7 @@ public class PowerAttachment extends Object {
             if (bolSideToggle) {
                 dblV4BAngleHigh = CENTERANGLE - ANGLEMODIFIERHIGH;
                 dblV4BAngleLow = CENTERANGLE + ANGLEMODIFIERLOW;
+                dblV4BAngleLowest = CENTERANGLE + ANGLEMODIFIERLOWEST;
                 dblV4BAngleLowStack = CENTERANGLE + ANGLEMODIFIERLOWSTACK;
                 telTelemetry.addLine("NOT WIRE");
                 lteDirectionV4B1.setPower(65);
