@@ -31,6 +31,7 @@ public class HoloMechDrive {
     private static final double NORMAL_POWER = 0.25;
 
     private boolean bolXWasPressed = false;
+    private boolean bolX2WasPressed = false;
     private boolean bolBWasPressed = false;
     private boolean bolLBWasPressed = false;
 
@@ -38,6 +39,7 @@ public class HoloMechDrive {
     private boolean bolDirection = false;
     private boolean bolBackwardsToggle = false;
     private boolean bolSideToggle = false;
+    private boolean bolSTToggle = false;
     private boolean bolFalse = false;
 
 
@@ -80,7 +82,8 @@ public class HoloMechDrive {
         float fltXDirection = cmpMoveParameters.getXDirection() * fltXReverse;
         float fltYDirection = cmpMoveParameters.getYDirection();
         boolean bolXButton = cmpMoveParameters.getXButton();
-        boolean bolBButton = cmpMoveParameters.getBButton();
+        boolean bolXButton2 = cmpMoveParameters.getXButton2();
+        boolean bolRBButton = cmpMoveParameters.getRBButton();
         boolean bolLBButton = cmpMoveParameters.getLBButton();
 
         if (bolDirectionToggle) {
@@ -122,11 +125,18 @@ public class HoloMechDrive {
             bolXWasPressed = false;
         }
 
-        if (bolBButton && !bolBWasPressed) {
+        if (bolXButton2 && !bolX2WasPressed) {
+            bolX2WasPressed = true;
+            bolSTToggle = !bolSTToggle;
+        } else if (!bolXButton2) {
+            bolX2WasPressed = false;
+        }
+
+        if (bolRBButton && !bolBWasPressed && bolXButton2) {
             bolBWasPressed = true;
             bolBackwardsToggle = true;
             dblMotorInstance = dblMotorPosition;
-        } else if (!bolBButton) {
+        } else if (!bolRBButton) {
             bolBWasPressed = false;
         }
 

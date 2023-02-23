@@ -37,6 +37,7 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions = 0;
     private int intNumSameRecognitions2 = 0;
     private int intNumSameRecognitions3 = 0;
+    private int intNumSameRecognitions5 = 0;
 
     private static final double CENTERANGLE = 0.51;
     private static final double ANGLEMODIFIERLOW = 0.467;
@@ -92,6 +93,7 @@ public class PowerAttachment extends Object {
     private boolean bolT2Toggle = false;
     private boolean bolT3Toggle = false;
     private boolean bolT4Toggle = false;
+    private boolean bolT5Toggle = false;
     private boolean bolSTToggle = false;
     private boolean bolSHToggle = false;
     private boolean bolLFToggle = false;
@@ -193,9 +195,8 @@ public class PowerAttachment extends Object {
             if (bolCLToggle) {
 
                 if (bolSTToggle) {
-                    intSlidePosition = intConeStack1;
                     dblServoPosition = dblV4BAngleLowStack;
-                    bolSGRB1Toggle = true;
+                    bolT5Toggle = true;
                 } else {
                     intSlidePosition = -150;
                     dblServoPosition = dblV4BAngleLow;
@@ -216,8 +217,23 @@ public class PowerAttachment extends Object {
             bolRB1WasPressed = false;
         }
 
+
+        if(bolT5Toggle){
+            if(intNumSameRecognitions5 < 20){
+                intNumSameRecognitions5++;
+            }
+            else {
+
+                intNumSameRecognitions5 = 0;
+                bolT5Toggle = false;
+                intSlidePosition = intConeStack1;
+                bolSGRB1Toggle = true;
+            }
+        }
+
+
         if(bolT3Toggle){
-            if(intNumSameRecognitions3 < 25){
+            if(intNumSameRecognitions3 < 15){
                 intNumSameRecognitions3++;
             }
             else {
@@ -229,10 +245,8 @@ public class PowerAttachment extends Object {
             }
         }
 
-
-
         if(bolT4Toggle){
-            if(intNumSameRecognitions3 < 25){
+            if(intNumSameRecognitions3 < 15){
                 intNumSameRecognitions3++;
             }
             else {
@@ -263,8 +277,7 @@ public class PowerAttachment extends Object {
 
         }
 
-        if(dcmSlider.getCurrentPosition() > -4 && bolGRB3Toggle){
-
+        if(dcmSlider.getCurrentPosition() > -5 && bolGRB3Toggle){
 
                 intSlidePosition = -150;
                 bolGRB3Toggle = false;
@@ -272,10 +285,17 @@ public class PowerAttachment extends Object {
 
         }
 
-        if(dcmSlider.getCurrentPosition() < -120 && bolGRB4Toggle){
+        if(dcmSlider.getCurrentPosition() < -100 && bolGRB4Toggle){
+            if (digitalTouch.getState() == false) {
+                dblServoPosition = CENTERANGLE;
+                bolGRB4Toggle = false;
+            } else {
+                srvGrabber.setPosition(0);
+                bolCLToggle = false;
+                dblServoPosition = dblV4BAngleLow;
+                bolGRB4Toggle = false;
+            }
 
-            dblServoPosition = CENTERANGLE;
-            bolGRB4Toggle = false;
 
         }
 

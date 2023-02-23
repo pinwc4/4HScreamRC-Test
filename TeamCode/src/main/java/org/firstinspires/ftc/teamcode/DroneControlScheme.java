@@ -43,7 +43,8 @@ public class DroneControlScheme extends ChassisControlScheme {
             cmpMoveParameters.setYDirection(gmpGamepad1.right_stick_y);
             cmpMoveParameters.setCenterPivot(-gmpGamepad1.left_stick_x / 2);
             cmpMoveParameters.setXButton(gmpGamepad1.x);
-            cmpMoveParameters.setBButton(gmpGamepad1.b);
+            cmpMoveParameters.setXButton2(gmpGamepad2.x);
+            cmpMoveParameters.setRBButton(gmpGamepad1.right_bumper);
             cmpMoveParameters.setLBButton(gmpGamepad2.left_bumper);
         }
     }
