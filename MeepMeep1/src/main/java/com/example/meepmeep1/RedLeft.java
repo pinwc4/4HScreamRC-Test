@@ -19,13 +19,15 @@ public class RedLeft {
                                 //fast
                                 .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
                                 //slow
-                                .setReversed(true)
+                                //.setReversed(true)
                                 .lineToLinearHeading(new Pose2d(-35, -27, Math.toRadians(270)))
                                 //fast
-                                .splineToSplineHeading(new Pose2d(-35, -9, Math.toRadians(290)), 310)
-                                .splineToLinearHeading(new Pose2d(-27, -19, Math.toRadians(315)), Math.toRadians(-20))
+                                .splineToSplineHeading(new Pose2d(-35, -3, Math.toRadians(270)), 270)
+                                .splineToLinearHeading(new Pose2d(-37, -15, Math.toRadians(225)), Math.toRadians(-20))
+                                .lineToLinearHeading(new Pose2d(-26, -2, Math.toRadians(225)))
 
 
+                                /*
 
                                 .setReversed(true)
                                 .lineToLinearHeading(new Pose2d(-56, -11.75, Math.toRadians(360)))
@@ -50,6 +52,8 @@ public class RedLeft {
                                 .setReversed(true)
                                 .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(270)))
 
+
+                                 */
 
 
 

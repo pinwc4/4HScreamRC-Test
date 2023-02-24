@@ -3,15 +3,17 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Red Left")
+@Autonomous(name = "(H) Left Auto")
+@Disabled
 
-public class RoadRunnerRedLeft extends LinearOpMode {
+public class RoadRunnerLeftHigh extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException{
@@ -46,6 +48,7 @@ public class RoadRunnerRedLeft extends LinearOpMode {
 
                 })
 
+                /*
                 .addTemporalMarker(0.92, 0.1, () -> {
                     attachment.moveV4BOut();
                 })
@@ -58,12 +61,19 @@ public class RoadRunnerRedLeft extends LinearOpMode {
                     attachment.moveV4BIn();
                 })
 
+                 */
+
                 .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
                 .setVelConstraint(slowMode)
                 .lineToLinearHeading(new Pose2d(-35, -27, Math.toRadians(270)))
                 .setVelConstraint(normalMode)
                 .splineToSplineHeading(new Pose2d(-35, -9, Math.toRadians(290)), 310)
                 .splineToLinearHeading(new Pose2d(-26, -19, Math.toRadians(315)), Math.toRadians(-20))
+                .addTemporalMarker(() -> attachment.moveV4BOut())
+                .waitSeconds(0.25)
+                .addTemporalMarker(() -> attachment.moveGrabber())
+                .waitSeconds(0.25)
+                .addTemporalMarker(() -> attachment.moveV4BIn())
 
                 .build();
 
