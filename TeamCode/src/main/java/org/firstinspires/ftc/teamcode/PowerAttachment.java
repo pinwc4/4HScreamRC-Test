@@ -180,18 +180,11 @@ public class PowerAttachment extends Object {
 
 // GRABBER
 
-        if (digitalTouch.getState() == true) {
-            bolCLToggle = true;
-
-        }
-        else {
-            bolCLToggle = false;
-        }
-
 
 
         if (gmpGamepad1.right_bumper && !bolRB1WasPressed) {
             bolRB1WasPressed = true;
+            bolCLToggle = !bolCLToggle;
             if (bolCLToggle) {
 
                 if (bolSTToggle) {
@@ -312,19 +305,6 @@ public class PowerAttachment extends Object {
 
             bolT2Toggle = true;
         }
-        /*
-
-        }  this is hypothetical code that i want to test (Ben)
-
-        if (digitalTouch.getState() == false && !bolLMSIsDown) {
-        srvGrabber.setPosition(1);
-        bolLMSIsDown = true;
-        }
-        else if (digitalTouch.getState() == true && bolLMSIsDown){
-        bolLMSIsDown = false;
-        }
-
-        */
 
 
         if(bolT2Toggle){

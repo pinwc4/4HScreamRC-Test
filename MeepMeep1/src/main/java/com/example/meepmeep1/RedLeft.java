@@ -26,7 +26,7 @@ public class RedLeft {
                                 .splineToLinearHeading(new Pose2d(-27, -19, Math.toRadians(315)), Math.toRadians(-20))
 
 
-                                /*
+
                                 .setReversed(true)
                                 .lineToLinearHeading(new Pose2d(-56, -11.75, Math.toRadians(360)))
                                 .lineToLinearHeading(new Pose2d(-60.8, -11.75, Math.toRadians(360)))
@@ -50,7 +50,7 @@ public class RedLeft {
                                 .setReversed(true)
                                 .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(270)))
 
-                                 */
+
 
 
                                 .build());
