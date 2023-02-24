@@ -99,6 +99,7 @@ public class PowerAttachment extends Object {
     private boolean bolSHToggle = false;
     private boolean bolLFToggle = false;
     private boolean bolCHS = false;
+    //private boolean  bolDWNToggle = false;
 
     public PowerAttachment(Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry) {
 
@@ -199,12 +200,23 @@ public class PowerAttachment extends Object {
 
             } else {
                 if (bolSTToggle) {
-                    dblServoPosition = dblV4BAngleHigh;
-                    bolT3Toggle = true;
-                    intConeStack1 = intConeStack1 + 52;
+
+                        dblServoPosition = dblV4BAngleHigh;
+                        bolT3Toggle = true;
+                        intConeStack1 = intConeStack1 + 52;
+
                 } else {
-                    dblServoPosition = dblV4BAngleHigh;
-                    bolT3Toggle = true;
+                    if(dblServoPosition == dblV4BAngleLowest){
+                        dblServoPosition = dblV4BAngleLowest;
+                        srvGrabber.setPosition(0);
+                    } else{
+                        dblServoPosition = dblV4BAngleHigh;
+                        bolT3Toggle = true;
+                    }
+
+
+
+
                 }
             }
         } else if (!gmpGamepad1.right_bumper && bolRB1WasPressed) {
@@ -381,11 +393,13 @@ public class PowerAttachment extends Object {
             bolRB2WasPressed = true;
             bolRBToggle = !bolRBToggle;
             if (bolRBToggle) {
-                intSlidePosition = -150;
-                dblServoPosition = dblV4BAngleLow;
-            } else{
                 intSlidePosition = 0;
                 dblServoPosition = dblV4BAngleLowest;
+                //bolDWNToggle = true;
+            } else{
+                intSlidePosition = -150;
+                dblServoPosition = dblV4BAngleLow;
+                //bolDWNToggle = false;
             }
         } else if (!gmpGamepad2.right_bumper && bolRB2WasPressed) {
             bolRB2WasPressed = false;
@@ -535,7 +549,7 @@ public class PowerAttachment extends Object {
                     intNumSameRecognitions = 0;
                     telTelemetry.addLine("Two");
                     bolTToggle = false;
-                    bolRBToggle = false;
+                    //bolRBToggle = false;
 
             }
         }
@@ -578,7 +592,6 @@ public class PowerAttachment extends Object {
 
 
 
-        telTelemetry.addData("bolCHS", bolCHS);
         telTelemetry.addData("Slider", dcmSlider.getCurrentPosition());
         telTelemetry.addData("intSlider", intSlidePosition);
         telTelemetry.addData("Grabber", srvGrabber.getPosition());
