@@ -66,11 +66,11 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-35, -27, Math.toRadians(270)))
                 .setVelConstraint(normalMode)
                 .splineToSplineHeading(new Pose2d(-35, -9, Math.toRadians(290)), 310)
-                .splineToLinearHeading(new Pose2d(-26, -19, Math.toRadians(315)), Math.toRadians(-20))
+                .splineToLinearHeading(new Pose2d(-26, -20, Math.toRadians(315)), Math.toRadians(-20))
                 .addTemporalMarker(() -> attachment.moveV4BOut())
-                .waitSeconds(0.25)
+                .waitSeconds(0.075)
                 .addTemporalMarker(() -> attachment.moveGrabber())
-                .waitSeconds(0.25)
+                .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveV4BIn())
 
                 .build();
@@ -85,10 +85,12 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
 
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
 
+
                 .addTemporalMarker(0.25, () -> {
                     attachment.moveSlidesM();
                 })
 
+                /*
                 .addTemporalMarker(0.85, 0.1, () -> {
                     attachment.moveV4BOut();
                 })
@@ -101,9 +103,16 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
                     attachment.moveV4BIn();
                 })
 
+                 */
+
                 .setReversed(false)
                 .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
                 .splineToLinearHeading(new Pose2d(-27, -21, Math.toRadians(325)), Math.toRadians(-20))
+                .addTemporalMarker(() -> attachment.moveV4BOut())
+                .waitSeconds(0.075)
+                .addTemporalMarker(() -> attachment.moveGrabber())
+                .waitSeconds(0.15)
+                .addTemporalMarker(() -> attachment.moveV4BIn())
 
                 .build();
 
@@ -128,6 +137,10 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
 
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(traj3.end())
 
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
+
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(270)))
 
@@ -136,13 +149,21 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
 
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj3.end())
 
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
+
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-57, -12, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(-57, -11, Math.toRadians(360)))
 
 
                 .build();
 
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(traj3.end())
+
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
 
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(360)))
@@ -205,8 +226,6 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
         }
 
 
-        attachment.moveSlidesDown();
-
         attachment.moveWallSpacerIn();
 
         if(intColorLevel == 1){
@@ -219,6 +238,7 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
             drive.followTrajectorySequence(park3);
             drive.update();
         }
+
 
 
 

@@ -196,7 +196,7 @@ public class RoadRunnerAttachment extends Object {
         leftRear.setPower(-0.3);
         rightRear.setPower(-0.3);
 
-        Thread.sleep(500);
+        Thread.sleep(250);
 
         dblDistanceSensorLeft = ( (DistanceSensor) snsDistanceStackLeft).getDistance(DistanceUnit.CM);
         dblDistanceSensorRight = ( (DistanceSensor) snsDistanceStackRight).getDistance(DistanceUnit.CM);
