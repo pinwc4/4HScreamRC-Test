@@ -77,6 +77,7 @@ public class PowerAttachment extends Object {
     private boolean bolGRB2Toggle = false;
     private boolean bolGRB3Toggle = false;
     private boolean bolGRB4Toggle = false;
+    private boolean bolGRB5Toggle = false;
 
     private boolean bolSGRB1Toggle = false;
     private boolean bolSGRB2Toggle = false;
@@ -270,24 +271,28 @@ public class PowerAttachment extends Object {
 
         }
 
-        if(dcmSlider.getCurrentPosition() > -7 && bolGRB3Toggle){
+        if(dcmSlider.getCurrentPosition() > -5 && bolGRB3Toggle){
 
                 intSlidePosition = -150;
                 bolGRB3Toggle = false;
                 bolGRB4Toggle = true;
 
+
         }
 
-        if(dcmSlider.getCurrentPosition() < -100 && bolGRB4Toggle){
-            if (digitalTouch.getState() == false) {
+        if(dcmSlider.getCurrentPosition() < -85 && bolGRB4Toggle){ //-100
+
                 dblServoPosition = CENTERANGLE;
                 bolGRB4Toggle = false;
-            } else {
-                srvGrabber.setPosition(0);
-                bolCLToggle = false;
-                dblServoPosition = dblV4BAngleLow;
-                bolGRB4Toggle = false;
+
             }
+
+            if(dcmSlider.getCurrentPosition() < -85 && bolGRB5Toggle){ //-100
+
+                    srvGrabber.setPosition(0);
+                    bolCLToggle = false;
+                    dblServoPosition = dblV4BAngleLow;
+                    bolGRB5Toggle = false;
 
 
         }
