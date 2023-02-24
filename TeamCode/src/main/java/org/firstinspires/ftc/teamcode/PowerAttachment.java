@@ -39,7 +39,7 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions3 = 0;
     private int intNumSameRecognitions5 = 0;
 
-    private static final double CENTERANGLE = 0.51;
+    private static final double CENTERANGLE = 0.5;
     private static final double ANGLEMODIFIERLOW = 0.467;
     private static final double ANGLEMODIFIERHIGH = 0.175;
     private static final double ANGLEMODIFIERLOWEST = 0.451;
@@ -277,7 +277,7 @@ public class PowerAttachment extends Object {
 
         }
 
-        if(dcmSlider.getCurrentPosition() > -5 && bolGRB3Toggle){
+        if(dcmSlider.getCurrentPosition() > -7 && bolGRB3Toggle){
 
                 intSlidePosition = -150;
                 bolGRB3Toggle = false;
