@@ -99,6 +99,8 @@ public class PowerAttachment extends Object {
     private boolean bolSHToggle = false;
     private boolean bolLFToggle = false;
     private boolean bolCHS = false;
+    private boolean bolLS2WasPressed = false;
+    private int intZeroReference;
     //private boolean  bolDWNToggle = false;
 
     public PowerAttachment(Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry) {
@@ -588,10 +590,17 @@ public class PowerAttachment extends Object {
 
          */
 
+        if (digitalTouch.getState() == false && !bolLS2WasPressed) {
+            bolLS2WasPressed = true;
+            intZeroReference = intSlidePosition;
+        } else if (digitalTouch.getState() == true && bolLS2WasPressed) {
+            bolLS2WasPressed = false;
+        }
 
 
 
 
+        telTelemetry.addData("ZeroReference", intZeroReference);
         telTelemetry.addData("Slider", dcmSlider.getCurrentPosition());
         telTelemetry.addData("intSlider", intSlidePosition);
         telTelemetry.addData("Grabber", srvGrabber.getPosition());
