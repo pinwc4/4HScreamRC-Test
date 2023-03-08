@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -26,7 +27,7 @@ public class PowerAttachment extends Object {
     private Servo srvConeRighter;
     private Servo srvWallSpacer;
 
-    private DigitalChannel digitalTouch;
+    private TouchSensor digitalTouch;
     private ColorSensor snsDistanceStackLeft;
     private ColorSensor snsDistanceStackRight;
 
@@ -135,8 +136,7 @@ public class PowerAttachment extends Object {
         lteDirectionCHS = hmpHardwareMap.get(DcMotorEx.class, "lteCHS");
 
 
-        digitalTouch = hmpHardwareMap.get(DigitalChannel.class, "sensor_digital");
-        digitalTouch.setMode(DigitalChannel.Mode.INPUT);
+        digitalTouch = hmpHardwareMap.get(TouchSensor.class, "sensor_digital");
 
         snsDistanceStackLeft = hmpHardwareMap.get(ColorSensor.class, "DistanceLeft");
         snsDistanceStackRight = hmpHardwareMap.get(ColorSensor.class, "DistanceRight");
@@ -168,12 +168,10 @@ public class PowerAttachment extends Object {
         }
 */
 
-        if (digitalTouch.getState() == true) {
-            telTelemetry.addData("Digital Touch", "Is Not Pressed");
-            telTelemetry.addData("Digital Touch", digitalTouch.getState());
-        } else {
+        if (digitalTouch.isPressed()) {
             telTelemetry.addData("Digital Touch", "Is Pressed");
-            telTelemetry.addData("Digital Touch", digitalTouch.getState());
+        } else {
+            telTelemetry.addData("Digital Touch", "Is Not Pressed");
         }
 
         dblDistanceSensorLeft = ( (DistanceSensor) snsDistanceStackLeft).getDistance(DistanceUnit.CM);
@@ -590,12 +588,15 @@ public class PowerAttachment extends Object {
 
          */
 
-        if (digitalTouch.getState() == false && !bolLS2WasPressed) {
+
+        if (digitalTouch.isPressed() == true && !bolLS2WasPressed) {
             bolLS2WasPressed = true;
-            intZeroReference = intSlidePosition;
-        } else if (digitalTouch.getState() == true && bolLS2WasPressed) {
+            intZeroReference = dcmSlider.getCurrentPosition();
+        } else if (digitalTouch.isPressed() == false && bolLS2WasPressed) {
             bolLS2WasPressed = false;
         }
+
+
 
 
 
