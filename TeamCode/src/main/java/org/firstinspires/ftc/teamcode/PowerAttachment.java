@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static com.sun.tools.doclint.Entity.and;
+
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -28,6 +30,7 @@ public class PowerAttachment extends Object {
     private Servo srvWallSpacer;
 
     private TouchSensor digitalTouch;
+    private DigitalChannel digitalTouchGRB;
     private ColorSensor snsDistanceStackLeft;
     private ColorSensor snsDistanceStackRight;
 
@@ -85,6 +88,7 @@ public class PowerAttachment extends Object {
     private boolean bolSGRB3Toggle = false;
 
 
+    private boolean bolResetToggle = false;
     private boolean bolSideToggle = false;
     private boolean bolCLToggle = false;
     private boolean bolGMAToggle = false;
@@ -135,6 +139,8 @@ public class PowerAttachment extends Object {
         lteDirectionV4B2 = hmpHardwareMap.get(DcMotorEx.class, "lteV4B2");
         lteDirectionCHS = hmpHardwareMap.get(DcMotorEx.class, "lteCHS");
 
+        digitalTouchGRB = hmpHardwareMap.get(DigitalChannel.class, "sensor_digitalGRB");
+        digitalTouchGRB.setMode(DigitalChannel.Mode.INPUT);
 
         digitalTouch = hmpHardwareMap.get(TouchSensor.class, "sensor_digital");
 
@@ -154,6 +160,23 @@ public class PowerAttachment extends Object {
 
 
     public void moveAttachments() {
+
+        //RESET
+        if (gmpGamepad2.left_trigger > 0.75 & gmpGamepad2.right_trigger > 0.75){
+                dblServoPosition = CENTERANGLE;
+                bolRBToggle = false;
+                bolSTToggle = false;
+                intSlidePosition = 0;
+                bolResetToggle = true;
+        }
+
+        if (digitalTouch.isPressed() == true & bolResetToggle == true){
+            intSlidePosition = dcmSlider.getCurrentPosition();
+            dcmSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            intSlidePosition = -150;
+            dblServoPosition = dblV4BAngleLow;
+            bolResetToggle = false;
+        }
 
 
 // FLIPPER
