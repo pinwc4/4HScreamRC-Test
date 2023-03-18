@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static com.sun.tools.doclint.Entity.and;
+
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -8,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -26,7 +29,8 @@ public class PowerAttachment extends Object {
     private Servo srvConeRighter;
     private Servo srvWallSpacer;
 
-    private DigitalChannel digitalTouch;
+    private TouchSensor digitalTouch;
+    private DigitalChannel digitalTouchGRB;
     private ColorSensor snsDistanceStackLeft;
     private ColorSensor snsDistanceStackRight;
 
@@ -84,6 +88,7 @@ public class PowerAttachment extends Object {
     private boolean bolSGRB3Toggle = false;
 
 
+    private boolean bolResetToggle = false;
     private boolean bolSideToggle = false;
     private boolean bolCLToggle = false;
     private boolean bolGMAToggle = false;
@@ -99,6 +104,8 @@ public class PowerAttachment extends Object {
     private boolean bolSHToggle = false;
     private boolean bolLFToggle = false;
     private boolean bolCHS = false;
+    private boolean bolLS2WasPressed = false;
+    private int intZeroReference;
     //private boolean  bolDWNToggle = false;
 
     public PowerAttachment(Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry) {
@@ -132,9 +139,10 @@ public class PowerAttachment extends Object {
         lteDirectionV4B2 = hmpHardwareMap.get(DcMotorEx.class, "lteV4B2");
         lteDirectionCHS = hmpHardwareMap.get(DcMotorEx.class, "lteCHS");
 
+        digitalTouchGRB = hmpHardwareMap.get(DigitalChannel.class, "sensor_digitalGRB");
+        digitalTouchGRB.setMode(DigitalChannel.Mode.INPUT);
 
-        digitalTouch = hmpHardwareMap.get(DigitalChannel.class, "sensor_digital");
-        digitalTouch.setMode(DigitalChannel.Mode.INPUT);
+        digitalTouch = hmpHardwareMap.get(TouchSensor.class, "sensor_digital");
 
         snsDistanceStackLeft = hmpHardwareMap.get(ColorSensor.class, "DistanceLeft");
         snsDistanceStackRight = hmpHardwareMap.get(ColorSensor.class, "DistanceRight");
@@ -153,6 +161,23 @@ public class PowerAttachment extends Object {
 
     public void moveAttachments() {
 
+        //RESET
+        if (gmpGamepad2.left_trigger > 0.75 & gmpGamepad2.right_trigger > 0.75){
+                dblServoPosition = CENTERANGLE;
+                bolRBToggle = false;
+                bolSTToggle = false;
+                intSlidePosition = 0;
+                bolResetToggle = true;
+        }
+
+        if (digitalTouch.isPressed() == true & bolResetToggle == true){
+            intSlidePosition = dcmSlider.getCurrentPosition();
+            dcmSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            intSlidePosition = -150;
+            dblServoPosition = dblV4BAngleLow;
+            bolResetToggle = false;
+        }
+
 
 // FLIPPER
 
@@ -166,12 +191,10 @@ public class PowerAttachment extends Object {
         }
 */
 
-        if (digitalTouch.getState() == true) {
-            telTelemetry.addData("Digital Touch", "Is Not Pressed");
-            telTelemetry.addData("Digital Touch", digitalTouch.getState());
-        } else {
+        if (digitalTouch.isPressed()) {
             telTelemetry.addData("Digital Touch", "Is Pressed");
-            telTelemetry.addData("Digital Touch", digitalTouch.getState());
+        } else {
+            telTelemetry.addData("Digital Touch", "Is Not Pressed");
         }
 
         dblDistanceSensorLeft = ( (DistanceSensor) snsDistanceStackLeft).getDistance(DistanceUnit.CM);
@@ -589,9 +612,19 @@ public class PowerAttachment extends Object {
          */
 
 
+        if (digitalTouch.isPressed() == true && !bolLS2WasPressed) {
+            bolLS2WasPressed = true;
+            intZeroReference = dcmSlider.getCurrentPosition();
+        } else if (digitalTouch.isPressed() == false && bolLS2WasPressed) {
+            bolLS2WasPressed = false;
+        }
 
 
 
+
+
+
+        telTelemetry.addData("ZeroReference", intZeroReference);
         telTelemetry.addData("Slider", dcmSlider.getCurrentPosition());
         telTelemetry.addData("intSlider", intSlidePosition);
         telTelemetry.addData("Grabber", srvGrabber.getPosition());

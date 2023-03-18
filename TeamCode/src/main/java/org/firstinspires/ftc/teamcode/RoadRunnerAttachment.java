@@ -98,7 +98,7 @@ public class RoadRunnerAttachment extends Object {
         snsDistanceStackLeft = hmpHardwareMap.get(ColorSensor.class, "DistanceLeft");
         snsDistanceStackRight = hmpHardwareMap.get(ColorSensor.class, "DistanceRight");
 
-        digitalTouch = hmpHardwareMap.get(DigitalChannel.class, "sensor_digital");
+        digitalTouch = hmpHardwareMap.get(DigitalChannel.class, "sensor_digitalGRB");
         digitalTouch.setMode(DigitalChannel.Mode.INPUT);
 
         lteDirectionV4B1 = hmpHardwareMap.get(DcMotorEx.class, "lteV4B1");
