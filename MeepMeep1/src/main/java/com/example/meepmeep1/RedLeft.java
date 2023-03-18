@@ -16,15 +16,12 @@ public class RedLeft {
                         drive.trajectorySequenceBuilder(new Pose2d(-39, -63, 270))
 
 
-                                //fast
                                 .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
-                                //slow
-                                //.setReversed(true)
+
                                 .lineToLinearHeading(new Pose2d(-35, -27, Math.toRadians(270)))
-                                //fast
-                                .splineToSplineHeading(new Pose2d(-35, -3, Math.toRadians(270)), 270)
-                                .splineToLinearHeading(new Pose2d(-37, -15, Math.toRadians(225)), Math.toRadians(-20))
-                                .lineToLinearHeading(new Pose2d(-26, -2, Math.toRadians(225)))
+
+                                .splineToSplineHeading(new Pose2d(-35, -9, Math.toRadians(290)), Math.toRadians(90))
+                                .splineToLinearHeading(new Pose2d(-26, -20, Math.toRadians(315)), Math.toRadians(-20))
 
 
                                 /*

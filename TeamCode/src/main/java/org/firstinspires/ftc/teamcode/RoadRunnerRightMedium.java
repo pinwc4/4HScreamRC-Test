@@ -65,7 +65,7 @@ public class RoadRunnerRightMedium extends LinearOpMode {
                 .setVelConstraint(slowMode)
                 .lineToLinearHeading(new Pose2d(35, -27, Math.toRadians(270)))
                 .setVelConstraint(normalMode)
-                .splineToSplineHeading(new Pose2d(35, -9, Math.toRadians(250)), 230)
+                .splineToSplineHeading(new Pose2d(35, -9, Math.toRadians(250)), Math.toRadians(230))
                 .splineToLinearHeading(new Pose2d(28, -22, Math.toRadians(225)), Math.toRadians(20))
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.075)
@@ -154,7 +154,10 @@ public class RoadRunnerRightMedium extends LinearOpMode {
                 })
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(57, -12, Math.toRadians(180)))
+
+                .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)))
+                .setReversed(false)
+                .lineToLinearHeading(new Pose2d(12, -12, Math.toRadians(180)))
 
 
                 .build();
@@ -166,9 +169,8 @@ public class RoadRunnerRightMedium extends LinearOpMode {
                 })
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)))
-                .setReversed(false)
-                .lineToLinearHeading(new Pose2d(12, -12, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(57, -12, Math.toRadians(180)))
+
 
 
                 .build();
