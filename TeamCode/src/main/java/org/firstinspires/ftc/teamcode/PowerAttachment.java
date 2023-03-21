@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static com.sun.tools.doclint.Entity.and;
-
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -65,9 +63,10 @@ public class PowerAttachment extends Object {
     private int intConeStack1 = -115;
     private int intConeStack2 = -150;
 
+    private boolean bolY1WasPressed = false;
     private boolean bolAWasPressed = false;
     private boolean bolBWasPressed = false;
-    private boolean bolYWasPressed = false;
+    private boolean bolY2WasPressed = false;
     private boolean bolX2WasPressed = false;
     private boolean bolLBWasPressed = false;
     private boolean bolRB2WasPressed = false;
@@ -105,6 +104,7 @@ public class PowerAttachment extends Object {
     private boolean bolLFToggle = false;
     private boolean bolCHS = false;
     private boolean bolLS2WasPressed = false;
+    private boolean bolOutToggle = true;
     private int intZeroReference;
     //private boolean  bolDWNToggle = false;
 
@@ -166,6 +166,9 @@ public class PowerAttachment extends Object {
                 dblServoPosition = CENTERANGLE;
                 bolRBToggle = false;
                 bolSTToggle = false;
+                bolGMAToggle = false;
+                bolGMBToggle = false;
+                bolGMYToggle = false;
                 intSlidePosition = 0;
                 bolResetToggle = true;
         }
@@ -470,7 +473,7 @@ public class PowerAttachment extends Object {
             if (bolSideToggle) {
                 dblV4BAngleHigh = CENTERANGLE - ANGLEMODIFIERHIGH;
                 dblV4BAngleLow = CENTERANGLE + ANGLEMODIFIERLOW;
-                dblV4BAngleLowest = CENTERANGLE + ANGLEMODIFIERLOWEST;
+                dblV4BAngleLowest = CENTERANGLE - ANGLEMODIFIERLOWEST;
                 dblV4BAngleLowStack = CENTERANGLE + ANGLEMODIFIERLOWSTACK;
                 telTelemetry.addLine("NOT WIRE");
                 lteDirectionV4B1.setPower(65);
@@ -478,7 +481,7 @@ public class PowerAttachment extends Object {
             } else {
                 dblV4BAngleHigh = CENTERANGLE + ANGLEMODIFIERHIGH;
                 dblV4BAngleLow = CENTERANGLE - ANGLEMODIFIERLOW;
-                dblV4BAngleLowest = CENTERANGLE - ANGLEMODIFIERLOWEST;
+                dblV4BAngleLowest = CENTERANGLE + ANGLEMODIFIERLOWEST;
                 dblV4BAngleLowStack = CENTERANGLE - ANGLEMODIFIERLOWSTACK;
                 telTelemetry.addLine("WIRE");
                 lteDirectionV4B1.setPower(-65);
@@ -497,7 +500,11 @@ public class PowerAttachment extends Object {
             bolGMAToggle = !bolGMAToggle;
             if (bolGMAToggle) {
                 intSlidePosition = -100;
-                //srvV4B.setPosition(CENTERANGLE);
+                if (bolOutToggle){
+                    dblServoPosition = dblV4BAngleHigh;
+                }else{
+                    dblServoPosition = CENTERANGLE;
+                }
             }else {
                 bolTToggle = true;
 
@@ -521,7 +528,11 @@ public class PowerAttachment extends Object {
             bolGMBToggle = !bolGMBToggle;
             if (bolGMBToggle) {
                 intSlidePosition = -470;
-                //srvV4B.setPosition(CENTERANGLE);
+                if (bolOutToggle){
+                    dblServoPosition = dblV4BAngleHigh;
+                }else{
+                    dblServoPosition = CENTERANGLE;
+                }
             } else {
                 bolTToggle = true;
                 if(bolSTToggle){
@@ -535,14 +546,18 @@ public class PowerAttachment extends Object {
             bolBWasPressed = false;
         }
 
-        if (gmpGamepad2.y && !bolYWasPressed) {
-            bolYWasPressed = true;
+        if (gmpGamepad2.y && !bolY2WasPressed) {
+            bolY2WasPressed = true;
             bolGMAToggle = false;
             bolGMBToggle =false;
             bolGMYToggle = !bolGMYToggle;
             if (bolGMYToggle) {
                 intSlidePosition = -850;
-                //srvV4B.setPosition(CENTERANGLE);
+                if (bolOutToggle){
+                    dblServoPosition = dblV4BAngleHigh;
+                }else{
+                    dblServoPosition = CENTERANGLE;
+                }
             } else {
                 bolTToggle = true;
 
@@ -552,9 +567,20 @@ public class PowerAttachment extends Object {
                     dblServoPosition = dblV4BAngleLow;
                 }
             }
-        } else if (!gmpGamepad2.y && bolYWasPressed) {
-            bolYWasPressed = false;
+        } else if (!gmpGamepad2.y && bolY2WasPressed) {
+            bolY2WasPressed = false;
         }
+
+
+
+
+        if (gmpGamepad1.y && !bolY1WasPressed){
+            bolY1WasPressed = true;
+            bolOutToggle = !bolOutToggle;
+        }else if (!gmpGamepad1.y && bolY1WasPressed){
+            bolY1WasPressed = false;
+        }
+
 
 
         if(bolTToggle){
