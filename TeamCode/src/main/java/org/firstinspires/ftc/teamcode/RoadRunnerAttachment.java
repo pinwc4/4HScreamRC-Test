@@ -182,7 +182,7 @@ public class RoadRunnerAttachment extends Object {
         dcmSlider.setPower(0.85);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        srvV4B.setPosition(0.89);//0.87
+        srvV4B.setPosition(0.91);//0.87
 
 
     }
@@ -264,8 +264,15 @@ public class RoadRunnerAttachment extends Object {
         dcmSlider.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         dcmSlider.setPower(0.3);
         while(digitalTouch.getState() == true){
+            intNumSameRecognitions++;
             Thread.sleep(10);
+            if(intNumSameRecognitions == 150){
+                break;
+            }
         }
+
+        intNumSameRecognitions = 0;
+
         lteDirectionV4B1.setPower(65);
         dcmSlider.setPower(0);
 
