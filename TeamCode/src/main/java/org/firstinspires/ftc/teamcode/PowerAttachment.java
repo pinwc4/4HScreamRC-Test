@@ -233,7 +233,6 @@ public class PowerAttachment extends Object {
 
                 } else {
                     if(dblServoPosition == dblV4BAngleLowest){
-                        dblServoPosition = dblV4BAngleLowest;
                         srvGrabber.setPosition(0);
                     } else{
                         dblServoPosition = dblV4BAngleHigh;
