@@ -27,7 +27,7 @@ public class PowerAttachment extends Object {
     private Servo srvConeRighter;
     private Servo srvWallSpacer;
 
-    private TouchSensor digitalTouch;
+    private TouchSensor digitalTouchRS;
     private DigitalChannel digitalTouchGRB;
     private ColorSensor snsDistanceStackLeft;
     private ColorSensor snsDistanceStackRight;
@@ -142,7 +142,7 @@ public class PowerAttachment extends Object {
         digitalTouchGRB = hmpHardwareMap.get(DigitalChannel.class, "sensor_digitalGRB");
         digitalTouchGRB.setMode(DigitalChannel.Mode.INPUT);
 
-        digitalTouch = hmpHardwareMap.get(TouchSensor.class, "sensor_digital");
+        digitalTouchRS = hmpHardwareMap.get(TouchSensor.class, "sensor_digital");
 
         snsDistanceStackLeft = hmpHardwareMap.get(ColorSensor.class, "DistanceLeft");
         snsDistanceStackRight = hmpHardwareMap.get(ColorSensor.class, "DistanceRight");
@@ -173,7 +173,7 @@ public class PowerAttachment extends Object {
                 bolResetToggle = true;
         }
 
-        if (digitalTouch.isPressed() == true & bolResetToggle == true){
+        if (digitalTouchRS.isPressed() == true & bolResetToggle == true){
             intSlidePosition = dcmSlider.getCurrentPosition();
             dcmSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             intSlidePosition = -150;
@@ -194,7 +194,7 @@ public class PowerAttachment extends Object {
         }
 */
 
-        if (digitalTouch.isPressed()) {
+        if (digitalTouchRS.isPressed()) {
             telTelemetry.addData("Digital Touch", "Is Pressed");
         } else {
             telTelemetry.addData("Digital Touch", "Is Not Pressed");
@@ -207,8 +207,46 @@ public class PowerAttachment extends Object {
 
 
 // GRABBER
+        //CONCEPT LIMIT SWITCH GRABBING
+
+        /*
+
+        if (gmpGamepad1.right_bumber && !bolRB1WasPressed){1
+//          if (bolConeToggle = true){8
+          intSlidePosition = 0;.;lpo0000--
+          if (digitalTouchGRB.isPressed() == false or digitalTouchRS.isPressed() == true){7
+           intSlidePosition = dcmSlider.getCurrentPosition();
+           if (digitalTouchGRB.isPressed() == false){2
+           bolConeToggle = true;
+           srvGrabber.setPosition(1);
+           intSlidePosition = -150;
+           dblServoPosition = CENTERANGLE;
+             }2
+           if (digitalTouchGRB.isPressed() == true && digitalTouchRS.isPressed() == true){3
+             if (STTogle){4
+             intSlidePosition = -350;
+             dblServoPosition = dblV4BAngleLowStack;
+             }4
+             else {5
+             intSlidePosition = -150;
+             dblServoPositon = dblV4BAngleLow;
+             }5
+           }3
+        }7
+        }8
+        else {6
+        bolConeToggle = false;
+        srvGrabber.setPosition(0);
+        }6
+        }1 else if (!gmpGamepad1.right_bumper && bolRB1WasPressed) {
+            bolRB1WasPressed = false;
+        }
+
+         */
 
 
+
+        //GRAB WITHOUT LIMIT SWITCH
 
         if (gmpGamepad1.right_bumper && !bolRB1WasPressed) {
             bolRB1WasPressed = true;
@@ -498,7 +536,11 @@ public class PowerAttachment extends Object {
             bolGMYToggle = false;
             bolGMAToggle = !bolGMAToggle;
             if (bolGMAToggle) {
-                intSlidePosition = -100;
+                if (bolOutToggle) {
+                    intSlidePosition = -155;
+                }else {
+                    intSlidePosition = -100;
+                }
                 if (bolOutToggle){
                     dblServoPosition = dblV4BAngleHigh;
                 }else{
@@ -526,7 +568,11 @@ public class PowerAttachment extends Object {
             bolGMYToggle = false;
             bolGMBToggle = !bolGMBToggle;
             if (bolGMBToggle) {
-                intSlidePosition = -470;
+                if (bolOutToggle) {
+                    intSlidePosition = -540;
+                }else {
+                    intSlidePosition = -470;
+                }
                 if (bolOutToggle){
                     dblServoPosition = dblV4BAngleHigh;
                 }else{
@@ -551,7 +597,11 @@ public class PowerAttachment extends Object {
             bolGMBToggle =false;
             bolGMYToggle = !bolGMYToggle;
             if (bolGMYToggle) {
-                intSlidePosition = -850;
+                if (bolOutToggle) {
+                    intSlidePosition = -920;
+                }else {
+                    intSlidePosition = -850;
+                }
                 if (bolOutToggle){
                     dblServoPosition = dblV4BAngleHigh;
                 }else{
@@ -637,10 +687,10 @@ public class PowerAttachment extends Object {
          */
 
 
-        if (digitalTouch.isPressed() == true && !bolLS2WasPressed) {
+        if (digitalTouchRS.isPressed() == true && !bolLS2WasPressed) {
             bolLS2WasPressed = true;
             intZeroReference = dcmSlider.getCurrentPosition();
-        } else if (digitalTouch.isPressed() == false && bolLS2WasPressed) {
+        } else if (digitalTouchRS.isPressed() == false && bolLS2WasPressed) {
             bolLS2WasPressed = false;
         }
 
