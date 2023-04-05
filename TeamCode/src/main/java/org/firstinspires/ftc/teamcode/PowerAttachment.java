@@ -111,6 +111,7 @@ public class PowerAttachment extends Object {
     private boolean bolOutToggle = false;
     private boolean bolConeToggle = true;
     private boolean bolGrabToggle = false;
+    private boolean bolGrabbingToggle = false;
     private boolean bolDropToggle = false;
     private boolean bolDropingToggle = false;
     private int intZeroReference;
@@ -223,6 +224,7 @@ public class PowerAttachment extends Object {
         /*
         digitalTouchGRB.getState() == true; NOT ACTIVATED
         digitalTouchRS.isPressed() == false; NOT ACTIVATED
+        srvGrabber.setPosition(0); NOT ACTIVATED
          */
 
         if(gmpGamepad1.right_bumper & !bolRB1WasPressed) {
@@ -249,6 +251,10 @@ public class PowerAttachment extends Object {
 
         if (bolGrabToggle & digitalTouchGRB.getState() == false) {
             srvGrabber.setPosition(1);
+            bolGrabbingToggle = true;
+        }
+
+        if (bolGrabbingToggle) {
             if(intNumSameRecognitions6 < 15){
                 intNumSameRecognitions6++;
             }
@@ -278,8 +284,13 @@ public class PowerAttachment extends Object {
         }
 
         if (bolDropToggle) {
-            dblServoPosition = dblV4BAngleHigh;
-            bolDropingToggle = true;
+            if (dblServoPosition == dblV4BAngleLowest) {
+                srvGrabber.setPosition(0);
+                bolDropToggle = false;
+            } else {
+                dblServoPosition = dblV4BAngleHigh;
+                bolDropingToggle = true;
+            }
         }
 
         if (bolDropingToggle) {
@@ -289,8 +300,12 @@ public class PowerAttachment extends Object {
             else {
                 srvGrabber.setPosition(0);
                 bolDropToggle = false;
-                dblServoPosition = CENTERANGLE;
-                bolDropingToggle = false;
+                if (dblServoPosition == dblV4BAngleLowest) {
+                    bolDropingToggle = false;
+                } else {
+                    dblServoPosition = CENTERANGLE;
+                    bolDropingToggle = false;
+                }
             }
         }
 
