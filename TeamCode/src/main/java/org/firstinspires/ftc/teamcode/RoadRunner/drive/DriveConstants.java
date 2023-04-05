@@ -22,8 +22,8 @@ public class DriveConstants {
     /*
      * These are motor constants that should be listed online for your motors.
      */
-    public static final double TICKS_PER_REV = 537.6;
-    public static final double MAX_RPM = 312;
+    public static final double TICKS_PER_REV = 383.6;//537.6;
+    public static final double MAX_RPM = 435;//312;
 
     /*
      * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
@@ -64,9 +64,9 @@ public class DriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 0.017;//0.0165;
-    public static double kA = 0.0027;//0.0025;
-    public static double kStatic =0.06597;// 0.05654;
+    public static double kV = 0.013;//0.014;//0.017;//0.0165;
+    public static double kA = 0.0035;//0.003;//0.0027;//0.0025;
+    public static double kStatic = 0.005;//0.06720;//0.06597;// 0.05654;
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -96,10 +96,10 @@ public class DriveConstants {
      * You are free to raise this on your own if you would like. It is best determined through experimentation.
      
      */
-    public static double MAX_VEL = 52.48291908330528;//45 //52.48291908330528
-    public static double MAX_ACCEL = 52.48291908330528;//45 //52.48291908330528
-    public static double MAX_ANG_VEL = Math.toRadians(197.0342257);//(203.4541);
-    public static double MAX_ANG_ACCEL = Math.toRadians(197.0342257);//(203.4541);
+    public static double MAX_VEL = 73.1730064499293;//52.48291908330528;//45 //52.48291908330528
+    public static double MAX_ACCEL = 73.1730064499293;//52.48291908330528;//45 //52.48291908330528
+    public static double MAX_ANG_VEL = Math.toRadians(328.82519999999994);//(197.0342257);//(203.4541);
+    public static double MAX_ANG_ACCEL = Math.toRadians(328.82519999999994);//(197.0342257);//(203.4541);
 
 
     public static double encoderTicksToInches(double ticks) {
