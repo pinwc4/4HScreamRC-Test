@@ -41,14 +41,15 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions3 = 0;
     private int intNumSameRecognitions5 = 0;
     private int intNumSameRecognitions6 = 0;
+    private int intNumSameRecognitions7 = 0;
 
     private static final double CENTERANGLE = 0.5;
-    private static final double ANGLEMODIFIERLOW = 0.467;
+    private static final double ANGLEMODIFIERLOW = 0.465;
     private static final double ANGLEMODIFIERHIGH = 0.175;
     private static final double ANGLEMODIFIERLOWEST = 0.451;
     private static final double ANGLEMODIFIERLOWSTACK = 0.37;
     private double dblV4BAngleHigh = 0.675; //0.3755
-    private double dblV4BAngleLow = 0.043;
+    private double dblV4BAngleLow = 0.035;
     private double dblV4BAngleLowStack = 0.13;
     private double dblV4BAngleLowest = 0.951;//0.9365
 
@@ -76,6 +77,7 @@ public class PowerAttachment extends Object {
     private boolean bolLB1WasPressed = false;
     private boolean bolDPadDownWasPressed = false;
     private boolean bolDPadUpWasPressed = false;
+    private boolean bolRSWasPressed = false;
 
     private boolean bolGRB1Toggle = false;
     private boolean bolGRB2Toggle = false;
@@ -109,7 +111,8 @@ public class PowerAttachment extends Object {
     private boolean bolOutToggle = false;
     private boolean bolConeToggle = true;
     private boolean bolGrabToggle = false;
-    private boolean bolGoodToggle = false;
+    private boolean bolDropToggle = false;
+    private boolean bolDropingToggle = false;
     private int intZeroReference;
     //private boolean  bolDWNToggle = false;
 
@@ -217,7 +220,86 @@ public class PowerAttachment extends Object {
 // GRABBER
         //CONCEPT LIMIT SWITCH GRABBING
 
+        /*
+        digitalTouchGRB.getState() == true; NOT ACTIVATED
+        digitalTouchRS.isPressed() == false; NOT ACTIVATED
+         */
 
+        if(gmpGamepad1.right_bumper & !bolRB1WasPressed) {
+            bolRB1WasPressed = true;
+            if (digitalTouchGRB.getState() == true) {
+                bolGrabToggle = true;
+                bolDropToggle = false;
+            } else {
+                bolDropToggle = true;
+                bolGrabToggle = false;
+            }
+        } else if (!gmpGamepad1.right_bumper & bolRB1WasPressed) {
+            bolRB1WasPressed = false;
+        }
+
+        if (bolGrabToggle) {
+            if (bolSTToggle) {
+                dblServoPosition = dblV4BAngleLowStack;
+            } else {
+                dblServoPosition = dblV4BAngleLow;
+            }
+            intSlidePosition = 0;
+        }
+
+        if (bolGrabToggle & digitalTouchGRB.getState() == false) {
+            srvGrabber.setPosition(1);
+            if(intNumSameRecognitions6 < 15){
+                intNumSameRecognitions6++;
+            }
+            else {
+                if (bolSTToggle) {
+                    intSlidePosition = -350;
+                } else {
+                    intSlidePosition = -150;
+                }
+                dblServoPosition = CENTERANGLE;
+                bolGrabToggle = false;
+            }
+        }
+
+        if (digitalTouchGRB.getState() == true & digitalTouchRS.isPressed() == false & !bolRSWasPressed & bolGrabToggle) {
+            bolRSWasPressed = true;
+            if (bolSTToggle) {
+                intSlidePosition = -350;
+                dblServoPosition = dblV4BAngleLowStack;
+            } else {
+                intSlidePosition = -150;
+                dblServoPosition = dblV4BAngleLow;
+            }
+            bolGrabToggle = false;
+        } else if (digitalTouchRS.isPressed() == true & bolRSWasPressed) {
+            bolRSWasPressed = false;
+        }
+
+        if (bolDropToggle) {
+            dblServoPosition = dblV4BAngleHigh;
+            bolDropingToggle = true;
+        }
+
+        if (bolDropingToggle) {
+            if(intNumSameRecognitions7 < 15){
+                intNumSameRecognitions7++;
+            }
+            else {
+                srvGrabber.setPosition(0);
+                bolDropToggle = false;
+                dblServoPosition = CENTERANGLE;
+                bolDropingToggle = false;
+            }
+        }
+
+        if (digitalTouchGRB.getState() == true) {
+            srvGrabber.setPosition(0);
+        }
+
+
+/*
         if (gmpGamepad1.right_bumper && !bolRB1WasPressed) {
 
             bolRB1WasPressed = true;
@@ -292,7 +374,7 @@ public class PowerAttachment extends Object {
 
 
         //GRAB WITHOUT LIMIT SWITCH
-/*
+
         if (gmpGamepad1.right_bumper && !bolRB1WasPressed) {
             bolRB1WasPressed = true;
             bolCLToggle = !bolCLToggle;
