@@ -42,14 +42,16 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions5 = 0;
     private int intNumSameRecognitions6 = 0;
     private int intNumSameRecognitions7 = 0;
+    private int intNumSameRecognitions8 = 0;
+    private int intNumSameRecognitions9 = 0;
 
     private static final double CENTERANGLE = 0.5;
-    private static final double ANGLEMODIFIERLOW = 0.465;
+    private static final double ANGLEMODIFIERLOW = 1;//;
     private static final double ANGLEMODIFIERHIGH = 0.175;
     private static final double ANGLEMODIFIERLOWEST = 0.451;
     private static final double ANGLEMODIFIERLOWSTACK = 0.37;
     private double dblV4BAngleHigh = 0.675; //0.3755
-    private double dblV4BAngleLow = 0.035;
+    private double dblV4BAngleLow = 0;//0.035;
     private double dblV4BAngleLowStack = 0.13;
     private double dblV4BAngleLowest = 0.951;//0.9365
 
@@ -114,6 +116,7 @@ public class PowerAttachment extends Object {
     private boolean bolGrabbingToggle = false;
     private boolean bolDropToggle = false;
     private boolean bolDropingToggle = false;
+    private boolean bolDropingToggle2 = false;
     private int intZeroReference;
     //private boolean  bolDWNToggle = false;
 
@@ -227,7 +230,7 @@ public class PowerAttachment extends Object {
         srvGrabber.setPosition(0); NOT ACTIVATED
          */
 
-        if(gmpGamepad1.right_bumper & !bolRB1WasPressed) {
+        if(gmpGamepad1.right_bumper && !bolRB1WasPressed) {
             bolRB1WasPressed = true;
             if (digitalTouchGRB.getState() == true) {
                 bolGrabToggle = true;
@@ -236,7 +239,7 @@ public class PowerAttachment extends Object {
                 bolDropToggle = true;
                 bolGrabToggle = false;
             }
-        } else if (!gmpGamepad1.right_bumper & bolRB1WasPressed) {
+        } else if (!gmpGamepad1.right_bumper && bolRB1WasPressed) {
             bolRB1WasPressed = false;
         }
 
@@ -249,9 +252,15 @@ public class PowerAttachment extends Object {
             intSlidePosition = 0;
         }
 
-        if (bolGrabToggle & digitalTouchGRB.getState() == false) {
-            srvGrabber.setPosition(1);
-            bolGrabbingToggle = true;
+        if (bolGrabToggle && digitalTouchGRB.getState() == false) {
+            if(intNumSameRecognitions9 < 15){
+                intNumSameRecognitions9++;
+            }
+            else {
+                intNumSameRecognitions9 = 0;
+                srvGrabber.setPosition(1);
+                bolGrabbingToggle = true;
+            }
         }
 
         if (bolGrabbingToggle) {
@@ -259,6 +268,7 @@ public class PowerAttachment extends Object {
                 intNumSameRecognitions6++;
             }
             else {
+                intNumSameRecognitions6 = 0;
                 if (bolSTToggle) {
                     intSlidePosition = -350;
                 } else {
@@ -266,10 +276,11 @@ public class PowerAttachment extends Object {
                 }
                 dblServoPosition = CENTERANGLE;
                 bolGrabToggle = false;
+                bolGrabbingToggle = false;
             }
         }
 
-        if (digitalTouchGRB.getState() == true & digitalTouchRS.isPressed() == false & !bolRSWasPressed & bolGrabToggle) {
+        if (digitalTouchGRB.getState() == true & digitalTouchRS.isPressed() == false && !bolRSWasPressed && bolGrabToggle) {
             bolRSWasPressed = true;
             if (bolSTToggle) {
                 intSlidePosition = -350;
@@ -294,18 +305,29 @@ public class PowerAttachment extends Object {
         }
 
         if (bolDropingToggle) {
-            if(intNumSameRecognitions7 < 15){
+            if(intNumSameRecognitions7 < 10){
                 intNumSameRecognitions7++;
             }
             else {
+                intNumSameRecognitions7 = 0;
                 srvGrabber.setPosition(0);
                 bolDropToggle = false;
                 if (dblServoPosition == dblV4BAngleLowest) {
                     bolDropingToggle = false;
                 } else {
-                    dblServoPosition = CENTERANGLE;
+                    bolDropingToggle2 = true;
                     bolDropingToggle = false;
                 }
+            }
+        }
+        if (bolDropingToggle2) {
+            if(intNumSameRecognitions8 < 6){
+                intNumSameRecognitions8++;
+            }
+            else {
+                intNumSameRecognitions8 = 0;
+                dblServoPosition = CENTERANGLE;
+                bolDropingToggle2 = false;
             }
         }
 
