@@ -49,10 +49,10 @@ public class PowerAttachment extends Object {
     private static final double ANGLEMODIFIERLOW = 1;//;
     private static final double ANGLEMODIFIERHIGH = 0.175;
     private static final double ANGLEMODIFIERLOWEST = 0.451;
-    private static final double ANGLEMODIFIERLOWSTACK = 0.37;
+    private static final double ANGLEMODIFIERLOWSTACK = 0.4;
     private double dblV4BAngleHigh = 0.675; //0.3755
     private double dblV4BAngleLow = 0;//0.035;
-    private double dblV4BAngleLowStack = 0.13;
+    private double dblV4BAngleLowStack = 0.1;
     private double dblV4BAngleLowest = 0.951;//0.9365
 
     private double dblDistanceSensorLeft;
@@ -118,6 +118,8 @@ public class PowerAttachment extends Object {
     private boolean bolDropingToggle = false;
     private boolean bolDropingToggle2 = false;
     private int intZeroReference;
+
+    private String strStateTest = "init";
     //private boolean  bolDWNToggle = false;
 
     public PowerAttachment(Gamepad gmpGamepad1, Gamepad gmpGamepad2, HardwareMap hmpHardwareMap, Telemetry telTelemetry) {
@@ -232,12 +234,15 @@ public class PowerAttachment extends Object {
 
         if(gmpGamepad1.right_bumper && !bolRB1WasPressed) {
             bolRB1WasPressed = true;
+            strStateTest = "pressed";
             if (digitalTouchGRB.getState() == true) {
                 bolGrabToggle = true;
                 bolDropToggle = false;
+                strStateTest = "grab toggle";
             } else {
                 bolDropToggle = true;
                 bolGrabToggle = false;
+                strStateTest = "drop toggle";
             }
         } else if (!gmpGamepad1.right_bumper && bolRB1WasPressed) {
             bolRB1WasPressed = false;
@@ -249,11 +254,11 @@ public class PowerAttachment extends Object {
             } else {
                 dblServoPosition = dblV4BAngleLow;
             }
-            intSlidePosition = 0;
+            intSlidePosition = 6;
         }
 
         if (bolGrabToggle && digitalTouchGRB.getState() == false) {
-            if(intNumSameRecognitions9 < 15){
+            if(intNumSameRecognitions9 < 8){
                 intNumSameRecognitions9++;
             }
             else {
@@ -264,7 +269,7 @@ public class PowerAttachment extends Object {
         }
 
         if (bolGrabbingToggle) {
-            if(intNumSameRecognitions6 < 15){
+            if(intNumSameRecognitions6 < 5){
                 intNumSameRecognitions6++;
             }
             else {
@@ -280,7 +285,7 @@ public class PowerAttachment extends Object {
             }
         }
 
-        if (digitalTouchGRB.getState() == true & digitalTouchRS.isPressed() == false && !bolRSWasPressed && bolGrabToggle) {
+        if (digitalTouchGRB.getState() == true && digitalTouchRS.isPressed() == true && !bolRSWasPressed && bolGrabToggle) {
             bolRSWasPressed = true;
             if (bolSTToggle) {
                 intSlidePosition = -350;
@@ -290,7 +295,7 @@ public class PowerAttachment extends Object {
                 dblServoPosition = dblV4BAngleLow;
             }
             bolGrabToggle = false;
-        } else if (digitalTouchRS.isPressed() == true & bolRSWasPressed) {
+        } else if (digitalTouchRS.isPressed() == true && bolRSWasPressed) {
             bolRSWasPressed = false;
         }
 
@@ -734,7 +739,7 @@ public class PowerAttachment extends Object {
                 if (bolOutToggle) {
                     intSlidePosition = -540;
                 }else {
-                    intSlidePosition = -470;
+                    intSlidePosition = -475;
                 }
                 if (bolOutToggle){
                     dblServoPosition = dblV4BAngleHigh;
@@ -796,7 +801,7 @@ public class PowerAttachment extends Object {
 
 
         if(bolTToggle){
-            if(intNumSameRecognitions < 15){
+            if(intNumSameRecognitions < 5){
                 intNumSameRecognitions++;
                 telTelemetry.addLine("One");
             }
@@ -866,6 +871,7 @@ public class PowerAttachment extends Object {
         telTelemetry.addData("Slider", dcmSlider.getCurrentPosition());
         //telTelemetry.addData("intSlider", intSlidePosition);
         telTelemetry.addData("Grabber", srvGrabber.getPosition());
+        telTelemetry.addData("State", strStateTest);
         //telTelemetry.addData("V4B", srvV4B.getPosition());
         //telTelemetry.addData("Left", dblDistanceSensorLeft);
         //telTelemetry.addData("Right", dblDistanceSensorRight);
