@@ -66,9 +66,9 @@ public class RoadRunnerRightMedium extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(35, -27, Math.toRadians(270)))
                 .setVelConstraint(normalMode)
                 .splineToSplineHeading(new Pose2d(35, -9, Math.toRadians(250)), Math.toRadians(218))
-                .splineToLinearHeading(new Pose2d(25.5, -22, Math.toRadians(225)), Math.toRadians(200))
+                .splineToLinearHeading(new Pose2d(25, -21, Math.toRadians(225)), Math.toRadians(200))
                 .addTemporalMarker(() -> attachment.moveV4BOut())
-                .waitSeconds(0.075)
+                .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveGrabber())
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveV4BIn())
@@ -106,8 +106,8 @@ public class RoadRunnerRightMedium extends LinearOpMode {
                  */
 
                 .setReversed(false)
-                .lineToLinearHeading(new Pose2d(56, -11.75, Math.toRadians(180)))
-                .splineToLinearHeading(new Pose2d(25.5 , -23, Math.toRadians(225)), Math.toRadians(200))
+                //.lineToLinearHeading(new Pose2d(56, -11.75, Math.toRadians(180)))
+                .splineToSplineHeading(new Pose2d(24.5 , -22, Math.toRadians(225)), Math.toRadians(200))
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.075)
                 .addTemporalMarker(() -> attachment.moveGrabber())
