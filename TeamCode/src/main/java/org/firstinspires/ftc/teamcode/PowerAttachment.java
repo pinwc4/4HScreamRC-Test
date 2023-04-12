@@ -234,11 +234,11 @@ public class PowerAttachment extends Object {
         srvGrabber.setPosition(0); NOT ACTIVATED
          */
 
-        if (digitalTouchGRB.getState() == false & !bolLSGRBWasPressed) {
+        if (digitalTouchGRB.getState() == false && !bolLSGRBWasPressed) {
             bolLSGRBWasPressed = true;
             lteDirectionV4B1.setPower(0);
             lteDirectionV4B2.setPower(0);
-        } else if (digitalTouchGRB.getState() == true & bolLSGRBWasPressed) {
+        } else if (digitalTouchGRB.getState() == true && bolLSGRBWasPressed) {
             bolLSGRBWasPressed = false;
         }
 
@@ -626,6 +626,13 @@ public class PowerAttachment extends Object {
             bolLBWasPressed = false;
         }
 
+        if (bolSideToggle) {
+            lteDirectionV4B1.setPower(65);
+            lteDirectionV4B2.setPower(65);
+        } else {
+            lteDirectionV4B1.setPower(-65);
+            lteDirectionV4B2.setPower(-65);
+        }
 
 // ARM PRESETS
         if (gmpGamepad2.a && !bolAWasPressed) {
