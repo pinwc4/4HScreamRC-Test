@@ -26,6 +26,9 @@ public class PowerAttachment extends Object {
     private Servo srvV4B;
     private Servo srvConeRighter;
     private Servo srvWallSpacer;
+    private Servo srvOdometryPod1;
+    private Servo srvOdometryPod2;
+    private Servo srvOdometryPod3;
 
     private TouchSensor digitalTouchRS;
     private DigitalChannel digitalTouchGRB;
@@ -44,6 +47,8 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions7 = 0;
     private int intNumSameRecognitions8 = 0;
     private int intNumSameRecognitions9 = 0;
+    private int intNumSameRecognitions10 = 0;
+
 
     private static final double CENTERANGLE = 0.5;
     private static final double ANGLEMODIFIERLOW = 1;//;
@@ -81,6 +86,7 @@ public class PowerAttachment extends Object {
     private boolean bolDPadUpWasPressed = false;
     private boolean bolRSWasPressed = false;
     private boolean bolLSGRBWasPressed = false;
+    private boolean bolA1WasPressed = false;
 
     private boolean bolGRB1Toggle = false;
     private boolean bolGRB2Toggle = false;
@@ -119,6 +125,7 @@ public class PowerAttachment extends Object {
     private boolean bolDropingToggle = false;
     private boolean bolDropingToggle2 = false;
     private boolean bolLSGrabbingToggle = true;
+    private boolean bolA1Toggle = true;
     private int intZeroReference;
 
     private String strStateTest = "init";
@@ -150,6 +157,9 @@ public class PowerAttachment extends Object {
         srvGrabber = hmpHardwareMap.servo.get("Grabber");
         srvGrabber.setPosition(0);
 
+        srvOdometryPod1 = hmpHardwareMap.servo.get("OdometryPod1");
+        srvOdometryPod2 = hmpHardwareMap.servo.get("OdometryPod2");
+        srvOdometryPod3 = hmpHardwareMap.servo.get("OdometryPod3");
 
         lteDirectionV4B1 = hmpHardwareMap.get(DcMotorEx.class, "lteV4B1");
         lteDirectionV4B2 = hmpHardwareMap.get(DcMotorEx.class, "lteV4B2");
@@ -234,13 +244,25 @@ public class PowerAttachment extends Object {
         srvGrabber.setPosition(0); NOT ACTIVATED
          */
 
-        if (digitalTouchGRB.getState() == false && !bolLSGRBWasPressed) {
-            bolLSGRBWasPressed = true;
-            lteDirectionV4B1.setPower(0);
-            lteDirectionV4B2.setPower(0);
-        } else if (digitalTouchGRB.getState() == true && bolLSGRBWasPressed) {
-            bolLSGRBWasPressed = false;
+
+
+        if (digitalTouchGRB.getState() == false) {
+            if (intNumSameRecognitions10 < 10) {
+                intNumSameRecognitions10++;
+                lteDirectionV4B1.setPower(0);
+                lteDirectionV4B2.setPower(0);
+            } else {
+                if (bolSideToggle) {
+                    lteDirectionV4B1.setPower(65);
+                    lteDirectionV4B2.setPower(65);
+                } else {
+                    lteDirectionV4B1.setPower(-65);
+                    lteDirectionV4B2.setPower(-65);
+                }
+            }
         }
+
+
 
         if (bolLSGrabbingToggle) {
 
@@ -346,6 +368,7 @@ public class PowerAttachment extends Object {
 
             if (digitalTouchGRB.getState() == true) {
                 srvGrabber.setPosition(0);
+                intNumSameRecognitions10 = 0;
             }
         }
 
@@ -626,13 +649,7 @@ public class PowerAttachment extends Object {
             bolLBWasPressed = false;
         }
 
-        if (bolSideToggle) {
-            lteDirectionV4B1.setPower(65);
-            lteDirectionV4B2.setPower(65);
-        } else {
-            lteDirectionV4B1.setPower(-65);
-            lteDirectionV4B2.setPower(-65);
-        }
+
 
 // ARM PRESETS
         if (gmpGamepad2.a && !bolAWasPressed) {
@@ -775,7 +792,26 @@ public class PowerAttachment extends Object {
 
             }
         }
+//ODOMETRY SERVO OPPERATION
 
+        if (gmpGamepad1.a && !bolA1WasPressed) {
+            bolA1WasPressed = true;
+            bolA1Toggle = !bolA1Toggle;
+            if (bolA1Toggle) {
+                srvOdometryPod1.setPosition(0);
+                srvOdometryPod2.setPosition(0);
+                srvOdometryPod3.setPosition(0);
+            } else {
+                srvOdometryPod1.setPosition(1);
+                srvOdometryPod2.setPosition(1);
+                srvOdometryPod3.setPosition(1);
+            }
+        } else if (!gmpGamepad1.a && bolA1WasPressed) {
+            bolA1WasPressed = false;
+            srvOdometryPod1.setPosition(0.5);
+            srvOdometryPod2.setPosition(0.5);
+            srvOdometryPod3.setPosition(0.5);
+        }
 
 
 
