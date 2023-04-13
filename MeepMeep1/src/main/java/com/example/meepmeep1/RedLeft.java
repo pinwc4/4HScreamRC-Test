@@ -16,41 +16,58 @@ public class RedLeft {
                         drive.trajectorySequenceBuilder(new Pose2d(39, -63, 270))
 
 
+                                //traj 1
+
                                 .splineToLinearHeading(new Pose2d(35, -60, Math.toRadians(270)), Math.toRadians(0))
 
+                                //.setVelConstraint(slowMode)
                                 .lineToLinearHeading(new Pose2d(35, -27, Math.toRadians(270)))
 
+                                //.setVelConstraint(normalMode)
                                 .splineToSplineHeading(new Pose2d(35, -9, Math.toRadians(250)), Math.toRadians(218))
-                                .splineToLinearHeading(new Pose2d(28, -19, Math.toRadians(225)), Math.toRadians(230))
+                                .splineToSplineHeading(new Pose2d(25, -21, Math.toRadians(235)), Math.toRadians(235))
 
+
+
+                                //traj 2
 
                                 .setReversed(true)
+                                //.splineToSplineHeading(new Pose2d(56, -12, Math.toRadians(180)), Math.toRadians(0))
+                                .splineToSplineHeading(new Pose2d(60.8, -12, Math.toRadians(180)), Math.toRadians(0))
 
-                                .lineToLinearHeading(new Pose2d(56, -11.75, Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(60.8, -11.75, Math.toRadians(180)))
+
+                                //traj 3
 
                                 .setReversed(false)
-                                .lineToLinearHeading(new Pose2d(56, -11, Math.toRadians(180)))
-                                .splineToLinearHeading(new Pose2d(27, -21, Math.toRadians(145)), Math.toRadians(-20))
-                                /*
+                                .splineToLinearHeading(new Pose2d(44, -14.5, Math.toRadians(180)), Math.toRadians(180))
+                                .splineToSplineHeading(new Pose2d(25.5, -24, Math.toRadians(225)), Math.toRadians(225))
 
 
-
-                                .setReversed(true)
-                                .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
-                                .lineToLinearHeading(new Pose2d(-60.8, -11.3, Math.toRadians(360)))
-
+                                //traj 4
 
                                 .setReversed(true)
-                                .lineToLinearHeading(new Pose2d(-56, -11, Math.toRadians(360)))
-                                .lineToLinearHeading(new Pose2d(-60.8, -10.9, Math.toRadians(360)))
+                                .splineToSplineHeading(new Pose2d(46, -13, Math.toRadians(180)), Math.toRadians(0))
+                                .splineToSplineHeading(new Pose2d(60.8, -13, Math.toRadians(180)), Math.toRadians(0))
 
+                                //traj 3
+
+                                .setReversed(false)
+                                .splineToLinearHeading(new Pose2d(44, -14.5, Math.toRadians(180)), Math.toRadians(180))
+                                .splineToSplineHeading(new Pose2d(25.5, -24, Math.toRadians(225)), Math.toRadians(225))
+
+
+                                //traj 5
 
                                 .setReversed(true)
-                                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(270)))
+                                .splineToSplineHeading(new Pose2d(56, -13.5, Math.toRadians(180)), Math.toRadians(0))
+                                .splineToSplineHeading(new Pose2d(60.8, -13.5, Math.toRadians(180)), Math.toRadians(0))
 
 
-                                 */
+                                //traj 3
+
+                                .setReversed(false)
+                                .splineToLinearHeading(new Pose2d(44, -14.5, Math.toRadians(180)), Math.toRadians(180))
+                                .splineToSplineHeading(new Pose2d(25.5, -24, Math.toRadians(225)), Math.toRadians(225))
 
 
 
