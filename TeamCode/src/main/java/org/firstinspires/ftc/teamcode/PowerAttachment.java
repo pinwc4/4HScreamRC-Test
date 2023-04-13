@@ -47,6 +47,8 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions7 = 0;
     private int intNumSameRecognitions8 = 0;
     private int intNumSameRecognitions9 = 0;
+    private int intNumSameRecognitions10 = 0;
+
 
     private static final double CENTERANGLE = 0.5;
     private static final double ANGLEMODIFIERLOW = 1;//;
@@ -242,13 +244,25 @@ public class PowerAttachment extends Object {
         srvGrabber.setPosition(0); NOT ACTIVATED
          */
 
-        if (digitalTouchGRB.getState() == false && !bolLSGRBWasPressed) {
-            bolLSGRBWasPressed = true;
-            lteDirectionV4B1.setPower(0);
-            lteDirectionV4B2.setPower(0);
-        } else if (digitalTouchGRB.getState() == true && bolLSGRBWasPressed) {
-            bolLSGRBWasPressed = false;
+
+
+        if (digitalTouchGRB.getState() == false) {
+            if (intNumSameRecognitions10 < 10) {
+                intNumSameRecognitions10++;
+                lteDirectionV4B1.setPower(0);
+                lteDirectionV4B2.setPower(0);
+            } else {
+                if (bolSideToggle) {
+                    lteDirectionV4B1.setPower(65);
+                    lteDirectionV4B2.setPower(65);
+                } else {
+                    lteDirectionV4B1.setPower(-65);
+                    lteDirectionV4B2.setPower(-65);
+                }
+            }
         }
+
+
 
         if (bolLSGrabbingToggle) {
 
@@ -354,6 +368,7 @@ public class PowerAttachment extends Object {
 
             if (digitalTouchGRB.getState() == true) {
                 srvGrabber.setPosition(0);
+                intNumSameRecognitions10 = 0;
             }
         }
 
@@ -634,13 +649,7 @@ public class PowerAttachment extends Object {
             bolLBWasPressed = false;
         }
 
-        if (bolSideToggle) {
-            lteDirectionV4B1.setPower(65);
-            lteDirectionV4B2.setPower(65);
-        } else {
-            lteDirectionV4B1.setPower(-65);
-            lteDirectionV4B2.setPower(-65);
-        }
+
 
 // ARM PRESETS
         if (gmpGamepad2.a && !bolAWasPressed) {
