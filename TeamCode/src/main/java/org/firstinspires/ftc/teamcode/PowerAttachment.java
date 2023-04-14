@@ -48,6 +48,7 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions8 = 0;
     private int intNumSameRecognitions9 = 0;
     private int intNumSameRecognitions10 = 0;
+    private int intNumSameRecognitions11 = 0;
 
 
     private static final double CENTERANGLE = 0.5;
@@ -792,7 +793,7 @@ public class PowerAttachment extends Object {
 
             }
         }
-//ODOMETRY SERVO OPPERATION
+//ODOMETRY SERVO OPERATION
 
         if (gmpGamepad1.a && !bolA1WasPressed) {
             bolA1WasPressed = true;
@@ -812,6 +813,44 @@ public class PowerAttachment extends Object {
             srvOdometryPod2.setPosition(0.5);
             srvOdometryPod3.setPosition(0.5);
         }
+
+        /*
+        if (gmpGamepad1.a && !bolA1WasPressed) {
+            bolA1WasPressed = true;
+            bolA1Toggle = !bolA1Toggle;
+            if (bolA1Toggle) {
+                if (intNumSameRecognitions11 < 10) {
+                    intNumSameRecognitions11 ++;
+                    srvOdometryPod1.setPosition(0);
+                    srvOdometryPod2.setPosition(0);
+                    srvOdometryPod3.setPosition(0);
+                } else {
+                    intNumSameRecognitions11 = 0;
+                    srvOdometryPod1.setPosition(0.5);
+                    srvOdometryPod2.setPosition(0.5);
+                    srvOdometryPod3.setPosition(0.5);
+                }
+            } else {
+                if (intNumSameRecognitions11 < 10) {
+                    intNumSameRecognitions11++;
+                    srvOdometryPod1.setPosition(1);
+                    srvOdometryPod2.setPosition(1);
+                    srvOdometryPod3.setPosition(1);
+                } else {
+                    intNumSameRecognitions11 = 0;
+                    srvOdometryPod1.setPosition(0.5);
+                    srvOdometryPod2.setPosition(0.5);
+                    srvOdometryPod3.setPosition(0.5);
+
+                }
+            }
+        } else if (!gmpGamepad1.a && bolA1WasPressed) {
+            bolA1WasPressed = false;
+            srvOdometryPod1.setPosition(0.5);
+            srvOdometryPod2.setPosition(0.5);
+            srvOdometryPod3.setPosition(0.5);
+        }
+         */
 
 
 
