@@ -13,7 +13,7 @@ public class HoloMechDrive {
     private DcMotor rightRear;
 
 
-    private DigitalChannel digitalTouchGRB;
+   // private DigitalChannel digitalTouchGRB;
 
     private double dblFlMotorPower;
     private double dblFrMotorPower;
@@ -142,7 +142,7 @@ public class HoloMechDrive {
 
 
         // Stack Pick-up
-
+/*
         if (bolYWasPressed && !bolYTogglePressed) {
             bolYTogglePressed = true;
             bolLSGrabbingToggle = !bolLSGrabbingToggle;
@@ -163,9 +163,10 @@ public class HoloMechDrive {
                 bolBWasPressed = false;
             }
         }
-
+*/
         if (bolRBButton && !bolBWasPressed && bolSTToggle) {
             bolBWasPressed = true;
+            bolSHToggle = !bolSHToggle;
             if (bolSHToggle) {
                 bolBackwardsToggle = true;
                 dblMotorInstance = dblMotorPosition;
