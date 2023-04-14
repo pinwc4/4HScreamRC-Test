@@ -17,8 +17,8 @@ public class RoadRunnerRightMedium extends LinearOpMode {
     public void runOpMode() throws InterruptedException{
 
 
-
-        MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(35, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
+        MecanumVelocityConstraint slowestMode = new MecanumVelocityConstraint(25, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
+        MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(30, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(70, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         //MecanumVelocityConstraint expoMode = new
 
@@ -62,11 +62,14 @@ public class RoadRunnerRightMedium extends LinearOpMode {
                  */
 
                 .splineToLinearHeading(new Pose2d(35, -60, Math.toRadians(270)), Math.toRadians(0))
+
                 .setVelConstraint(slowMode)
                 .lineToLinearHeading(new Pose2d(35, -27, Math.toRadians(270)))
+
                 .setVelConstraint(normalMode)
                 .splineToSplineHeading(new Pose2d(35, -9, Math.toRadians(250)), Math.toRadians(218))
-                .splineToLinearHeading(new Pose2d(25, -21, Math.toRadians(225)), Math.toRadians(200))
+                .splineToSplineHeading(new Pose2d(25.75, -20.5, Math.toRadians(235)), Math.toRadians(235))
+
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveGrabber())
@@ -78,8 +81,10 @@ public class RoadRunnerRightMedium extends LinearOpMode {
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(56, -11.95, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(60.8, -11.95, Math.toRadians(180)))
+                .splineToSplineHeading(new Pose2d(46, -13, Math.toRadians(180)), Math.toRadians(0))
+                .setVelConstraint(slowestMode)
+                .splineToSplineHeading(new Pose2d(60.8, -13, Math.toRadians(180)), Math.toRadians(0))
+                .setVelConstraint(normalMode)
 
                 .build();
 
@@ -90,24 +95,10 @@ public class RoadRunnerRightMedium extends LinearOpMode {
                     attachment.moveSlidesM();
                 })
 
-                /*
-                .addTemporalMarker(0.85, 0.1, () -> {
-                    attachment.moveV4BOut();
-                })
-
-                .addTemporalMarker(0.93, 2, () -> {
-                    attachment.moveGrabber();
-                })
-
-                .addTemporalMarker(0.99, 4, () -> {
-                    attachment.moveV4BIn();
-                })
-
-                 */
 
                 .setReversed(false)
-                //.lineToLinearHeading(new Pose2d(56, -11.75, Math.toRadians(180)))
-                .splineToSplineHeading(new Pose2d(24.5 , -22, Math.toRadians(225)), Math.toRadians(200))
+                .splineToLinearHeading(new Pose2d(48, -14.5, Math.toRadians(180)), Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(26.25, -24.75, Math.toRadians(210)), Math.toRadians(210)) //225
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.075)
                 .addTemporalMarker(() -> attachment.moveGrabber())
@@ -122,16 +113,20 @@ public class RoadRunnerRightMedium extends LinearOpMode {
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(56, -12.5, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(60.8, -12.5, Math.toRadians(180)))
+                .splineToSplineHeading(new Pose2d(46, -13.75, Math.toRadians(180)), Math.toRadians(0))
+                .setVelConstraint(slowestMode)
+                .splineToSplineHeading(new Pose2d(60.8, -13.75, Math.toRadians(180)), Math.toRadians(0))
+                .setVelConstraint(normalMode)
 
                 .build();
 
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(56, -13, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(60.8, -13, Math.toRadians(180)))
+                .splineToSplineHeading(new Pose2d(46, -14.5, Math.toRadians(180)), Math.toRadians(0))
+                .setVelConstraint(slowestMode)
+                .splineToSplineHeading(new Pose2d(59, -14.5, Math.toRadians(180)), Math.toRadians(0))
+                .setVelConstraint(normalMode)
 
                 .build();
 
@@ -142,7 +137,7 @@ public class RoadRunnerRightMedium extends LinearOpMode {
                 })
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(36, -12.15, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(36, -14, Math.toRadians(270)))
 
 
                 .build();
@@ -155,9 +150,9 @@ public class RoadRunnerRightMedium extends LinearOpMode {
 
                 .setReversed(true)
 
-                .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(40, -13.5, Math.toRadians(180)))
                 .setReversed(false)
-                .lineToLinearHeading(new Pose2d(12, -12, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(12, -13.5, Math.toRadians(180)))
 
 
                 .build();
@@ -169,7 +164,7 @@ public class RoadRunnerRightMedium extends LinearOpMode {
                 })
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(57, -12, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(60, -15, Math.toRadians(180)))
 
 
 
