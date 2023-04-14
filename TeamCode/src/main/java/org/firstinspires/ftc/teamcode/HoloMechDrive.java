@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class HoloMechDrive {
@@ -10,6 +11,9 @@ public class HoloMechDrive {
     private DcMotor rightFront;
     private DcMotor leftRear;
     private DcMotor rightRear;
+
+
+    private DigitalChannel digitalTouchGRB;
 
     private double dblFlMotorPower;
     private double dblFrMotorPower;
@@ -34,6 +38,7 @@ public class HoloMechDrive {
     private boolean bolX2WasPressed = false;
     private boolean bolBWasPressed = false;
     private boolean bolLBWasPressed = false;
+    private boolean bolYWasPressed = false;
 
     private boolean bolDirectionToggle = false;
     private boolean bolDirection = false;
@@ -42,6 +47,8 @@ public class HoloMechDrive {
     private boolean bolSTToggle = false;
     private boolean bolSHToggle = false;
     private boolean bolFalse = false;
+    private boolean bolYTogglePressed = false;
+    private boolean bolYToggle = true;
 
 
     private ChassisMoveParameters cmpMoveParameters;
@@ -133,9 +140,32 @@ public class HoloMechDrive {
             bolX2WasPressed = false;
         }
 
+
+        // Stack Pick-up
+
+        if (bolYWasPressed && !bolYTogglePressed) {
+            bolYTogglePressed = true;
+            bolYToggle = !bolYToggle;
+        } else if (!bolYWasPressed && bolYTogglePressed) {
+
+        }
+
+        if (bolYToggle) {
+            if (digitalTouchGRB.getState() == true) {
+                bolSHToggle = true;
+            } else {
+                bolSHToggle = false;
+            }
+        } else {
+            if (bolRBButton && !bolBWasPressed && bolSTToggle) {
+                bolBWasPressed = true;
+            } else if (!bolRBButton) {
+                bolBWasPressed = false;
+            }
+        }
+
         if (bolRBButton && !bolBWasPressed && bolSTToggle) {
             bolBWasPressed = true;
-            bolSHToggle = !bolSHToggle;
             if (bolSHToggle) {
                 bolBackwardsToggle = true;
                 dblMotorInstance = dblMotorPosition;
@@ -143,7 +173,6 @@ public class HoloMechDrive {
         } else if (!bolRBButton) {
             bolBWasPressed = false;
         }
-
 
 
 
@@ -164,9 +193,7 @@ public class HoloMechDrive {
                     bolBackwardsToggle = false;
                 }
 
-            }
-
-            if(bolDirection){
+            }else {
 
                 dblFlMotorPower = -NORMAL_POWER;
                 dblFrMotorPower = NORMAL_POWER;
@@ -183,9 +210,12 @@ public class HoloMechDrive {
 
             }
 
-
-
         }
+
+
+
+
+
 
             leftFront.setPower(dblFlMotorPower);
             rightFront.setPower(dblFrMotorPower);
