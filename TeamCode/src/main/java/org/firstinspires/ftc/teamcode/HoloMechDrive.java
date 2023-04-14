@@ -48,7 +48,7 @@ public class HoloMechDrive {
     private boolean bolSHToggle = false;
     private boolean bolFalse = false;
     private boolean bolYTogglePressed = false;
-    private boolean bolYToggle = true;
+    private boolean bolLSGrabbingToggle = true;
 
 
     private ChassisMoveParameters cmpMoveParameters;
@@ -145,12 +145,12 @@ public class HoloMechDrive {
 
         if (bolYWasPressed && !bolYTogglePressed) {
             bolYTogglePressed = true;
-            bolYToggle = !bolYToggle;
+            bolLSGrabbingToggle = !bolLSGrabbingToggle;
         } else if (!bolYWasPressed && bolYTogglePressed) {
-
+            bolYTogglePressed = false;
         }
 
-        if (bolYToggle) {
+        if (bolLSGrabbingToggle) {
             if (digitalTouchGRB.getState() == true) {
                 bolSHToggle = true;
             } else {
@@ -178,7 +178,7 @@ public class HoloMechDrive {
 
         if(bolBackwardsToggle) {
 
-            if(!bolDirection){
+            if (!bolDirection){
 
                 dblFlMotorPower = NORMAL_POWER;
                 dblFrMotorPower = -NORMAL_POWER;
@@ -193,7 +193,7 @@ public class HoloMechDrive {
                     bolBackwardsToggle = false;
                 }
 
-            }else {
+            } else {
 
                 dblFlMotorPower = -NORMAL_POWER;
                 dblFrMotorPower = NORMAL_POWER;

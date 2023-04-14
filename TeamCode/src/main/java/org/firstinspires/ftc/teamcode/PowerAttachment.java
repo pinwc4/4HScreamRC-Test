@@ -99,7 +99,6 @@ public class PowerAttachment extends Object {
     private boolean bolSGRB2Toggle = false;
     private boolean bolSGRB3Toggle = false;
 
-
     private boolean bolResetToggle = false;
     private boolean bolSideToggle = false;
     private boolean bolCLToggle = false;
@@ -262,8 +261,6 @@ public class PowerAttachment extends Object {
                 }
             }
         }
-
-
 
         if (bolLSGrabbingToggle) {
 
@@ -814,41 +811,47 @@ public class PowerAttachment extends Object {
             srvOdometryPod3.setPosition(0.5);
         }
 
+        if (!gmpGamepad1.a) {
+            srvOdometryPod1.setPosition(0.5);
+            srvOdometryPod2.setPosition(0.5);
+            srvOdometryPod3.setPosition(0.5);
+        }
+
         /*
         if (gmpGamepad1.a && !bolA1WasPressed) {
             bolA1WasPressed = true;
             bolA1Toggle = !bolA1Toggle;
             if (bolA1Toggle) {
-                if (intNumSameRecognitions11 < 10) {
+                if (intNumSameRecognitions11 < 20) {
                     intNumSameRecognitions11 ++;
                     srvOdometryPod1.setPosition(0);
                     srvOdometryPod2.setPosition(0);
                     srvOdometryPod3.setPosition(0);
                 } else {
-                    intNumSameRecognitions11 = 0;
                     srvOdometryPod1.setPosition(0.5);
                     srvOdometryPod2.setPosition(0.5);
                     srvOdometryPod3.setPosition(0.5);
+                    intNumSameRecognitions11 = 0;
                 }
             } else {
-                if (intNumSameRecognitions11 < 10) {
+                if (intNumSameRecognitions11 < 20) {
                     intNumSameRecognitions11++;
                     srvOdometryPod1.setPosition(1);
                     srvOdometryPod2.setPosition(1);
                     srvOdometryPod3.setPosition(1);
                 } else {
-                    intNumSameRecognitions11 = 0;
                     srvOdometryPod1.setPosition(0.5);
                     srvOdometryPod2.setPosition(0.5);
                     srvOdometryPod3.setPosition(0.5);
-
+                    intNumSameRecognitions11 = 0;
                 }
             }
         } else if (!gmpGamepad1.a && bolA1WasPressed) {
-            bolA1WasPressed = false;
+            intNumSameRecognitions11 = 0;
             srvOdometryPod1.setPosition(0.5);
             srvOdometryPod2.setPosition(0.5);
             srvOdometryPod3.setPosition(0.5);
+            bolA1WasPressed = false;
         }
          */
 
