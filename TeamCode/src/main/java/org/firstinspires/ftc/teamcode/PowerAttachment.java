@@ -195,7 +195,7 @@ public class PowerAttachment extends Object {
             bolGMAToggle = false;
             bolGMBToggle = false;
             bolGMYToggle = false;
-            intSlidePosition = 0;
+            intSlidePosition = 17;
             bolResetToggle = true;
         }
 
@@ -286,7 +286,7 @@ public class PowerAttachment extends Object {
                 } else {
                     dblServoPosition = dblV4BAngleLow;
                 }
-                intSlidePosition = 15;
+                intSlidePosition = 17;
             }
 
             if (bolGrabToggle && digitalTouchGRB.getState() == false) {
@@ -340,7 +340,7 @@ public class PowerAttachment extends Object {
             }
 
             if (bolDropingToggle) {
-                if (intNumSameRecognitions7 < 10) {
+                if (intNumSameRecognitions7 < 13) {
                     intNumSameRecognitions7++;
                 } else {
                     intNumSameRecognitions7 = 0;
@@ -355,7 +355,7 @@ public class PowerAttachment extends Object {
                 }
             }
             if (bolDropingToggle2) {
-                if (intNumSameRecognitions8 < 6) {
+                if (intNumSameRecognitions8 < 8) {
                     intNumSameRecognitions8++;
                 } else {
                     intNumSameRecognitions8 = 0;
