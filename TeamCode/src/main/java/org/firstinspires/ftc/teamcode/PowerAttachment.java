@@ -49,6 +49,7 @@ public class PowerAttachment extends Object {
     private int intNumSameRecognitions9 = 0;
     private int intNumSameRecognitions10 = 0;
     private int intNumSameRecognitions11 = 0;
+    private int intNumSameRecognitions12 = 0;
 
 
     private static final double CENTERANGLE = 0.5;
@@ -121,6 +122,7 @@ public class PowerAttachment extends Object {
     private boolean bolConeToggle = true;
     private boolean bolGrabToggle = false;
     private boolean bolGrabbingToggle = false;
+    private boolean bolSTGrabbingToggle = false;
     private boolean bolDropToggle = false;
     private boolean bolDropingToggle = false;
     private boolean bolDropingToggle2 = false;
@@ -283,10 +285,21 @@ public class PowerAttachment extends Object {
             if (bolGrabToggle) {
                 if (bolSTToggle) {
                     dblServoPosition = dblV4BAngleLowStack;
+                    bolSTGrabbingToggle = true;
                 } else {
                     dblServoPosition = dblV4BAngleLow;
+                    intSlidePosition = 17;
                 }
-                intSlidePosition = 17;
+            }
+
+            if (bolSTGrabbingToggle) {
+                if (intNumSameRecognitions12 < 8) {
+                    intNumSameRecognitions12++;
+                } else {
+                    intNumSameRecognitions12 = 0;
+                    intSlidePosition = 17;
+                    bolSTGrabbingToggle = false;
+                }
             }
 
             if (bolGrabToggle && digitalTouchGRB.getState() == false) {
