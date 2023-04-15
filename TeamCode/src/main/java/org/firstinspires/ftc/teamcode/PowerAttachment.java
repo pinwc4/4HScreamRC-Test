@@ -55,10 +55,10 @@ public class PowerAttachment extends Object {
     private static final double ANGLEMODIFIERLOW = 1;//;
     private static final double ANGLEMODIFIERHIGH = 0.175;
     private static final double ANGLEMODIFIERLOWEST = 0.451;
-    private static final double ANGLEMODIFIERLOWSTACK = 0.4;
+    private static final double ANGLEMODIFIERLOWSTACK = 0.42;
     private double dblV4BAngleHigh = 0.675; //0.3755
     private double dblV4BAngleLow = 0;//0.035;
-    private double dblV4BAngleLowStack = 0.1;
+    private double dblV4BAngleLowStack = 0.08;
     private double dblV4BAngleLowest = 0.951;//0.9365
 
     private double dblDistanceSensorLeft;
