@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name = "Right High")
-@Disabled
+
 
 public class RoadRunnerRightHigh extends LinearOpMode {
     @Override
