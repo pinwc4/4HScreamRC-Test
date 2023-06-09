@@ -16,9 +16,18 @@ public class RightMedium {
                         drive.trajectorySequenceBuilder(new Pose2d(39, -63, 270))
 
 
+
                                 //traj 1
 
-                                .splineToLinearHeading(new Pose2d(35, -60, Math.toRadians(270)), Math.toRadians(0))
+                                .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
+
+
+                                .lineToLinearHeading(new Pose2d(-35, 23.5, Math.toRadians(270)))
+
+                                .splineToLinearHeading(new Pose2d(-48, 23.5, Math.toRadians(0)), Math.toRadians(330))
+
+                                .splineToLinearHeading(new Pose2d(-25.5, 23.2, Math.toRadians(0)), Math.toRadians(0))
+                                /*.splineToLinearHeading(new Pose2d(35, -60, Math.toRadians(270)), Math.toRadians(0))
 
                                 //.setVelConstraint(slowMode)
                                 .lineToLinearHeading(new Pose2d(35, -27, Math.toRadians(270)))
@@ -68,7 +77,7 @@ public class RightMedium {
                                 .setReversed(false)
                                 .splineToLinearHeading(new Pose2d(44, -14.5, Math.toRadians(180)), Math.toRadians(180))
                                 .splineToSplineHeading(new Pose2d(25.5, -24, Math.toRadians(225)), Math.toRadians(225))
-
+*/
 
 
                                 .build());
