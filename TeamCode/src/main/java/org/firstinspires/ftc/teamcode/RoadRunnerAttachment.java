@@ -187,6 +187,17 @@ public class RoadRunnerAttachment extends Object {
 
     }
 
+    public void movePickUpPositionGround(){
+
+        dcmSlider.setTargetPosition(-155);
+        dcmSlider.setPower(0.85);
+        dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        srvV4B.setPosition(1);//0.87
+
+
+    }
+
     public void moveStackCenter() throws InterruptedException{
 
         lteDirectionV4B1.setPower(65)  ;
