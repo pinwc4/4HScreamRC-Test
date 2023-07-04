@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Transformer Cycle")
+@Autonomous(name = "Transformer wait")
 
-public class CRITransCycleWait extends LinearOpMode {
+public class CRITransLeftWait extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException {
@@ -29,7 +29,9 @@ public class CRITransCycleWait extends LinearOpMode {
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
 
 
-                .setReversed(true)
+               // .setReversed(true)
+
+                /*
                 .addTemporalMarker(1.5, () -> {
                     attachment.moveSlidesM();
                 })
@@ -37,33 +39,54 @@ public class CRITransCycleWait extends LinearOpMode {
                 .addTemporalMarker(2, () -> {
                     attachment.senseSleeve();
                 })
-                .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
 
-                .lineToLinearHeading(new Pose2d(-35, 23.5, Math.toRadians(270)))
+                 */
 
-                .splineToLinearHeading(new Pose2d(-48, 23.5, Math.toRadians(0)), Math.toRadians(330))
+                //.addTemporalMarker(4, () -> attachment.movePickUpPositionGround())
 
-                        .lineToLinearHeading(new Pose2d(-25.5, 23.2, Math.toRadians(0)))
+                //robot moves out
+                .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(80))
+
+                //robot moves out
+                .splineToSplineHeading(new Pose2d(-34, 19, Math.toRadians(270)), Math.toRadians(90))
+
+                //robot moves to cone
+                .splineToSplineHeading(new Pose2d(-59.5, 22, Math.toRadians(0)), Math.toRadians(180))
+
+                //robot moves sideways
+                .lineToLinearHeading(new Pose2d(-62.8, 12.5, Math.toRadians(0)))
+
+                .build();
+
+/*
+        TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
+
+                //.splineToLinearHeading(new Pose2d(-48, 23.5, Math.toRadians(0)), Math.toRadians(330))
+
+
+                       // .lineToLinearHeading(new Pose2d(-25.5, 23.2, Math.toRadians(0)))
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveGrabber())
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveV4BOut())
 
-                .lineToLinearHeading(new Pose2d(-62.8, 23.5, Math.toRadians(0)))
 
-                .addTemporalMarker(7.14,() -> attachment.movePickUpPositionGround())
-                .build();
-        TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
-                .lineToLinearHeading(new Pose2d(-57, 23.5, Math.toRadians(0)))
+
+
+
+
 
                 .build();
+
+
+ */
 
 
         attachment.moveV4B();
         drive.followTrajectorySequence(traj1);
-        attachment.movePickUpCone2();
-        drive.followTrajectorySequence(traj2);
+       // attachment.movePickUpCone2();
+        //drive.followTrajectorySequence(traj2);
         drive.update();
 
 
