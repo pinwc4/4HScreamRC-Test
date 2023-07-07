@@ -16,20 +16,23 @@ apply from: '../build.common.gradle'
 apply from: '../build.dependencies.gradle'
 
 android {
-<<<<<<< HEAD
+    namespace = 'org.firstinspires.ftc.teamcode'
 
-    androidResources {
-        noCompress 'tflite'
+<<<<<<< HEAD
+    packagingOptions {
+        jniLibs.useLegacyPackaging true
     }
+}
+=======
+
+
     packagingOptions {
         jniLibs {
             pickFirsts += ['**/*.so']
         }
     }
-=======
-    namespace = 'org.firstinspires.ftc.teamcode'
->>>>>>> 2390680ce6a1a918b8855dc429555f57b38796e0
-}
+
+>>>>>>> master
 
 dependencies {
     implementation project(':FtcRobotController')
@@ -37,4 +40,6 @@ dependencies {
 
     implementation 'org.apache.commons:commons-math3:3.6.1'
     implementation 'com.acmerobotics.roadrunner:core:0.5.5'
+//implementation 'org.openftc.easyopencv:1.4.4'
+}
 }
