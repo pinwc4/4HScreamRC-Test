@@ -39,7 +39,7 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
 
 
                 .addTemporalMarker(1.5, () -> {
-                    attachment.moveSlidesM();
+                    attachment.moveSlidesH();
                 })
                 .addTemporalMarker(2, () -> {
                     attachment.senseSleeve();
@@ -67,8 +67,8 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-35, -20, Math.toRadians(270)))
 
                 .setVelConstraint(normalMode)
-                .splineToSplineHeading(new Pose2d(-35, -6, Math.toRadians(290)), Math.toRadians(332))
-                .splineToSplineHeading(new Pose2d(-25.75, -20.5, Math.toRadians(305)), Math.toRadians(305))
+
+                .splineToSplineHeading(new Pose2d(-25.75, -1, Math.toRadians(190)), Math.toRadians(270))
 
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.15)
@@ -92,13 +92,13 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
 
 
                 .addTemporalMarker(0.25, () -> {
-                    attachment.moveSlidesM();
+                    attachment.moveSlidesH();
                 })
 
 
                 .setReversed(false)
                 .splineToLinearHeading(new Pose2d(-48, -12, Math.toRadians(360)), Math.toRadians(360))
-                .splineToSplineHeading(new Pose2d(-27.75, -23, Math.toRadians(330)), Math.toRadians(340)) //225
+                .splineToSplineHeading(new Pose2d(-27.75, -1, Math.toRadians(330)), Math.toRadians(340)) //225
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.075)
                 .addTemporalMarker(() -> attachment.moveGrabber())

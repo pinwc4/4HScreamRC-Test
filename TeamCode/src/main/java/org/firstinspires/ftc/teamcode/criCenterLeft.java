@@ -15,6 +15,10 @@ public class criCenterLeft extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException {
+        int intColorLevel = 0;
+        int intConeStack1 = -90;
+        int intCycleCounter = 0;
+
         RevBlinkinLedDriver lights;
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         waitForStart();
@@ -37,35 +41,168 @@ public class criCenterLeft extends LinearOpMode {
                 .addTemporalMarker(2, () -> {
                     attachment.senseSleeve();
                 })
-                .splineToLinearHeading(new Pose2d(24, 0.5, Math.toRadians(270)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(23, 0.5, Math.toRadians(270)), Math.toRadians(0))
 
-
-
-                .splineToLinearHeading(new Pose2d(-62.8, -12, Math.toRadians(0)), Math.toRadians(330))
-
-                .lineToLinearHeading(new Pose2d(-25.5, 23.2, Math.toRadians(0)))
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveGrabber())
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveV4BOut())
 
-                .lineToLinearHeading(new Pose2d(-62.8, 23.5, Math.toRadians(0)))
+                .splineToLinearHeading(new Pose2d(-62.8, -12, Math.toRadians(180)), Math.toRadians(0))
 
-                .addTemporalMarker(7.14,() -> attachment.movePickUpPositionGround())
                 .build();
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
-                .lineToLinearHeading(new Pose2d(-57, 23.5, Math.toRadians(0)))
 
-                .splineToSplineHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesH();
+                })
+
+
+                .setReversed(false)
+                .splineToLinearHeading(new Pose2d(-48, -12, Math.toRadians(360)), Math.toRadians(360))
+                .splineToSplineHeading(new Pose2d(-27.75, -23, Math.toRadians(330)), Math.toRadians(340)) //225
+                .addTemporalMarker(() -> attachment.moveV4BOut())
+                .waitSeconds(0.075)
+                .addTemporalMarker(() -> attachment.moveGrabber())
+                .waitSeconds(0.15)
+                .addTemporalMarker(() -> attachment.moveV4BIn())
+
                 .build();
 
 
+
+
+        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj1.end())
+
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
+
+                .splineToSplineHeading(new Pose2d(-60.8, -11, Math.toRadians(360)), Math.toRadians(180))
+
+
+                .build();
+
+        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj1.end())
+
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(-46, -12, Math.toRadians(360)), Math.toRadians(180))
+
+                .splineToSplineHeading(new Pose2d(-59, -10.5, Math.toRadians(360)), Math.toRadians(180))
+
+
+                .build();
+
+        TrajectorySequence park2 = drive.trajectorySequenceBuilder(traj3.end())
+
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
+
+                .setReversed(true)
+                .lineToLinearHeading(new Pose2d(-36, -14, Math.toRadians(270)))
+
+
+                .build();
+
+        TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj3.end())
+
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
+
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
+
+                .splineToSplineHeading(new Pose2d(-58, -13, Math.toRadians(360)), Math.toRadians(180))
+
+
+
+                .build();
+
+        TrajectorySequence park3 = drive.trajectorySequenceBuilder(traj3.end())
+
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
+
+                .setReversed(true)
+
+                .lineToLinearHeading(new Pose2d(-40, -13.5, Math.toRadians(360)))
+                .setReversed(false)
+                .lineToLinearHeading(new Pose2d(-12, -13.5, Math.toRadians(360)))
+
+
+
+                .build();
+
+
+        waitForStart();
+
+        resetRuntime();
+
         attachment.moveV4B();
+
         drive.followTrajectorySequence(traj1);
-        attachment.movePickUpCone2();
-        drive.followTrajectorySequence(traj2);
         drive.update();
+
+       // intColorLevel = attachment.getintColorLevel();
+
+
+
+        while (getRuntime() < 23) {
+
+
+            if(intCycleCounter == 0){
+                drive.followTrajectorySequenceAsync(traj2);
+                while (drive.isBusy() && opModeIsActive()) {
+                    attachment.movePickUpPosition();
+                    attachment.moveWallSpacerOut();
+                    drive.update();
+                }
+            } else if(intCycleCounter == 1){
+                drive.followTrajectorySequenceAsync(traj4);
+                while (drive.isBusy() && opModeIsActive()) {
+                    attachment.movePickUpPosition();
+                    attachment.moveWallSpacerOut();
+                    drive.update();
+                }
+            } else if(intCycleCounter == 2){
+                drive.followTrajectorySequenceAsync(traj4);
+                while (drive.isBusy() && opModeIsActive()) {
+                    attachment.movePickUpPosition();
+                    attachment.moveWallSpacerOut();
+                    drive.update();
+                }
+            }
+
+            attachment.moveStackCenter();
+
+            attachment.movePickUpCone2();
+
+            drive.followTrajectorySequence(traj3);
+            drive.update();
+
+            intConeStack1 = intConeStack1 + 52;//52
+            intCycleCounter++;
+
+        }
+
+
+        attachment.moveWallSpacerIn();
+
+        if(intColorLevel == 1){
+            drive.followTrajectorySequence(park1);
+            drive.update();
+        } else if (intColorLevel == 2){
+            drive.followTrajectorySequence(park2);
+            drive.update();
+        } else {
+            drive.followTrajectorySequence(park3);
+            drive.update();
+        }
+
+
 
 
 
