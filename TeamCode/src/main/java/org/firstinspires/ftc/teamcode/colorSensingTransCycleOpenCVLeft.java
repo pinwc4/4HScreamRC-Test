@@ -15,11 +15,11 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Transformer Cycle With OpenCV")
+@Autonomous(name = "Transformer Cycle With OpenCV Left")
 
-public class colorSensingTransCycleOpenCV extends LinearOpMode {
+public class colorSensingTransCycleOpenCVLeft extends LinearOpMode {
 
-    private SleeveDetection sleeveDetection;
+    private SleeveDetectionLeft sleeveDetection;
     private OpenCvCamera camera;
 
     // Name of the Webcam to be set in the config
@@ -29,7 +29,7 @@ public class colorSensingTransCycleOpenCV extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
-        sleeveDetection = new SleeveDetection();
+        sleeveDetection = new SleeveDetectionLeft();
         camera.setPipeline(sleeveDetection);
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()

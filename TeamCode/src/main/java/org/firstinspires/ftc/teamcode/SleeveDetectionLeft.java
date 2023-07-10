@@ -5,12 +5,11 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 
-public class SleeveDetection extends OpenCvPipeline {
+public class SleeveDetectionLeft extends OpenCvPipeline {
     /*
     YELLOW  = Parking Left
     CYAN    = Parking Middle
@@ -24,7 +23,7 @@ public class SleeveDetection extends OpenCvPipeline {
     }
 
     // TOPLEFT anchor point for the bounding box
-    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(70, 100);
+    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(120, 110);
 
     // Width and height for the bounding box
     public static int REGION_WIDTH = 30;
