@@ -200,7 +200,7 @@ public class RoadRunnerAttachment extends Object {
         dcmSlider.setPower(0.85);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        srvV4B.setPosition(1);//0.87
+        srvV4B.setPosition(0.98);//0.87
 
 
     }

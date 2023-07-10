@@ -1,19 +1,26 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Transformer wait")
+@Autonomous(name = "Transformer Wait")
 
 public class CRITransLeftWait extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException {
+
+        MecanumVelocityConstraint slowestMode = new MecanumVelocityConstraint(25, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
+        MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(30, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
+        MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(70, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
+
         RevBlinkinLedDriver lights;
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         waitForStart();
@@ -42,51 +49,43 @@ public class CRITransLeftWait extends LinearOpMode {
 
                  */
 
-                //.addTemporalMarker(4, () -> attachment.movePickUpPositionGround())
+                .addTemporalMarker(2.5, () -> attachment.movePickUpPositionGround())
 
                 //robot moves out
-                .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(80))
+                .splineToLinearHeading(new Pose2d(-37, -60, Math.toRadians(270)), Math.toRadians(80))
 
                 //robot moves out
-                .splineToSplineHeading(new Pose2d(-34, 19, Math.toRadians(270)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(-36, 15, Math.toRadians(270)), Math.toRadians(90))
 
                 //robot moves to cone
-                .splineToSplineHeading(new Pose2d(-59.5, 22, Math.toRadians(0)), Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(-57.5, 23.5, Math.toRadians(0)), Math.toRadians(170))
 
                 //robot moves sideways
-                .lineToLinearHeading(new Pose2d(-62.8, 12.5, Math.toRadians(0)))
+                .splineToLinearHeading(new Pose2d(-67.8, 11, Math.toRadians(0)), Math.toRadians(270))
+
+
 
                 .build();
 
-/*
+
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
 
-                //.splineToLinearHeading(new Pose2d(-48, 23.5, Math.toRadians(0)), Math.toRadians(330))
+                .setVelConstraint(slowestMode)
+                .lineToLinearHeading(new Pose2d(-64, 11, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-67.8, 11, Math.toRadians(0)))
 
-
-                       // .lineToLinearHeading(new Pose2d(-25.5, 23.2, Math.toRadians(0)))
-                .addTemporalMarker(() -> attachment.moveV4BOut())
-                .waitSeconds(0.15)
-                .addTemporalMarker(() -> attachment.moveGrabber())
-                .waitSeconds(0.15)
-                .addTemporalMarker(() -> attachment.moveV4BOut())
-
-
-
-
-
-
+                .setVelConstraint(normalMode)
 
                 .build();
 
 
- */
+
 
 
         attachment.moveV4B();
         drive.followTrajectorySequence(traj1);
-       // attachment.movePickUpCone2();
-        //drive.followTrajectorySequence(traj2);
+        drive.followTrajectorySequence(traj2);
+        attachment.movePickUpCone2();
         drive.update();
 
 
