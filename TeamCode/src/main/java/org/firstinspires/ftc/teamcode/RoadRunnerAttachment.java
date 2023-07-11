@@ -171,6 +171,12 @@ public class RoadRunnerAttachment extends Object {
 
     }
 
+    public void moveV4BOutHigh() {
+
+        srvV4B.setPosition(0.65);
+
+    }
+
     public void moveGrabber() {
 
         srvGrabber.setPosition(0);
