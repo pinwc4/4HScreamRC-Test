@@ -31,7 +31,7 @@ public class RoadRunnerRightMedium extends LinearOpMode {
 
 
         // We want to start the bot at x: 10, y: -8, heading: 90 degrees
-        Pose2d startPose = new Pose2d(73, -63, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(39, -63, Math.toRadians(270));
 
         drive.setPoseEstimate(startPose);
 
@@ -39,7 +39,7 @@ public class RoadRunnerRightMedium extends LinearOpMode {
 
 
                 .addTemporalMarker(1.5, () -> {
-                    attachment.moveSlidesH();
+                    attachment.moveSlidesM();
                 })
                 .addTemporalMarker(2, () -> {
                     attachment.senseSleeve();
@@ -61,13 +61,14 @@ public class RoadRunnerRightMedium extends LinearOpMode {
 
                  */
 
-                .splineToSplineHeading(new Pose2d(83, -60, Math.toRadians(270)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(35, -60, Math.toRadians(270)), Math.toRadians(0))
 
+                .setVelConstraint(slowestMode)
+                .lineToLinearHeading(new Pose2d(35, -27, Math.toRadians(270)))
 
-                .lineToLinearHeading(new Pose2d(35, -24, Math.toRadians(270)))
-
-
-                .splineToSplineHeading(new Pose2d(73, -2, Math.toRadians(300)), Math.toRadians(120))
+                .setVelConstraint(normalMode)
+                .splineToSplineHeading(new Pose2d(35, -9, Math.toRadians(250)), Math.toRadians(218))
+                .splineToSplineHeading(new Pose2d(25.75, -20.5, Math.toRadians(235)), Math.toRadians(235))
 
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.15)
@@ -80,16 +81,18 @@ public class RoadRunnerRightMedium extends LinearOpMode {
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(98, -12, Math.toRadians(180)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(60.8, -13, Math.toRadians(180)), Math.toRadians(0))
-                        .build();
+                .splineToSplineHeading(new Pose2d(46, -13, Math.toRadians(180)), Math.toRadians(0))
+                .setVelConstraint(slowestMode)
+                .splineToSplineHeading(new Pose2d(60.8, -13, Math.toRadians(180)), Math.toRadians(0))
+                .setVelConstraint(normalMode)
 
+                .build();
 
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
 
 
                 .addTemporalMarker(0.25, () -> {
-                    attachment.moveSlidesH();
+                    attachment.moveSlidesM();
                 })
 
 
