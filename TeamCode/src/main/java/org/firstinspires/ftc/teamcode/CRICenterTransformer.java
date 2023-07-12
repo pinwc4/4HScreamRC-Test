@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySe
 
 @Autonomous(name = "Transformer Cycle WAIT")
 
-public class CRITransCycleWait extends LinearOpMode {
+public class CRICenterTransformer extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException {
