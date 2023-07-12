@@ -10,9 +10,11 @@ import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Transformer Wait")
+/*
 
-public class CRITransLeftWait extends LinearOpMode {
+@Autonomous(name = "CRI Wait")
+
+public class CRITransScore extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException {
@@ -49,7 +51,7 @@ public class CRITransLeftWait extends LinearOpMode {
 
                  */
 
-                .addTemporalMarker(2.5, () -> attachment.movePickUpPositionGround())
+             /*   .addTemporalMarker(2.5, () -> attachment.movePickUpPositionGround())
 
                 //robot moves out
                 .splineToLinearHeading(new Pose2d(-37, -60, Math.toRadians(270)), Math.toRadians(80))
@@ -90,6 +92,6 @@ public class CRITransLeftWait extends LinearOpMode {
 
 
 
-    }
-}
-
+  //  }
+//}
+*/

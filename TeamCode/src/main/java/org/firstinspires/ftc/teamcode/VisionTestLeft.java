@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -56,12 +57,13 @@ public class VisionTestLeft extends LinearOpMode {
 
 
 
+
             MecanumVelocityConstraint slowestMode = new MecanumVelocityConstraint(25, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
             MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(30, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
             MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(70, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
             //MecanumVelocityConstraint expoMode = new
 
-            int intColorLevel = 0;
+            String strColorLevel = String.valueOf(sleeveDetection.getPosition());
             int intConeStack1 = -90;
             int intCycleCounter = 0;
 
@@ -70,207 +72,42 @@ public class VisionTestLeft extends LinearOpMode {
 
 
             // We want to start the bot at x: 10, y: -8, heading: 90 degrees
-            Pose2d startPose = new Pose2d(-39, -63, Math.toRadians(270));
+            Pose2d startPose = new Pose2d(-58, 29, Math.toRadians(0));
 
             drive.setPoseEstimate(startPose);
 
-            TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
 
-
-                    .addTemporalMarker(1.5, () -> {
-                        attachment.moveSlidesH();
-                    })
-                    .addTemporalMarker(2, () -> {
-                        attachment.senseSleeve();
-
-                    })
-
-                    /*
-                    .addTemporalMarker(0.92, 0.1, () -> {
-                        attachment.moveV4BOut();
-                    })
-
-                    .addTemporalMarker(0.95, 1.5, () -> {
-                        attachment.moveGrabber();
-                    })
-
-                    .addTemporalMarker(0.99, 4, () -> {
-                        attachment.moveV4BIn();
-                    })
-
-                     */
-
-                    .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
-
-                    .setVelConstraint(slowestMode)
-                    .lineToLinearHeading(new Pose2d(-35, -20, Math.toRadians(270)))
-
-                    .setVelConstraint(normalMode)
-
-                    .splineToSplineHeading(new Pose2d(-25.75, -1, Math.toRadians(190)), Math.toRadians(270))
-
-                    .addTemporalMarker(() -> attachment.moveV4BOut())
-                    .waitSeconds(0.15)
-                    .addTemporalMarker(() -> attachment.moveGrabber())
-                    .waitSeconds(0.15)
-                    .addTemporalMarker(() -> attachment.moveV4BIn())
-
-                    .build();
-
-            TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
-
-                    .setReversed(true)
-                    .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
-                    .setVelConstraint(slowestMode)
-                    .splineToSplineHeading(new Pose2d(-60.8, -11.5, Math.toRadians(360)), Math.toRadians(180))
-                    .setVelConstraint(normalMode)
-
-                    .build();
-
-            TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
-
-
-                    .addTemporalMarker(0.25, () -> {
-                        attachment.moveSlidesH();
-                    })
-
-
-                    .setReversed(false)
-                    .splineToLinearHeading(new Pose2d(-48, -12, Math.toRadians(360)), Math.toRadians(360))
-                    .splineToSplineHeading(new Pose2d(-27.75, -1, Math.toRadians(330)), Math.toRadians(340)) //225
-                    .addTemporalMarker(() -> attachment.moveV4BOut())
-                    .waitSeconds(0.075)
-                    .addTemporalMarker(() -> attachment.moveGrabber())
-                    .waitSeconds(0.15)
-                    .addTemporalMarker(() -> attachment.moveV4BIn())
-
-                    .build();
-
-
-
-
-            TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj1.end())
-
-                    .setReversed(true)
-                    .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
-                    .setVelConstraint(slowestMode)
-                    .splineToSplineHeading(new Pose2d(-60.8, -11, Math.toRadians(360)), Math.toRadians(180))
-                    .setVelConstraint(normalMode)
-
-                    .build();
-
-            TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj1.end())
-
-                    .setReversed(true)
-                    .splineToSplineHeading(new Pose2d(-46, -12, Math.toRadians(360)), Math.toRadians(180))
-                    .setVelConstraint(slowestMode)
-                    .splineToSplineHeading(new Pose2d(-59, -10.5, Math.toRadians(360)), Math.toRadians(180))
-                    .setVelConstraint(normalMode)
-
-                    .build();
-
-            TrajectorySequence park2 = drive.trajectorySequenceBuilder(traj3.end())
-
-                    .addTemporalMarker(0.25, () -> {
-                        attachment.moveSlidesDown();
-                    })
-
-                    .setReversed(true)
-                    .lineToLinearHeading(new Pose2d(-36, -14, Math.toRadians(270)))
-
-
-                    .build();
-
-            TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj3.end())
-
-                    .addTemporalMarker(0.25, () -> {
-                        attachment.moveSlidesDown();
-                    })
-
-                    .setReversed(true)
-                    .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
-                    .setVelConstraint(slowestMode)
-                    .splineToSplineHeading(new Pose2d(-58, -13, Math.toRadians(360)), Math.toRadians(180))
-                    .setVelConstraint(normalMode)
-
-
-                    .build();
-
-            TrajectorySequence park3 = drive.trajectorySequenceBuilder(traj3.end())
-
-                    .addTemporalMarker(0.25, () -> {
-                        attachment.moveSlidesDown();
-                    })
-
-                    .setReversed(true)
-
-                    .lineToLinearHeading(new Pose2d(-40, -13.5, Math.toRadians(360)))
-                    .setReversed(false)
-                    .lineToLinearHeading(new Pose2d(-12, -13.5, Math.toRadians(360)))
-
-
-
-                    .build();
-
-
-            waitForStart();
-
-            resetRuntime();
-
-            attachment.moveV4B();
-
-            drive.followTrajectorySequence(traj1);
-            drive.update();
-
-            intColorLevel = attachment.getintColorLevel();
-
-
-
-            while (getRuntime() < 23) {
-
-
-                if(intCycleCounter == 0){
-                    drive.followTrajectorySequenceAsync(traj2);
-                    while (drive.isBusy() && opModeIsActive()) {
-                        attachment.movePickUpPosition();
-                        attachment.moveWallSpacerOut();
-                        drive.update();
-                    }
-                } else if(intCycleCounter == 1){
-                    drive.followTrajectorySequenceAsync(traj4);
-                    while (drive.isBusy() && opModeIsActive()) {
-                        attachment.movePickUpPosition();
-                        attachment.moveWallSpacerOut();
-                        drive.update();
-                    }
-                } else if(intCycleCounter == 2){
-                    drive.followTrajectorySequenceAsync(traj5);
-                    while (drive.isBusy() && opModeIsActive()) {
-                        attachment.movePickUpPosition();
-                        attachment.moveWallSpacerOut();
-                        drive.update();
-                    }
-                }
-
-                attachment.moveStackCenter();
-
-                attachment.movePickUpCone2();
-
-                drive.followTrajectorySequence(traj3);
-                drive.update();
-
-                intConeStack1 = intConeStack1 + 52;//52
-                intCycleCounter++;
-
-            }
+        //Navigate to parking spot 1
+        TrajectorySequence park1 = drive.trajectorySequenceBuilder(new Pose2d(-58.00, 29.00, Math.toRadians(0.00)))
+                .setReversed(true)
+                .setVelConstraint(normalMode)
+                .splineToConstantHeading(new Vector2d(-30, 17.00), Math.toRadians(0.00))
+                .build();
+
+        //Navigate to parking spot 2
+        TrajectorySequence park2 = drive.trajectorySequenceBuilder(new Pose2d(-58.00, 29.00, Math.toRadians(0.00)))
+                .setReversed(true)
+                .setVelConstraint(normalMode)
+                .splineToConstantHeading(new Vector2d(-30.00, 17.00), Math.toRadians(0.00))
+                .splineTo(new Vector2d(-6.00, 17.00), Math.toRadians(0.00))
+                .build();
+
+        //Navigate to parking spot 3
+        TrajectorySequence park3 = drive.trajectorySequenceBuilder(new Pose2d(-58.00, 29.00, Math.toRadians(0.00)))
+                .setReversed(true)
+                .setVelConstraint(normalMode)
+                .splineToConstantHeading(new Vector2d(-30.00, 17.00), Math.toRadians(0.00))
+                .splineTo(new Vector2d(-6.00, 17.00), Math.toRadians(0.00))
+                .splineTo(new Vector2d(16.00, 19.00), Math.toRadians(0.00))
+                .build();
 
 
             attachment.moveWallSpacerIn();
 
-            if(intColorLevel == 1){
+            if(strColorLevel == "CENTER"){
                 drive.followTrajectorySequence(park1);
                 drive.update();
-            } else if (intColorLevel == 2){
+            } else if (strColorLevel == "RIGHT"){
                 drive.followTrajectorySequence(park2);
                 drive.update();
             } else {
@@ -284,4 +121,3 @@ public class VisionTestLeft extends LinearOpMode {
 
         }
     }
-

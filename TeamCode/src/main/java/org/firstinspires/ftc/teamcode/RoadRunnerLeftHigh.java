@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySe
 
 @Autonomous(name = "Left Medium")
 
-public class RoadRunnerLeftMedium extends LinearOpMode {
+public class RoadRunnerLeftHigh extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException{
@@ -37,14 +37,14 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
 
-
-                .addTemporalMarker(1.5, () -> {
+                .setReversed(true)
+               .addTemporalMarker(1.5, () -> {
                     attachment.moveSlidesH();
                 })
-                .addTemporalMarker(2, () -> {
-                    attachment.senseSleeve();
+               // .addTemporalMarker(2, () -> {
+                  //  attachment.senseSleeve();
 
-                })
+                //})
 
                 /*
                 .addTemporalMarker(0.92, 0.1, () -> {
@@ -63,14 +63,13 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
 
                 .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
 
-                .setVelConstraint(slowestMode)
-                .lineToLinearHeading(new Pose2d(-35, -20, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-36.04, 24, Math.toRadians(270)))
 
-                .setVelConstraint(normalMode)
 
-                .splineToSplineHeading(new Pose2d(-25.75, -1, Math.toRadians(190)), Math.toRadians(270))
 
-                .addTemporalMarker(() -> attachment.moveV4BOut())
+                .splineToLinearHeading(new Pose2d(-23.71, 3.13, Math.toRadians(290)), Math.toRadians(300))
+
+                .addTemporalMarker(() -> attachment.moveV4BOutHigh())
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveGrabber())
                 .waitSeconds(0.15)
@@ -81,30 +80,35 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
-                .setVelConstraint(slowestMode)
-                .splineToSplineHeading(new Pose2d(-60.8, -11.5, Math.toRadians(360)), Math.toRadians(180))
-                .setVelConstraint(normalMode)
+                .splineToSplineHeading(new Pose2d(-32, 9.24, Math.toRadians(0)), Math.toRadians(180))
+
+                .splineToLinearHeading(new Pose2d(-32, -11.7, Math.toRadians(0)), Math.toRadians(0))
+
 
                 .build();
 
+
+
+
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
 
-
+                //.addTemporalMarker(0.20, () -> {
+                 //   attachment.moveStackCenter();
+              //  })
                 .addTemporalMarker(0.25, () -> {
-                    attachment.moveSlidesH();
+                    attachment.movePickUpPosition();
                 })
 
 
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-48, -12, Math.toRadians(360)), Math.toRadians(360))
-                .splineToSplineHeading(new Pose2d(-27.75, -1, Math.toRadians(330)), Math.toRadians(340)) //225
-                .addTemporalMarker(() -> attachment.moveV4BOut())
+                .lineToLinearHeading(new Pose2d(-56, -12, Math.toRadians(0)))
+                .addTemporalMarker(() -> attachment.moveV4BOutHigh())
                 .waitSeconds(0.075)
                 .addTemporalMarker(() -> attachment.moveGrabber())
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveV4BIn())
 
+                .lineToLinearHeading(new Pose2d(-54, -12,Math.toRadians(0)))
                 .build();
 
 
@@ -180,14 +184,20 @@ public class RoadRunnerLeftMedium extends LinearOpMode {
 
         attachment.moveV4B();
 
+
+
         drive.followTrajectorySequence(traj1);
+
+        drive.followTrajectorySequence(traj2);
+
+        drive.followTrajectorySequence(traj3);
         drive.update();
 
         intColorLevel = attachment.getintColorLevel();
 
 
 
-        while (getRuntime() < 23) {
+       while (getRuntime() < 23) {
 
 
             if(intCycleCounter == 0){

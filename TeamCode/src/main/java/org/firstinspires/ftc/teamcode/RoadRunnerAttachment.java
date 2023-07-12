@@ -171,6 +171,12 @@ public class RoadRunnerAttachment extends Object {
 
     }
 
+    public void moveV4BOutHigh() {
+
+        srvV4B.setPosition(0.325);
+
+    }
+
     public void moveGrabber() {
 
         srvGrabber.setPosition(0);
@@ -200,7 +206,7 @@ public class RoadRunnerAttachment extends Object {
         dcmSlider.setPower(0.85);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        srvV4B.setPosition(0.98);//0.87
+        srvV4B.setPosition(1);//0.87
 
 
     }

@@ -8,11 +8,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-/*
 @Autonomous(name = "Transformer Cycle Wait")
 
-
-public class CRICenterTransformer extends LinearOpMode {
+public class CRITransCycleWait extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException {
@@ -46,8 +44,6 @@ public class CRICenterTransformer extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(-48, 23.5, Math.toRadians(0)), Math.toRadians(330))
 
                         .lineToLinearHeading(new Pose2d(-25.5, 23.2, Math.toRadians(0)))
-             /*   .splineToSplineHeading(new Pose2d(3.5, -58.2, Math.toRadians(270)), Math.toRadians(80))
-               // .build();
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveGrabber())
@@ -64,14 +60,14 @@ public class CRICenterTransformer extends LinearOpMode {
                 .build();
 
 
-        //attachment.moveV4B();
-       // drive.followTrajectorySequence(traj1);
+        attachment.moveV4B();
+        drive.followTrajectorySequence(traj1);
         attachment.movePickUpCone2();
         drive.followTrajectorySequence(traj2);
-       // drive.update();
+        drive.update();
 
 
 
-   // }
-//}
+    }
+}
 
