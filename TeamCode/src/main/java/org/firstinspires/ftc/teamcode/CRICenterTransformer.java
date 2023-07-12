@@ -9,11 +9,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/CRITransCycleWait.java
+/*
 @Autonomous(name = "Transformer Cycle Wait")
-=======
-@Autonomous(name = "CenterTransformer")
->>>>>>> 4281c4039047d806d3e6f28e0da2adfb22f34bf9:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/CRICenterTransformer.java
+
 
 public class CRICenterTransformer extends LinearOpMode {
     @Override
@@ -51,7 +49,7 @@ public class CRICenterTransformer extends LinearOpMode {
                 //.addTemporalMarker(4, () -> attachment.movePickUpPositionGround())
 
                 //robot moves out
-                .splineToSplineHeading(new Pose2d(3.5, -58.2, Math.toRadians(270)), Math.toRadians(80))
+             /*   .splineToSplineHeading(new Pose2d(3.5, -58.2, Math.toRadians(270)), Math.toRadians(80))
 
                 //robot moves out
                 .splineToLinearHeading(new Pose2d(9, 5
@@ -64,7 +62,7 @@ public class CRICenterTransformer extends LinearOpMode {
                // .splineToSplineHeading(new Pose2d(-24, 12, Math.toRadians(0)), Math.toRadians(90))
 
                // .lineToLinearHeading(new Pose2d(24, 12, Math.toRadians(0)))
-                .build();
+               // .build();
 
 /*
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
@@ -91,14 +89,14 @@ public class CRICenterTransformer extends LinearOpMode {
  */
 
 
-        attachment.moveV4B();
-        drive.followTrajectorySequence(traj1);
+        //attachment.moveV4B();
+       // drive.followTrajectorySequence(traj1);
         // attachment.movePickUpCone2();
         //drive.followTrajectorySequence(traj2);
-        drive.update();
+       // drive.update();
 
 
 
-    }
-}
+   // }
+//}
 

@@ -38,7 +38,7 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
 
                 .setReversed(true)
-                .addTemporalMarker(1.5, () -> {
+               .addTemporalMarker(1.5, () -> {
                     attachment.moveSlidesH();
                 })
                // .addTemporalMarker(2, () -> {
@@ -63,20 +63,11 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
 
                 .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
 
-                .lineToLinearHeading(new Pose2d(-36.04, 24.14, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-36.04, 24, Math.toRadians(270)))
 
-                .splineToSplineHeading(new Pose2d(-36.04, 25.14, Math.toRadians(300)), Math.toRadians(90))
 
-                .build();
 
-        TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
-
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-25.71, 2.13, Math.toRadians(290)), Math.toRadians(270))
-
-                .splineToSplineHeading(new Pose2d(-30, 3, Math.toRadians(0)), Math.toRadians(290))
-
-                .splineToSplineHeading(new Pose2d(-30, -12, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-23.71, 3.13, Math.toRadians(290)), Math.toRadians(300))
 
                 .addTemporalMarker(() -> attachment.moveV4BOutHigh())
                 .waitSeconds(0.15)
@@ -86,39 +77,44 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
 
                 .build();
 
-        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj1.end())
+        TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(0)), Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(-32, 9.24, Math.toRadians(0)), Math.toRadians(180))
 
-                .splineToSplineHeading(new Pose2d(-60.8, -11.5, Math.toRadians(0)), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-32, -11.7, Math.toRadians(0)), Math.toRadians(0))
 
 
                 .build();
 
-        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj2.end())
 
 
+
+        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
+
+                //.addTemporalMarker(0.20, () -> {
+                 //   attachment.moveStackCenter();
+              //  })
                 .addTemporalMarker(0.25, () -> {
-                    attachment.moveSlidesM();
+                    attachment.movePickUpPosition();
                 })
 
 
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-48, -12, Math.toRadians(360)), Math.toRadians(360))
-                .splineToSplineHeading(new Pose2d(-27.75, -1, Math.toRadians(330)), Math.toRadians(340)) //225
-                .addTemporalMarker(() -> attachment.moveV4BOut())
+                .lineToLinearHeading(new Pose2d(-56, -12, Math.toRadians(0)))
+                .addTemporalMarker(() -> attachment.moveV4BOutHigh())
                 .waitSeconds(0.075)
                 .addTemporalMarker(() -> attachment.moveGrabber())
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveV4BIn())
 
+                .lineToLinearHeading(new Pose2d(-54, -12,Math.toRadians(0)))
                 .build();
 
 
 
 
-        TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj1.end())
+        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
                 .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
@@ -128,7 +124,7 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
 
                 .build();
 
-        TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj1.end())
+        TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
                 .splineToSplineHeading(new Pose2d(-46, -12, Math.toRadians(360)), Math.toRadians(180))
@@ -188,7 +184,13 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
 
         attachment.moveV4B();
 
+
+
         drive.followTrajectorySequence(traj1);
+
+        drive.followTrajectorySequence(traj2);
+
+        drive.followTrajectorySequence(traj3);
         drive.update();
 
         intColorLevel = attachment.getintColorLevel();
