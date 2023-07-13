@@ -185,11 +185,6 @@ public class RoadRunnerAttachment extends Object {
 
     }
 
-    public void moveV4BOutHigh() {
-
-        srvV4B.setPosition(0.325);
-
-    }
 
     public void moveGrabber() {
 
@@ -306,7 +301,7 @@ public class RoadRunnerAttachment extends Object {
         while(digitalTouch.getState() == true){
             intNumSameRecognitions++;
             Thread.sleep(10);
-            if(intNumSameRecognitions == 150){
+            if(intNumSameRecognitions == 250){
                 break;
             }
         }
