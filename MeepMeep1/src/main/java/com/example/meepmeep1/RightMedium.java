@@ -21,25 +21,6 @@ public class RightMedium {
 
                                 .setReversed(true)
 
-                                // .addTemporalMarker(2, () -> {
-                                //  attachment.senseSleeve();
-
-                                //})
-
-                                /*
-                                .addTemporalMarker(0.92, 0.1, () -> {
-                                    attachment.moveV4BOut();
-                                })
-
-                                .addTemporalMarker(0.95, 1.5, () -> {
-                                    attachment.moveGrabber();
-                                })
-
-                                .addTemporalMarker(0.99, 4, () -> {
-                                    attachment.moveV4BIn();
-                                })
-
-                                 */
 
                                 .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
 
@@ -55,10 +36,10 @@ public class RightMedium {
 
 
 
-
+//traj2
                 .splineToSplineHeading(new Pose2d(-32, 9.24, Math.toRadians(0)), Math.toRadians(180))
 
-                .splineToLinearHeading(new Pose2d(-31, -11.7, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-31, -12, Math.toRadians(0)), Math.toRadians(0))
 
                 .lineToLinearHeading(new Pose2d(-62, 12, Math.toRadians(0)))
 
@@ -71,7 +52,7 @@ public class RightMedium {
 
 
 
-
+//traj3
                 .lineToLinearHeading(new Pose2d(-54, -12,Math.toRadians(0)))
 
 

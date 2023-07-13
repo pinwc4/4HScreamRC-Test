@@ -120,28 +120,29 @@ public class RoadRunnerRightHigh extends LinearOpMode {
 
                 .build();
 
-        TrajectorySequence park2 = drive.trajectorySequenceBuilder(traj3.end())
-
-                .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(270)))
-
-
-                .build();
-
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj3.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-57, -12, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(-34, -9, Math.toRadians(360)))
 
 
                 .build();
+
+        TrajectorySequence park2 = drive.trajectorySequenceBuilder(traj3.end())
+
+                .setReversed(true)
+                .lineToLinearHeading(new Pose2d(-12, -9, Math.toRadians(270)))
+
+
+                .build();
+
 
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(traj3.end())
 
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(360)))
                 .setReversed(false)
-                .lineToLinearHeading(new Pose2d(-12, -12, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(12, -9, Math.toRadians(360)))
 
 
                 .build();
