@@ -15,13 +15,13 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 
-@Autonomous(name = "CRI Trans Wait Left")
+@Autonomous(name = "CRI Trans Wait Right")
 
 
 
-public class CRITransWaitLeft extends LinearOpMode {
+public class CRITransWaitRight extends LinearOpMode {
 
-    private SleeveDetectionLeft sleeveDetection;
+    private SleeveDetectionRight sleeveDetection;
     private OpenCvCamera camera;
 
     // Name of the Webcam to be set in the config
@@ -30,9 +30,11 @@ public class CRITransWaitLeft extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
 
+
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
-        sleeveDetection = new SleeveDetectionLeft();
+        sleeveDetection = new SleeveDetectionRight();
         camera.setPipeline(sleeveDetection);
 
 
@@ -75,7 +77,7 @@ public class CRITransWaitLeft extends LinearOpMode {
         RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
 
 
-        Pose2d startPose = new Pose2d(-39, -63, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-39, 63, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
 
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
@@ -85,20 +87,12 @@ public class CRITransWaitLeft extends LinearOpMode {
 
 
 
-               .addTemporalMarker(2.5, () -> attachment.movePickUpPositionGround())
+                .addTemporalMarker(2.5, () -> attachment.movePickUpPositionGround())
 
-                //robot moves out
-                .splineToLinearHeading(new Pose2d(-37, -60, Math.toRadians(270)), Math.toRadians(80))
-
-                //robot moves out
-                .splineToSplineHeading(new Pose2d(-36, 15, Math.toRadians(270)), Math.toRadians(90))
-
-                //robot moves to cone
-                .splineToSplineHeading(new Pose2d(-57.5, 23.5, Math.toRadians(0)), Math.toRadians(170))
-
-                //robot moves sideways
-                .splineToLinearHeading(new Pose2d(-67.8, 11, Math.toRadians(0)), Math.toRadians(270))
-
+                .splineToLinearHeading(new Pose2d(-37.00, 60.00, Math.toRadians(90.00)), Math.toRadians(280.00))
+                .splineToSplineHeading(new Pose2d(-36.00, -15.00, Math.toRadians(90.00)), Math.toRadians(270.00))
+                .splineToSplineHeading(new Pose2d(-57.50, -23.50, Math.toRadians(360.00)), Math.toRadians(190.00))
+                .splineToLinearHeading(new Pose2d(-67.80, -11.00, Math.toRadians(360.00)), Math.toRadians(90.00))
 
 
                 .build();
@@ -107,8 +101,9 @@ public class CRITransWaitLeft extends LinearOpMode {
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setVelConstraint(slowestMode)
-                .lineToLinearHeading(new Pose2d(-55, 11, Math.toRadians(0)))
-                .lineToLinearHeading(new Pose2d(-62, 11, Math.toRadians(0)))
+
+                .lineToLinearHeading(new Pose2d(-55.00, -11.00, Math.toRadians(360.00)))
+                .lineToLinearHeading(new Pose2d(-62.00, -11.00, Math.toRadians(360.00)))
 
                 .setVelConstraint(normalMode)
 
@@ -125,7 +120,7 @@ public class CRITransWaitLeft extends LinearOpMode {
 
         TrajectorySequence wait1 = drive.trajectorySequenceBuilder(traj2.end())
 
-                .splineToSplineHeading(new Pose2d(-30, 13, Math.toRadians(325)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(-30.00, -13.00, Math.toRadians(35.00)), Math.toRadians(360.00))
 
                 .build();
 
@@ -133,7 +128,7 @@ public class CRITransWaitLeft extends LinearOpMode {
         TrajectorySequence wait2 = drive.trajectorySequenceBuilder(traj2.end())
 
                 //old
-                .splineToSplineHeading(new Pose2d(-30, 13, Math.toRadians(325)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(-30.00, -13.00, Math.toRadians(35.00)), Math.toRadians(360.00))
 
 
                 .build();
@@ -152,7 +147,7 @@ public class CRITransWaitLeft extends LinearOpMode {
                     attachment.moveSlidesH();
                 })
 
-                .splineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(320)), Math.toRadians(-20))
+                .splineToLinearHeading(new Pose2d(-27.00, -0.00, Math.toRadians(40.00)), Math.toRadians(380.00))
 
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.075)
@@ -169,7 +164,7 @@ public class CRITransWaitLeft extends LinearOpMode {
                     attachment.moveSlidesH();
                 })
 
-                .splineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(320)), Math.toRadians(-20))
+                .splineToLinearHeading(new Pose2d(-27.00, -0.00, Math.toRadians(40.00)), Math.toRadians(380.00))
 
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.075)
@@ -191,7 +186,7 @@ public class CRITransWaitLeft extends LinearOpMode {
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(poleMove1.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-35, 10, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(-35.00, -10.00, Math.toRadians(0.00)))
 
 
                 .build();
@@ -200,8 +195,7 @@ public class CRITransWaitLeft extends LinearOpMode {
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(poleMove2.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-12, 8, Math.toRadians(180)))
-
+                .lineToLinearHeading(new Pose2d(-12.00, -8.00, Math.toRadians(180.00)))
 
                 .build();
 
@@ -209,7 +203,7 @@ public class CRITransWaitLeft extends LinearOpMode {
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(poleMove2.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(12, 8, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(12.00, -8.00, Math.toRadians(180.00)))
 
 
 
