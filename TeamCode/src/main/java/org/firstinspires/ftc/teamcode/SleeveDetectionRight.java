@@ -9,7 +9,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-
+//Right means set up on the right side of the TILE not the field
 public class SleeveDetectionRight extends OpenCvPipeline {
     /*
     YELLOW  = Parking Left
@@ -24,7 +24,7 @@ public class SleeveDetectionRight extends OpenCvPipeline {
     }
 
     // TOPLEFT anchor point for the bounding box
-    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(120, 110);
+    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(45, 110);
 
     // Width and height for the bounding box
     public static int REGION_WIDTH = 30;

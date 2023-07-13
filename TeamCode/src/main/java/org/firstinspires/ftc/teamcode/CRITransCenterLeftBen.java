@@ -18,11 +18,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "CRITransCenterLeftBenE")
 
-@Disabled
-
 public class CRITransCenterLeftBen extends LinearOpMode {
 
-    private SleeveDetectionLeft sleeveDetection;
+    private SleeveDetectionRight sleeveDetection;
     private OpenCvCamera camera;
 
     // Name of the Webcam to be set in the config
@@ -34,7 +32,7 @@ public class CRITransCenterLeftBen extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
-        sleeveDetection = new SleeveDetectionLeft();
+        sleeveDetection = new SleeveDetectionRight();
         camera.setPipeline(sleeveDetection);
 
 
