@@ -54,8 +54,10 @@ public class VisionTestLeft extends LinearOpMode {
 
         waitForStart();
 
+        String strColorLevel = String.valueOf(sleeveDetection.getPosition());
 
 
+//paste code from other cycle programs here
 
 
             MecanumVelocityConstraint slowestMode = new MecanumVelocityConstraint(25, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
@@ -63,7 +65,7 @@ public class VisionTestLeft extends LinearOpMode {
             MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(70, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
             //MecanumVelocityConstraint expoMode = new
 
-            String strColorLevel = String.valueOf(sleeveDetection.getPosition());
+
             int intConeStack1 = -90;
             int intCycleCounter = 0;
 
