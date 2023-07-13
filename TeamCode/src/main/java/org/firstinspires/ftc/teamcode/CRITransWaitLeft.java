@@ -25,7 +25,7 @@ public class CRITransWaitLeft extends LinearOpMode {
         MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(30, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(70, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
 
-        int intColorLevel = 1;
+        int intColorLevel = 2;
         int intConeStack1 = -90;
         int intCycleCounter = 0;
 
@@ -127,7 +127,18 @@ public class CRITransWaitLeft extends LinearOpMode {
 
         TrajectorySequence poleMove2 = drive.trajectorySequenceBuilder(wait2.end())
 
-                .splineToLinearHeading(new Pose2d(-27, 4, Math.toRadians(325)), Math.toRadians(-20))
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesH();
+                })
+
+                .splineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(320)), Math.toRadians(-20))
+
+                .addTemporalMarker(() -> attachment.moveV4BOut())
+                .waitSeconds(0.075)
+                .addTemporalMarker(() -> attachment.moveGrabber())
+                .waitSeconds(0.15)
+                .addTemporalMarker(() -> attachment.moveV4BIn())
+
 
 
                 .build();
@@ -151,8 +162,8 @@ public class CRITransWaitLeft extends LinearOpMode {
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(poleMove2.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-36, 4, Math.toRadians(270)))
-
+                .lineToLinearHeading(new Pose2d(-12, 8, Math.toRadians(180)))
+                .addTemporalMarker(() -> attachment.moveSlidesDown())
 
                 .build();
 
@@ -160,9 +171,9 @@ public class CRITransWaitLeft extends LinearOpMode {
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(poleMove2.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-36, 4, Math.toRadians(360)))
-                .setReversed(false)
-                .lineToLinearHeading(new Pose2d(-12, 4, Math.toRadians(360)))
+                .setReversed(true)
+                .lineToLinearHeading(new Pose2d(12, 8, Math.toRadians(180)))
+                .addTemporalMarker(() -> attachment.moveSlidesDownHigh())
 
 
                 .build();
@@ -199,27 +210,27 @@ public class CRITransWaitLeft extends LinearOpMode {
 
         else if (intColorLevel == 2){
 
-            drive.followTrajectorySequence(park2);
+            drive.followTrajectorySequence(wait2);
 
             drive.update();
 
         }
 
-        else {
+        /*else {
 
             drive.followTrajectorySequence(park3);
 
             drive.update();
 
         }
-
+*/
 
         while (getRuntime() < 25){
             Thread.sleep(100);
         }
 
-        drive.followTrajectorySequence(poleMove1);
-        drive.followTrajectorySequence(park1);
+        drive.followTrajectorySequence(poleMove2);
+        drive.followTrajectorySequence(park3);
 
     }
 }

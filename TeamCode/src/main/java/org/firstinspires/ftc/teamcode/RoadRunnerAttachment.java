@@ -156,6 +156,13 @@ public class RoadRunnerAttachment extends Object {
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void moveSlidesDownHigh(){
+        srvV4B.setPosition(CENTERANGLE);
+        dcmSlider.setTargetPosition(-10);
+        dcmSlider.setPower(1);
+        dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
     public void moveJoeTest() throws InterruptedException{
 
         srvV4B.setPosition(0.325);
