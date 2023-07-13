@@ -114,7 +114,7 @@ public class CRITransWaitLeft extends LinearOpMode {
                     attachment.moveSlidesH();
                 })
 
-                .splineToLinearHeading(new Pose2d(-27, 2, Math.toRadians(325)), Math.toRadians(-20))
+                .splineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(320)), Math.toRadians(-20))
 
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.075)
