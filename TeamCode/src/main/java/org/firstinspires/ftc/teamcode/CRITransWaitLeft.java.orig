@@ -261,6 +261,7 @@ public class CRITransWaitLeft extends LinearOpMode {
         }
 
         drive.followTrajectorySequence(poleMove2);
+<<<<<<< HEAD
 
         if(strColorLevel == "LEFT"){
             drive.followTrajectorySequence(park1);
@@ -272,8 +273,10 @@ public class CRITransWaitLeft extends LinearOpMode {
             drive.followTrajectorySequence(park3);
             drive.update();
         }
-
+=======
+        drive.followTrajectorySequence(park3);
         attachment.moveSlidesDown();
+>>>>>>> a10f349a1d62c044069dc1a444d91e4b776fb076
 
     }
 }

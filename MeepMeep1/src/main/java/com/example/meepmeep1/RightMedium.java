@@ -19,69 +19,63 @@ public class RightMedium {
 
                                 //traj 1
 
+                                .setReversed(true)
+
+                                // .addTemporalMarker(2, () -> {
+                                //  attachment.senseSleeve();
+
+                                //})
+
+                                /*
+                                .addTemporalMarker(0.92, 0.1, () -> {
+                                    attachment.moveV4BOut();
+                                })
+
+                                .addTemporalMarker(0.95, 1.5, () -> {
+                                    attachment.moveGrabber();
+                                })
+
+                                .addTemporalMarker(0.99, 4, () -> {
+                                    attachment.moveV4BIn();
+                                })
+
+                                 */
+
                                 .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
 
-
-                                .lineToLinearHeading(new Pose2d(-35, 23.5, Math.toRadians(270)))
-
-                                .splineToLinearHeading(new Pose2d(-48, 23.5, Math.toRadians(0)), Math.toRadians(330))
-
-                                .splineToLinearHeading(new Pose2d(-25.5, 23.2, Math.toRadians(0)), Math.toRadians(0))
-                                /*.splineToLinearHeading(new Pose2d(35, -60, Math.toRadians(270)), Math.toRadians(0))
-
-                                //.setVelConstraint(slowMode)
-                                .lineToLinearHeading(new Pose2d(35, -27, Math.toRadians(270)))
-
-                                //.setVelConstraint(normalMode)
-                                .splineToSplineHeading(new Pose2d(35, -9, Math.toRadians(250)), Math.toRadians(218))
-                                .splineToSplineHeading(new Pose2d(25, -21, Math.toRadians(235)), Math.toRadians(235))
+                                .lineToLinearHeading(new Pose2d(-36.04, 24, Math.toRadians(270)))
 
 
 
-                                //traj 2
-
-                                .setReversed(true)
-                                //.splineToSplineHeading(new Pose2d(56, -12, Math.toRadians(180)), Math.toRadians(0))
-                                .splineToSplineHeading(new Pose2d(60.8, -12, Math.toRadians(180)), Math.toRadians(0))
+                                .splineToLinearHeading(new Pose2d(-23.71, 3.13, Math.toRadians(290)), Math.toRadians(300))
 
 
-                                //traj 3
-
-                                .setReversed(false)
-                                .splineToLinearHeading(new Pose2d(44, -14.5, Math.toRadians(180)), Math.toRadians(180))
-                                .splineToSplineHeading(new Pose2d(25.5, -24, Math.toRadians(225)), Math.toRadians(225))
 
 
-                                //traj 4
-
-                                .setReversed(true)
-                                .splineToSplineHeading(new Pose2d(46, -13, Math.toRadians(180)), Math.toRadians(0))
-                                .splineToSplineHeading(new Pose2d(60.8, -13, Math.toRadians(180)), Math.toRadians(0))
-
-                                //traj 3
-
-                                .setReversed(false)
-                                .splineToLinearHeading(new Pose2d(44, -14.5, Math.toRadians(180)), Math.toRadians(180))
-                                .splineToSplineHeading(new Pose2d(25.5, -24, Math.toRadians(225)), Math.toRadians(225))
 
 
-                                //traj 5
-
-                                .setReversed(true)
-                                .splineToSplineHeading(new Pose2d(56, -13.5, Math.toRadians(180)), Math.toRadians(0))
-                                .splineToSplineHeading(new Pose2d(60.8, -13.5, Math.toRadians(180)), Math.toRadians(0))
 
 
-                                //traj 3
+                .splineToSplineHeading(new Pose2d(-32, 9.24, Math.toRadians(0)), Math.toRadians(180))
 
-                                .setReversed(false)
-                                .splineToLinearHeading(new Pose2d(44, -14.5, Math.toRadians(180)), Math.toRadians(180))
-                                .splineToSplineHeading(new Pose2d(25.5, -24, Math.toRadians(225)), Math.toRadians(225))
-*/
+                .splineToLinearHeading(new Pose2d(-31, -11.7, Math.toRadians(0)), Math.toRadians(0))
+
+                .lineToLinearHeading(new Pose2d(-62, 12, Math.toRadians(0)))
+
+
+
+
+
+
+
+
+
+
+
+                .lineToLinearHeading(new Pose2d(-54, -12,Math.toRadians(0)))
 
 
                                 .build());
-
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
                 .setDarkMode(true)
