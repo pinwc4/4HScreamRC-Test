@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
 /*
-@Autonomous(name = "Transformer Cycle Wait")
+@Autonomous(name = "Transformer Cycle Wait 2")
 
 
 public class CRICenterTransformer extends LinearOpMode {
@@ -73,5 +73,6 @@ public class CRICenterTransformer extends LinearOpMode {
 
 
    // }
-//}
+}
 
+*/

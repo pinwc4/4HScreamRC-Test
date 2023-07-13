@@ -36,30 +36,57 @@ public class CRITransCenterLeftBen extends LinearOpMode {
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
 
 
-        TrajectorySequence untitled0 = drive.trajectorySequenceBuilder(new Pose2d(16.00, -64.00, Math.toRadians(270.00)))
+        TrajectorySequence yellow1 = drive.trajectorySequenceBuilder(new Pose2d(16.00, -64.00, Math.toRadians(270.00)))
                 .setReversed(true)
                 .setVelConstraint(normalMode)
                 .splineToSplineHeading(new Pose2d(12.00, -36.00, Math.toRadians(270.00)), Math.toRadians(90.00))
                 .splineTo(new Vector2d(12.00, -4.00), Math.toRadians(90.00))
-                .splineTo(new Vector2d(7.00, 11.00), Math.toRadians(178.66))
-                .splineTo(new Vector2d(-27.00, 11.00), Math.toRadians(180.00))
-                .splineTo(new Vector2d(-41.00, 29.00), Math.toRadians(180.00))
-                .splineTo(new Vector2d(-50.00, 29.00), Math.toRadians(180.00))
-                .splineTo(new Vector2d(-58.00, 29.00), Math.toRadians(180.00))
+                .splineToSplineHeading(new Pose2d(7.00, 11.00, Math.toRadians(178.66)), Math.toRadians(180.00))
+                .splineTo(new Vector2d(-29.00, 11.00), Math.toRadians(180.00))
+                .splineToConstantHeading(new Vector2d(-37.00, 19.00), Math.toRadians(180.00))
+                .splineTo(new Vector2d(-50.00, 19.00), Math.toRadians(180.00))
+                .splineTo(new Vector2d(-62.00, 19.00), Math.toRadians(180.00))
+                .build();
+
+        //Navigate to parking spot 1
+
+        TrajectorySequence park1 = drive.trajectorySequenceBuilder(yellow1.end())
+                .setReversed(true)
+                .setVelConstraint(normalMode)
+                .splineToConstantHeading(new Vector2d(-33, 10.00), Math.toRadians(0.00))
+                .build();
+
+//Navigate to parking spot 2
+
+        TrajectorySequence park2 = drive.trajectorySequenceBuilder(yellow1.end())
+                .setReversed(true)
+                .setVelConstraint(normalMode)
+                .splineToConstantHeading(new Vector2d(-30.00, 10.00), Math.toRadians(0.00))
+                .splineTo(new Vector2d(-8, 9.00), Math.toRadians(0.00))
+                .build();
+
+
+        //Navigate to parking spot 3
+
+        TrajectorySequence park3 = drive.trajectorySequenceBuilder(yellow1.end())
+                .setReversed(true)
+                .setVelConstraint(normalMode)
+                .splineToConstantHeading(new Vector2d(-30.00, 10.00), Math.toRadians(0.00))
+                .splineTo(new Vector2d(-6.00, 9.00), Math.toRadians(0.00))
+                .splineTo(new Vector2d(14.00, 8.00), Math.toRadians(0.00))
                 .build();
 
 
 
 
 
-
-
-
-
-        drive.followTrajectorySequence(untitled0);
+        drive.followTrajectorySequence(yellow1);
         drive.update();
 
+        Thread.sleep(5000);
 
+        drive.followTrajectorySequence(park1);
+        drive.update();
 
     }
 }
