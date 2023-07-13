@@ -274,6 +274,6 @@ public class CRITransWaitLeft extends LinearOpMode {
         }
 
         attachment.moveSlidesDown();
-
+        Thread.sleep(2000);
     }
 }
