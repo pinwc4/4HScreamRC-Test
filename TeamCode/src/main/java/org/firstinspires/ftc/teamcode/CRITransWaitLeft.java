@@ -163,7 +163,7 @@ public class CRITransWaitLeft extends LinearOpMode {
 
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(-12, 8, Math.toRadians(180)))
-                .addTemporalMarker(() -> attachment.moveSlidesDown())
+
 
                 .build();
 
@@ -173,7 +173,7 @@ public class CRITransWaitLeft extends LinearOpMode {
                 .setReversed(true)
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(12, 8, Math.toRadians(180)))
-                .addTemporalMarker(() -> attachment.moveSlidesDownHigh())
+
 
 
                 .build();
@@ -231,6 +231,7 @@ public class CRITransWaitLeft extends LinearOpMode {
 
         drive.followTrajectorySequence(poleMove2);
         drive.followTrajectorySequence(park3);
+        attachment.moveSlidesDown();
 
     }
 }

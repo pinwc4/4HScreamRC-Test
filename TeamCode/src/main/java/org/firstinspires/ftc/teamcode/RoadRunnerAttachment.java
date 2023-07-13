@@ -156,11 +156,18 @@ public class RoadRunnerAttachment extends Object {
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void moveSlidesDownHigh(){
+    public void moveSlidesDownHome() throws InterruptedException{
         srvV4B.setPosition(CENTERANGLE);
-        dcmSlider.setTargetPosition(-10);
-        dcmSlider.setPower(1);
+        dcmSlider.setTargetPosition(0);
+        dcmSlider.setPower(0.85);
         dcmSlider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (digitalTouch.getState() == true) {
+            intNumSameRecognitions++;
+            Thread.sleep(10);
+            if (intNumSameRecognitions == 250) {
+                break;
+            }
+        }
     }
 
     public void moveJoeTest() throws InterruptedException{
