@@ -77,7 +77,7 @@ public class CRITransWaitRight extends LinearOpMode {
         RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
 
 
-        Pose2d startPose = new Pose2d(-39, -63, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-39, 63, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
 
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
