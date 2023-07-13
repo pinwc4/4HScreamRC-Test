@@ -21,26 +21,18 @@ public class LeftMedium {
 
 
 
-                                //robot moves out
-                                .splineToLinearHeading(new Pose2d(-37, -60, Math.toRadians(270)), Math.toRadians(80))
+                                //traj 1
 
-                                //robot moves out
-                                .splineToSplineHeading(new Pose2d(-36, 15, Math.toRadians(270)), Math.toRadians(90))
+                                .setReversed(true)
 
-                                //robot moves to cone
-                                .splineToSplineHeading(new Pose2d(-57.5, 23.5, Math.toRadians(0)), Math.toRadians(170))
 
-                                //robot moves sideways
-                                .splineToLinearHeading(new Pose2d(-67.8, 11, Math.toRadians(0)), Math.toRadians(270))
+                                .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
+
+                                .lineToLinearHeading(new Pose2d(-36.04, 24, Math.toRadians(270)))
 
 
 
-
-
-
-
-                .lineToLinearHeading(new Pose2d(-64, 11, Math.toRadians(0)))
-                .lineToLinearHeading(new Pose2d(-67.8, 11, Math.toRadians(0)))
+                                .splineToLinearHeading(new Pose2d(-23.71, 3.13, Math.toRadians(290)), Math.toRadians(300))
 
 
 
@@ -48,29 +40,12 @@ public class LeftMedium {
 
 
 
+//traj2
+                                .splineToSplineHeading(new Pose2d(-32, 9.24, Math.toRadians(0)), Math.toRadians(180))
 
+                                .lineToLinearHeading(new Pose2d(-33, -12, Math.toRadians(0)))
 
-        //WAITS TO CYCLE
-
-
-
-
-
-                .splineToSplineHeading(new Pose2d(-30, 13, Math.toRadians(325)), Math.toRadians(0))
-
-
-
-
-
-
-
-
-        //MOVES TO POLE
-
-
-
-
-                .splineToLinearHeading(new Pose2d(-27, 4, Math.toRadians(325)), Math.toRadians(-20))
+                                .lineToLinearHeading(new Pose2d(-62, -12, Math.toRadians(0)))
 
 
 
@@ -81,19 +56,11 @@ public class LeftMedium {
 
 
 
-
-        //PARKS BASED ON SIGNAL SLEEVE
-
-
+//traj3
+                                .lineToLinearHeading(new Pose2d(-54, -12,Math.toRadians(0)))
 
 
-                .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-30, 5, Math.toRadians(360)))
-
-
-
-
-                .build());
+                                .build());
 
 
 

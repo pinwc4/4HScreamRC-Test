@@ -10,8 +10,10 @@ import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-@Disabled
-class RoadRunnerLeftHigh extends LinearOpMode {
+@Autonomous(name = "CycleLeft")
+
+
+public class RoadRunnerLeftHigh extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException{
@@ -22,14 +24,14 @@ class RoadRunnerLeftHigh extends LinearOpMode {
         MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(70, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         //MecanumVelocityConstraint expoMode = new
 
-        int intColorLevel = 0;
+        int intColorLevel = 1;
         int intConeStack1 = -90;
         int intCycleCounter = 0;
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
 
-attachment.moveGrabber();
+
         // We want to start the bot at x: 10, y: -8, heading: 90 degrees
         Pose2d startPose = new Pose2d(-39, -63, Math.toRadians(270));
 
@@ -67,7 +69,7 @@ attachment.moveGrabber();
 
 
 
-                .splineToLinearHeading(new Pose2d(-23.71, 3.13, Math.toRadians(290)), Math.toRadians(300))
+                .splineToLinearHeading(new Pose2d(-23.71, 2.13, Math.toRadians(290)), Math.toRadians(300))
 
                 .addTemporalMarker(() -> attachment.moveV4BOutHigh())
                 .waitSeconds(0.15)
@@ -82,9 +84,9 @@ attachment.moveGrabber();
                 .setReversed(true)
                 .splineToSplineHeading(new Pose2d(-32, 9.24, Math.toRadians(0)), Math.toRadians(180))
 
-                .splineToLinearHeading(new Pose2d(-31, -11.7, Math.toRadians(0)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(-33, -12, Math.toRadians(0)))
 
-                .lineToLinearHeading(new Pose2d(-62, 12, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-62, -12, Math.toRadians(0)))
                 .build();
 
 
@@ -114,7 +116,7 @@ attachment.moveGrabber();
 
 
 
-        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj1.end())
+       /* TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
                 .splineToSplineHeading(new Pose2d(-48, -12, Math.toRadians(0)), Math.toRadians(180))
@@ -132,46 +134,30 @@ attachment.moveGrabber();
                 .setVelConstraint(normalMode)
 
                 .build();
+*/
+        TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj3.end())
+
+                .setReversed(true)
+                .lineToLinearHeading(new Pose2d(-34, -9, Math.toRadians(360)))
+
+
+                .build();
 
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(traj3.end())
 
-                .addTemporalMarker(0.25, () -> {
-                    attachment.moveSlidesDown();
-                })
-
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-36, -14, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-12, -9, Math.toRadians(270)))
 
 
                 .build();
 
-        TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj3.end())
-
-                .addTemporalMarker(0.25, () -> {
-                    attachment.moveSlidesDown();
-                })
-
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
-                .setVelConstraint(slowestMode)
-                .splineToSplineHeading(new Pose2d(-58, -13, Math.toRadians(360)), Math.toRadians(180))
-                .setVelConstraint(normalMode)
-
-
-                .build();
 
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(traj3.end())
 
-                .addTemporalMarker(0.25, () -> {
-                    attachment.moveSlidesDown();
-                })
-
                 .setReversed(true)
-
-                .lineToLinearHeading(new Pose2d(-40, -13.5, Math.toRadians(360)))
+                .lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(360)))
                 .setReversed(false)
-                .lineToLinearHeading(new Pose2d(-12, -13.5, Math.toRadians(360)))
-
+                .lineToLinearHeading(new Pose2d(12, -9, Math.toRadians(360)))
 
 
                 .build();
@@ -191,11 +177,7 @@ attachment.moveGrabber();
 
         attachment.movePickUpCone2();
 
-        attachment.moveWallSpacerOut();
 
-        attachment.moveStackCenter();
-
-        drive.followTrajectorySequence(traj3);
 
         drive.update();
 
@@ -213,7 +195,7 @@ attachment.moveGrabber();
                     attachment.moveWallSpacerOut();
                     drive.update();
                 }
-            } else if(intCycleCounter == 1){
+            /*} else if(intCycleCounter == 1){
                 drive.followTrajectorySequenceAsync(traj4);
                 while (drive.isBusy() && opModeIsActive()) {
                     attachment.movePickUpPosition();
@@ -227,12 +209,18 @@ attachment.moveGrabber();
                     attachment.moveWallSpacerOut();
                     drive.update();
                 }
+                */
+
             }
 
 
 
+           attachment.moveWallSpacerOut();
 
+           attachment.moveStackCenter();
 
+           drive.followTrajectorySequence(traj3);
+           drive.update();
 
 
 
