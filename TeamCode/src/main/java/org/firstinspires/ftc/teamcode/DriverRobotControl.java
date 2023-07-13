@@ -4,6 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.teamcode.ChassisAndControl.Chassis;
+import org.firstinspires.ftc.teamcode.ChassisAndControl.ChassisControlScheme;
+import org.firstinspires.ftc.teamcode.ChassisAndControl.DR4BAttachment;
+import org.firstinspires.ftc.teamcode.ChassisAndControl.DroneControlScheme;
+import org.firstinspires.ftc.teamcode.ChassisAndControl.FreightAttachment;
+import org.firstinspires.ftc.teamcode.ChassisAndControl.MecanumChassis;
+
 @TeleOp(name = "DriverRobotControl_DRIVER_CONTROL")
 
 public class DriverRobotControl extends OpMode {
