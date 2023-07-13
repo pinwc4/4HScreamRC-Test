@@ -3,15 +3,15 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Left Medium")
-
-public class RoadRunnerLeftHigh extends LinearOpMode {
+@Disabled
+class RoadRunnerLeftHigh extends LinearOpMode {
     @Override
 
     public void runOpMode() throws InterruptedException{
@@ -29,7 +29,7 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
 
-
+attachment.moveGrabber();
         // We want to start the bot at x: 10, y: -8, heading: 90 degrees
         Pose2d startPose = new Pose2d(-39, -63, Math.toRadians(270));
 
@@ -82,9 +82,9 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
                 .setReversed(true)
                 .splineToSplineHeading(new Pose2d(-32, 9.24, Math.toRadians(0)), Math.toRadians(180))
 
-                .splineToLinearHeading(new Pose2d(-32, -11.7, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-31, -11.7, Math.toRadians(0)), Math.toRadians(0))
 
-
+                .lineToLinearHeading(new Pose2d(-62, 12, Math.toRadians(0)))
                 .build();
 
 
@@ -101,7 +101,7 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
 
 
                 .setReversed(false)
-                .lineToLinearHeading(new Pose2d(-56, -12, Math.toRadians(0)))
+
                 .addTemporalMarker(() -> attachment.moveV4BOutHigh())
                 .waitSeconds(0.075)
                 .addTemporalMarker(() -> attachment.moveGrabber())
@@ -117,10 +117,9 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
-                .setVelConstraint(slowestMode)
-                .splineToSplineHeading(new Pose2d(-60.8, -11, Math.toRadians(360)), Math.toRadians(180))
-                .setVelConstraint(normalMode)
+                .splineToSplineHeading(new Pose2d(-48, -12, Math.toRadians(0)), Math.toRadians(180))
+
+                .splineToSplineHeading(new Pose2d(-25.61, -1.25, Math.toRadians(222)), Math.toRadians(222-1.25))
 
                 .build();
 
@@ -190,10 +189,17 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
 
         drive.followTrajectorySequence(traj2);
 
+        attachment.movePickUpCone2();
+
+        attachment.moveWallSpacerOut();
+
+        attachment.moveStackCenter();
+
         drive.followTrajectorySequence(traj3);
+
         drive.update();
 
-        intColorLevel = attachment.getintColorLevel();
+        //intColorLevel = attachment.getintColorLevel();
 
 
 
@@ -223,12 +229,12 @@ public class RoadRunnerLeftHigh extends LinearOpMode {
                 }
             }
 
-            attachment.moveStackCenter();
 
-            attachment.movePickUpCone2();
 
-            drive.followTrajectorySequence(traj3);
-            drive.update();
+
+
+
+
 
             intConeStack1 = intConeStack1 + 52;//52
             intCycleCounter++;
