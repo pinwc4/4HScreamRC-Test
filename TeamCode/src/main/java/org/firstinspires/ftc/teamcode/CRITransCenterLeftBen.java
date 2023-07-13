@@ -7,16 +7,51 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "CRITransCenterLeftBenE")
 
 public class CRITransCenterLeftBen extends LinearOpMode {
+
+    private SleeveDetectionLeft sleeveDetection;
+    private OpenCvCamera camera;
+
+    // Name of the Webcam to be set in the config
+    private String webcamName = "Webcam 1";
+
     @Override
 
     public void runOpMode() throws InterruptedException {
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
+        sleeveDetection = new SleeveDetectionLeft();
+        camera.setPipeline(sleeveDetection);
+
+
+
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                camera.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {}
+        });
+
+        while (!isStarted()) {
+            telemetry.addData("ROTATION: ", sleeveDetection.getPosition());
+            telemetry.update();
+        }
 
         MecanumVelocityConstraint slowestMode = new MecanumVelocityConstraint(25, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(30, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
@@ -25,6 +60,8 @@ public class CRITransCenterLeftBen extends LinearOpMode {
         RevBlinkinLedDriver lights;
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         waitForStart();
+
+        String strColorLevel = String.valueOf(sleeveDetection.getPosition());
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
@@ -83,10 +120,16 @@ public class CRITransCenterLeftBen extends LinearOpMode {
         drive.followTrajectorySequence(yellow1);
         drive.update();
 
-        Thread.sleep(5000);
-
-        drive.followTrajectorySequence(park1);
-        drive.update();
+        if(strColorLevel == "LEFT"){
+            drive.followTrajectorySequence(park1);
+            drive.update();
+        } else if (strColorLevel == "CENTER"){
+            drive.followTrajectorySequence(park2);
+            drive.update();
+        } else {
+            drive.followTrajectorySequence(park3);
+            drive.update();
+        }
 
     }
 }

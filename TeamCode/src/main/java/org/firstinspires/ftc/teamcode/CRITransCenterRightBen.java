@@ -19,7 +19,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 public class CRITransCenterRightBen extends LinearOpMode {
 
-    private SleeveDetectionLeft sleeveDetection;
+    private SleeveDetectionRight sleeveDetection;
     private OpenCvCamera camera;
 
     // Name of the Webcam to be set in the config
@@ -29,7 +29,7 @@ public class CRITransCenterRightBen extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
-        sleeveDetection = new SleeveDetectionLeft();
+        sleeveDetection = new SleeveDetectionRight();
         camera.setPipeline(sleeveDetection);
 
 
@@ -51,10 +51,6 @@ public class CRITransCenterRightBen extends LinearOpMode {
             telemetry.update();
         }
 
-        waitForStart();
-
-        String strColorLevel = String.valueOf(sleeveDetection.getPosition());
-
         MecanumVelocityConstraint slowestMode = new MecanumVelocityConstraint(25, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(30, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(70, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
@@ -62,6 +58,8 @@ public class CRITransCenterRightBen extends LinearOpMode {
         RevBlinkinLedDriver lights;
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         waitForStart();
+
+        String strColorLevel = String.valueOf(sleeveDetection.getPosition());
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
