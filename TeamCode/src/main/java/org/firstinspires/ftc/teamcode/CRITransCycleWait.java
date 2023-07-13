@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name = "Transformer Cycle Wait")
-
+@Disabled
 public class CRITransCycleWait extends LinearOpMode {
     @Override
 

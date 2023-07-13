@@ -12,18 +12,92 @@ public class LeftMedium {
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .followTrajectorySequence
-                        (drive -> drive.trajectorySequenceBuilder(new Pose2d(-39, -63, 270))
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(-39, -63, 270))
 
 
-                                //traj 1
-
-                                .splineToLinearHeading(new Pose2d(-35, -60, Math.toRadians(270)), Math.toRadians(0))
 
 
-                                .lineToLinearHeading(new Pose2d(-35, 24, Math.toRadians(270)))
 
-                                .splineToSplineHeading(new Pose2d(23.75, 57.5, Math.toRadians(180))), Math.toRadians(210));
+
+
+                                //robot moves out
+                                .splineToLinearHeading(new Pose2d(-37, -60, Math.toRadians(270)), Math.toRadians(80))
+
+                                //robot moves out
+                                .splineToSplineHeading(new Pose2d(-36, 15, Math.toRadians(270)), Math.toRadians(90))
+
+                                //robot moves to cone
+                                .splineToSplineHeading(new Pose2d(-57.5, 23.5, Math.toRadians(0)), Math.toRadians(170))
+
+                                //robot moves sideways
+                                .splineToLinearHeading(new Pose2d(-67.8, 11, Math.toRadians(0)), Math.toRadians(270))
+
+
+
+
+
+
+
+                .lineToLinearHeading(new Pose2d(-64, 11, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-67.8, 11, Math.toRadians(0)))
+
+
+
+
+
+
+
+
+
+        //WAITS TO CYCLE
+
+
+
+
+
+                .splineToSplineHeading(new Pose2d(-30, 13, Math.toRadians(325)), Math.toRadians(0))
+
+
+
+
+
+
+
+
+        //MOVES TO POLE
+
+
+
+
+                .splineToLinearHeading(new Pose2d(-27, 4, Math.toRadians(325)), Math.toRadians(-20))
+
+
+
+
+
+
+
+
+
+
+
+        //PARKS BASED ON SIGNAL SLEEVE
+
+
+
+
+                .setReversed(true)
+                .lineToLinearHeading(new Pose2d(-30, 5, Math.toRadians(360)))
+
+
+
+
+                .build());
+
+
+
+
 
 
 
