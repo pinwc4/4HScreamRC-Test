@@ -74,6 +74,7 @@ public class CRITransCenterRightBen extends LinearOpMode {
         TrajectorySequence yellow1 = drive.trajectorySequenceBuilder(new Pose2d(16.00, 64.00, Math.toRadians(90.00)))
                 .setReversed(true)
                 .setVelConstraint(normalMode)
+                .addTemporalMarker(1,() -> attachment.movePickUpPositionGround2())
                 .splineToSplineHeading(new Pose2d(12.00, 36.00, Math.toRadians(90.00)), Math.toRadians(270.00))
                 .splineTo(new Vector2d(12.00, 4.00), Math.toRadians(270.00))
                 .splineToSplineHeading(new Pose2d(7.00, -9.00, Math.toRadians(181.34)), Math.toRadians(180.00))
@@ -84,19 +85,36 @@ public class CRITransCenterRightBen extends LinearOpMode {
                 .build();
 
 
+        TrajectorySequence traj2 = drive.trajectorySequenceBuilder(yellow1.end())
+
+                .setVelConstraint(slowestMode)
+                .lineToLinearHeading(new Pose2d(-59, -19, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-65, -19, Math.toRadians(180)))
+
+                .setVelConstraint(normalMode)
+
+                .build();
+
+
         //Navigate to parking spot 1
 
-        TrajectorySequence park1 = drive.trajectorySequenceBuilder(yellow1.end())
+        TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj2.end())
                 .setReversed(true)
                 .setVelConstraint(normalMode)
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
                 .splineToConstantHeading(new Vector2d(-35, -9), Math.toRadians(360.00))
                 .build();
 
 //Navigate to parking spot 2
 
-        TrajectorySequence park2 = drive.trajectorySequenceBuilder(yellow1.end())
+        TrajectorySequence park2 = drive.trajectorySequenceBuilder(traj2.end())
                 .setReversed(true)
                 .setVelConstraint(normalMode)
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
                 .splineToConstantHeading(new Vector2d(-35.00, -9), Math.toRadians(360))
                 .splineTo(new Vector2d(-12, -9.00), Math.toRadians(360))
                 .build();
@@ -104,17 +122,26 @@ public class CRITransCenterRightBen extends LinearOpMode {
 
         //Navigate to parking spot 3
 
-        TrajectorySequence park3 = drive.trajectorySequenceBuilder(yellow1.end())
+        TrajectorySequence park3 = drive.trajectorySequenceBuilder(traj2.end())
                 .setReversed(true)
                 .setVelConstraint(normalMode)
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
                 .splineToConstantHeading(new Vector2d(-35.00, -9.00), Math.toRadians(0.00))
                 .splineTo(new Vector2d(-12, -10), Math.toRadians(0.00))
                 .splineTo(new Vector2d(10 , -12.00), Math.toRadians(0.00))
                 .build();
 
 
+        attachment.moveV4B();
         drive.followTrajectorySequence(yellow1);
         drive.update();
+
+        drive.followTrajectorySequence(traj2);
+        drive.update();
+
+        attachment.movePickUpCone2();
 
 
         if(strColorLevel == "LEFT"){

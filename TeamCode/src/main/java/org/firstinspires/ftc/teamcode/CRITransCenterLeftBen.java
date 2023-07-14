@@ -87,8 +87,8 @@ public class CRITransCenterLeftBen extends LinearOpMode {
                 .splineToSplineHeading(new Pose2d(7.00, 11.00, Math.toRadians(178.66)), Math.toRadians(180.00))
                 .splineTo(new Vector2d(-29.00, 11.00), Math.toRadians(180.00))
                 .splineToConstantHeading(new Vector2d(-37.00, 19.00), Math.toRadians(180.00))
-                .splineTo(new Vector2d(-50.00, 18.00), Math.toRadians(180.00))
-                .splineTo(new Vector2d(-63.00, 18.00), Math.toRadians(180.00))
+                .splineTo(new Vector2d(-50.00, 19.00), Math.toRadians(180.00))
+                .splineTo(new Vector2d(-63.00, 19.00), Math.toRadians(180.00))
 
                 .build();
 
@@ -143,6 +143,7 @@ public class CRITransCenterLeftBen extends LinearOpMode {
 
 
 
+        attachment.moveV4B();
         drive.followTrajectorySequence(yellow1);
         drive.update();
 
