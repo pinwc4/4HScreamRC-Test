@@ -6,19 +6,50 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "Right High")
-@Disabled
+@Autonomous(name = "Cycle Right")
 
-public class RoadRunnerRightHigh extends LinearOpMode {
+public class CRICycleRight extends LinearOpMode {
+
+    private SleeveDetectionRight sleeveDetection;
+    private OpenCvCamera camera;
+
+    // Name of the Webcam to be set in the config
+    private String webcamName = "Webcam 1";
     @Override
 
     public void runOpMode() throws InterruptedException{
 
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
+        sleeveDetection = new SleeveDetectionRight();
+        camera.setPipeline(sleeveDetection);
 
+
+
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                camera.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {}
+        });
+
+        while (!isStarted()) {
+            telemetry.addData("ROTATION: ", sleeveDetection.getPosition());
+            telemetry.update();
+        }
 
         MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(25, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(50, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
@@ -30,6 +61,9 @@ public class RoadRunnerRightHigh extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
+
+        waitForStart();
+        String strColorLevel = String.valueOf(sleeveDetection.getPosition());
 
 
         // We want to start the bot at x: 10, y: -8, heading: 90 degrees
@@ -204,10 +238,10 @@ public class RoadRunnerRightHigh extends LinearOpMode {
 
         attachment.moveWallSpacerIn();
 
-        if(intColorLevel == 1){
+        if(strColorLevel == "LEFT"){
             drive.followTrajectorySequence(park1);
             drive.update();
-        } else if (intColorLevel == 2){
+        } else if (strColorLevel == "CENTER"){
             drive.followTrajectorySequence(park2);
             drive.update();
         } else {

@@ -15,8 +15,10 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "Center Left")
 @Disabled
-
-public class criCenterLeft extends LinearOpMode {
+//this is apparently a random and useless program, and i spent an hour working on it because
+//it seemed to be the closest match. Please for the love of god name your programs instead of
+//slapping random stuff together
+public class criCenterRight extends LinearOpMode {
 
     private SleeveDetectionRight sleeveDetection;
     private OpenCvCamera camera;
@@ -65,7 +67,7 @@ public class criCenterLeft extends LinearOpMode {
         RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
 
 
-        Pose2d startPose = new Pose2d(12, -63, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(12, 63, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
 
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
@@ -79,7 +81,7 @@ public class criCenterLeft extends LinearOpMode {
                 .addTemporalMarker(2, () -> {
                     attachment.senseSleeve();
                 })
-                .splineToLinearHeading(new Pose2d(23, 0.5, Math.toRadians(270)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(23.00, -0.50, Math.toRadians(90.00)), Math.toRadians(360.00))
 
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.15)
@@ -87,7 +89,7 @@ public class criCenterLeft extends LinearOpMode {
                 .waitSeconds(0.15)
                 .addTemporalMarker(() -> attachment.moveV4BOut())
 
-                .splineToLinearHeading(new Pose2d(-62.8, -12, Math.toRadians(180)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-62.80, 12.00, Math.toRadians(180.00)), Math.toRadians(360.00))
 
                 .build();
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
@@ -98,8 +100,9 @@ public class criCenterLeft extends LinearOpMode {
 
 
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-48, -12, Math.toRadians(360)), Math.toRadians(360))
-                .splineToSplineHeading(new Pose2d(-27.75, -23, Math.toRadians(330)), Math.toRadians(340)) //225
+                .splineToSplineHeading(new Pose2d(-46.00, 13.00, Math.toRadians(0.00)), Math.toRadians(180.00))
+                .splineToSplineHeading(new Pose2d(-60.80, 11.00, Math.toRadians(0.00)), Math.toRadians(180.00))
+
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.075)
                 .addTemporalMarker(() -> attachment.moveGrabber())
@@ -114,19 +117,16 @@ public class criCenterLeft extends LinearOpMode {
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
-
-                .splineToSplineHeading(new Pose2d(-60.8, -11, Math.toRadians(360)), Math.toRadians(180))
-
+                .splineToSplineHeading(new Pose2d(-46.00, 13.00, Math.toRadians(0.00)), Math.toRadians(180.00))
+                .splineToSplineHeading(new Pose2d(-60.80, 11.00, Math.toRadians(0.00)), Math.toRadians(180.00))
 
                 .build();
 
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj1.end())
 
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(-46, -12, Math.toRadians(360)), Math.toRadians(180))
-
-                .splineToSplineHeading(new Pose2d(-59, -10.5, Math.toRadians(360)), Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(-46.00, 13.00, Math.toRadians(0.00)), Math.toRadians(180.00))
+                .splineToSplineHeading(new Pose2d(-60.80, 11.00, Math.toRadians(0.00)), Math.toRadians(180.00))
 
 
                 .build();
@@ -138,7 +138,7 @@ public class criCenterLeft extends LinearOpMode {
                 })
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-36, -14, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-36.00, 14.00, Math.toRadians(90.00)))
 
 
                 .build();
@@ -150,10 +150,9 @@ public class criCenterLeft extends LinearOpMode {
                 })
 
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(-46, -13, Math.toRadians(360)), Math.toRadians(180))
 
-                .splineToSplineHeading(new Pose2d(-58, -13, Math.toRadians(360)), Math.toRadians(180))
-
+                .splineToSplineHeading(new Pose2d(-46.00, 13.00, Math.toRadians(0.00)), Math.toRadians(180.00))
+                .splineToSplineHeading(new Pose2d(-58.00, 13.00, Math.toRadians(0.00)), Math.toRadians(180.00))
 
 
                 .build();
@@ -166,10 +165,9 @@ public class criCenterLeft extends LinearOpMode {
 
                 .setReversed(true)
 
-                .lineToLinearHeading(new Pose2d(-40, -13.5, Math.toRadians(360)))
-                .setReversed(false)
-                .lineToLinearHeading(new Pose2d(-12, -13.5, Math.toRadians(360)))
-
+                .lineToLinearHeading(new Pose2d(-40.00, 13.50, Math.toRadians(0.00)))
+                .setReversed(true)
+                .lineToLinearHeading(new Pose2d(-12.00, 13.50, Math.toRadians(0.00)))
 
 
                 .build();
