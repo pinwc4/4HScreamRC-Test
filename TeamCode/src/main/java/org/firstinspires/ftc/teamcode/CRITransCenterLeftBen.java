@@ -60,9 +60,13 @@ public class CRITransCenterLeftBen extends LinearOpMode {
 
         RevBlinkinLedDriver lights;
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+
+
         waitForStart();
 
         String strColorLevel = String.valueOf(sleeveDetection.getPosition());
+
+        camera.closeCameraDevice();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
@@ -77,28 +81,46 @@ public class CRITransCenterLeftBen extends LinearOpMode {
         TrajectorySequence yellow1 = drive.trajectorySequenceBuilder(new Pose2d(16.00, -64.00, Math.toRadians(270.00)))
                 .setReversed(true)
                 .setVelConstraint(normalMode)
+                .addTemporalMarker(1,() -> attachment.movePickUpPositionGround2())
                 .splineToSplineHeading(new Pose2d(12.00, -36.00, Math.toRadians(270.00)), Math.toRadians(90.00))
                 .splineTo(new Vector2d(12.00, -4.00), Math.toRadians(90.00))
                 .splineToSplineHeading(new Pose2d(7.00, 11.00, Math.toRadians(178.66)), Math.toRadians(180.00))
                 .splineTo(new Vector2d(-29.00, 11.00), Math.toRadians(180.00))
                 .splineToConstantHeading(new Vector2d(-37.00, 19.00), Math.toRadians(180.00))
-                .splineTo(new Vector2d(-50.00, 19.00), Math.toRadians(180.00))
-                .splineTo(new Vector2d(-62.00, 19.00), Math.toRadians(180.00))
+                .splineTo(new Vector2d(-50.00, 18.00), Math.toRadians(180.00))
+                .splineTo(new Vector2d(-63.00, 18.00), Math.toRadians(180.00))
+
+                .build();
+
+        TrajectorySequence traj2 = drive.trajectorySequenceBuilder(yellow1.end())
+
+                .setVelConstraint(slowestMode)
+                .lineToLinearHeading(new Pose2d(-59, 19, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-65, 19, Math.toRadians(180)))
+
+                .setVelConstraint(normalMode)
+
                 .build();
 
         //Navigate to parking spot 1
 
-        TrajectorySequence park1 = drive.trajectorySequenceBuilder(yellow1.end())
+        TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj2.end())
                 .setReversed(true)
                 .setVelConstraint(normalMode)
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
                 .splineToConstantHeading(new Vector2d(-33, 10.00), Math.toRadians(0.00))
                 .build();
 
 //Navigate to parking spot 2
 
-        TrajectorySequence park2 = drive.trajectorySequenceBuilder(yellow1.end())
+        TrajectorySequence park2 = drive.trajectorySequenceBuilder(traj2.end())
                 .setReversed(true)
                 .setVelConstraint(normalMode)
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
                 .splineToConstantHeading(new Vector2d(-30.00, 10.00), Math.toRadians(0.00))
                 .splineTo(new Vector2d(-8, 9.00), Math.toRadians(0.00))
                 .build();
@@ -106,9 +128,12 @@ public class CRITransCenterLeftBen extends LinearOpMode {
 
         //Navigate to parking spot 3
 
-        TrajectorySequence park3 = drive.trajectorySequenceBuilder(yellow1.end())
+        TrajectorySequence park3 = drive.trajectorySequenceBuilder(traj2.end())
                 .setReversed(true)
                 .setVelConstraint(normalMode)
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
                 .splineToConstantHeading(new Vector2d(-30.00, 10.00), Math.toRadians(0.00))
                 .splineTo(new Vector2d(-6.00, 9.00), Math.toRadians(0.00))
                 .splineTo(new Vector2d(14.00, 8.00), Math.toRadians(0.00))
@@ -120,6 +145,13 @@ public class CRITransCenterLeftBen extends LinearOpMode {
 
         drive.followTrajectorySequence(yellow1);
         drive.update();
+
+        drive.followTrajectorySequence(traj2);
+        drive.update();
+
+        attachment.movePickUpCone2();
+
+
 
         if(strColorLevel == "LEFT"){
             drive.followTrajectorySequence(park1);
