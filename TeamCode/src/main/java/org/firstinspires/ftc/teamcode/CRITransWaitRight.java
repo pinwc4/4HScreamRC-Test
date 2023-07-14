@@ -89,10 +89,10 @@ public class CRITransWaitRight extends LinearOpMode {
 
                 .addTemporalMarker(2.5, () -> attachment.movePickUpPositionGround())
 
-                .splineToLinearHeading(new Pose2d(-37.00, 60.00, Math.toRadians(90.00)), Math.toRadians(280.00))
-                .splineToSplineHeading(new Pose2d(-36.00, -15.00, Math.toRadians(90.00)), Math.toRadians(270.00))
-                .splineToSplineHeading(new Pose2d(-57.50, -23.50, Math.toRadians(360.00)), Math.toRadians(190.00))
-                .splineToLinearHeading(new Pose2d(-67.80, -11.00, Math.toRadians(360.00)), Math.toRadians(90.00))
+                .splineToLinearHeading(new Pose2d(-37.5, 60.00, Math.toRadians(90.00)), Math.toRadians(280.00))
+                .splineToSplineHeading(new Pose2d(-37.5, -15.00, Math.toRadians(90.00)), Math.toRadians(270.00))
+                .splineToSplineHeading(new Pose2d(-57.5, -21, Math.toRadians(360.00)), Math.toRadians(190.00))
+                .splineToLinearHeading(new Pose2d(-67.8, -11.00, Math.toRadians(360.00)), Math.toRadians(90.00))
 
 
                 .build();
@@ -102,8 +102,8 @@ public class CRITransWaitRight extends LinearOpMode {
 
                 .setVelConstraint(slowestMode)
 
-                .lineToLinearHeading(new Pose2d(-55.00, -11.00, Math.toRadians(360.00)))
-                .lineToLinearHeading(new Pose2d(-62.00, -11.00, Math.toRadians(360.00)))
+                .lineToLinearHeading(new Pose2d(-60, -11.00, Math.toRadians(360.00)))
+                .lineToLinearHeading(new Pose2d(-67.00, -11.00, Math.toRadians(360.00)))
 
                 .setVelConstraint(normalMode)
 
@@ -245,6 +245,12 @@ public class CRITransWaitRight extends LinearOpMode {
 
             drive.update();
 
+        }
+
+        else{
+            drive.followTrajectorySequence(wait2);
+
+            drive.update();
         }
 
 

@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -16,7 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 public class CRICycleLeft extends LinearOpMode {
 
-    private SleeveDetectionRight sleeveDetection;
+    private SleeveDetectionLeft sleeveDetection;
     private OpenCvCamera camera;
 
     // Name of the Webcam to be set in the config
@@ -25,16 +27,18 @@ public class CRICycleLeft extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException{
 
-/*
+
         MecanumVelocityConstraint slowestMode = new MecanumVelocityConstraint(25, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         MecanumVelocityConstraint slowMode = new MecanumVelocityConstraint(30, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
         MecanumVelocityConstraint normalMode = new MecanumVelocityConstraint(70, DriveConstants.getTrackWidth(), DriveConstants.getWheelBase());
-        //MecanumVelocityConstraint expoMode = new
-        */
+
+
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
-        sleeveDetection = new SleeveDetectionRight();
+        sleeveDetection = new SleeveDetectionLeft();
         camera.setPipeline(sleeveDetection);
 
 
@@ -61,11 +65,7 @@ public class CRICycleLeft extends LinearOpMode {
         int intConeStack1 = -90;
         int intCycleCounter = 0;
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
 
-        waitForStart();
-        String strColorLevel = String.valueOf(sleeveDetection.getPosition());
 
 
         // We want to start the bot at x: 10, y: -8, heading: 90 degrees
@@ -77,6 +77,7 @@ public class CRICycleLeft extends LinearOpMode {
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
 
                 .setReversed(true)
+                .setVelConstraint(normalMode)
 
                .addTemporalMarker(1.5, () -> {
                     attachment.moveSlidesH();
@@ -84,9 +85,11 @@ public class CRICycleLeft extends LinearOpMode {
 
                 .splineToLinearHeading(new Pose2d(-37, -60, Math.toRadians(270)), Math.toRadians(80))
 
-                .splineToSplineHeading(new Pose2d(-36, 23, Math.toRadians(270)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(-37, -18, Math.toRadians(270)), Math.toRadians(90))
 
-                .splineToLinearHeading(new Pose2d(-22.71, 3.13, Math.toRadians(290)), Math.toRadians(300))
+                .splineToSplineHeading(new Pose2d(-40, -2, Math.toRadians(360)), Math.toRadians(85))
+
+                .splineToLinearHeading(new Pose2d(-24, -2, Math.toRadians(360)), Math.toRadians(0))
 
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.15)
@@ -94,7 +97,7 @@ public class CRICycleLeft extends LinearOpMode {
                 .waitSeconds(0.25)
                 .addTemporalMarker(() -> attachment.moveV4BIn())
 
-                .splineToSplineHeading(new Pose2d(-32, 9.24, Math.toRadians(0)), Math.toRadians(180))
+                //.splineToSplineHeading(new Pose2d(-32, -11.7, Math.toRadians(0)), Math.toRadians(180))
 
                 .lineToLinearHeading(new Pose2d(-33, -11.7, Math.toRadians(0)))
 
@@ -134,12 +137,12 @@ public class CRICycleLeft extends LinearOpMode {
                 .setReversed(false)
 
                 .splineToLinearHeading(new Pose2d(-61.5, -10, Math.toRadians(0)), Math.toRadians(0))
-                .splineToSplineHeading(new Pose2d(-24.25, -1, Math.toRadians(43)), Math.toRadians(43))
+                .splineToSplineHeading(new Pose2d(-26, -5, Math.toRadians(45)), Math.toRadians(45))
 
                 .addTemporalMarker(() -> attachment.moveV4BOut())
                 .waitSeconds(0.075)
                 .addTemporalMarker(() -> attachment.moveGrabber())
-                .waitSeconds(0.75)
+                .waitSeconds(0.25)
                 .addTemporalMarker(() -> attachment.moveV4BIn())
 
                 .lineToLinearHeading(new Pose2d(-46, -12,Math.toRadians(0)))
@@ -172,14 +175,19 @@ public class CRICycleLeft extends LinearOpMode {
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(traj3.end())
 
                 .setReversed(true)
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
                 .lineToLinearHeading(new Pose2d(-36, -13, Math.toRadians(0)))
-
 
                 .build();
 
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(traj3.end())
 
                 .setReversed(true)
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
                 .lineToLinearHeading(new Pose2d(-36, -13, Math.toRadians(0)))
                 .setReversed(false)
                 .lineToLinearHeading(new Pose2d(-12, -12, Math.toRadians(0)))
@@ -190,6 +198,9 @@ public class CRICycleLeft extends LinearOpMode {
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(traj3.end())
 
                 .setReversed(true)
+                .addTemporalMarker(0.25, () -> {
+                    attachment.moveSlidesDown();
+                })
                 .lineToLinearHeading(new Pose2d(-36, -13, Math.toRadians(0)))
                 .setReversed(false)
                 .lineToLinearHeading(new Pose2d(12, -12, Math.toRadians(0)))
@@ -203,14 +214,14 @@ public class CRICycleLeft extends LinearOpMode {
 
         waitForStart();
 
+        String strColorLevel = String.valueOf(sleeveDetection.getPosition());
+
         resetRuntime();
 
         attachment.moveV4B();
 
         drive.followTrajectorySequence(traj1);
         drive.update();
-
-        //intColorLevel = attachment.getintColorLevel();
 
 
        while (getRuntime() < 23) {
