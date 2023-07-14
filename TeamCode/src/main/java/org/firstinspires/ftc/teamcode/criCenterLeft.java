@@ -6,17 +6,51 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "Center Left")
 @Disabled
 
 public class criCenterLeft extends LinearOpMode {
 
+    private SleeveDetectionRight sleeveDetection;
+    private OpenCvCamera camera;
+
+    // Name of the Webcam to be set in the config
+    private String webcamName = "Webcam 1";
     @Override
 
     public void runOpMode() throws InterruptedException {
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
+        sleeveDetection = new SleeveDetectionRight();
+        camera.setPipeline(sleeveDetection);
+
+
+
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                camera.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {}
+        });
+
+        while (!isStarted()) {
+            telemetry.addData("ROTATION: ", sleeveDetection.getPosition());
+            telemetry.update();
+        }
+
         int intColorLevel = 0;
         int intConeStack1 = -90;
         int intCycleCounter = 0;
@@ -24,6 +58,8 @@ public class criCenterLeft extends LinearOpMode {
         RevBlinkinLedDriver lights;
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         waitForStart();
+
+        String strColorLevel = String.valueOf(sleeveDetection.getPosition());
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         RoadRunnerAttachment attachment = new RoadRunnerAttachment(hardwareMap, telemetry);
@@ -193,10 +229,10 @@ public class criCenterLeft extends LinearOpMode {
 
         attachment.moveWallSpacerIn();
 
-        if(intColorLevel == 1){
+        if(strColorLevel == "LEFT"){
             drive.followTrajectorySequence(park1);
             drive.update();
-        } else if (intColorLevel == 2){
+        } else if (strColorLevel == "CENTER"){
             drive.followTrajectorySequence(park2);
             drive.update();
         } else {
