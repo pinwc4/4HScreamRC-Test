@@ -89,10 +89,10 @@ public class CRITransWaitRight extends LinearOpMode {
 
                 .addTemporalMarker(2.5, () -> attachment.movePickUpPositionGround())
 
-                .splineToLinearHeading(new Pose2d(-37.00, 60.00, Math.toRadians(90.00)), Math.toRadians(280.00))
-                .splineToSplineHeading(new Pose2d(-36.00, -15.00, Math.toRadians(90.00)), Math.toRadians(270.00))
-                .splineToSplineHeading(new Pose2d(-57.50, -23.50, Math.toRadians(360.00)), Math.toRadians(190.00))
-                .splineToLinearHeading(new Pose2d(-67.80, -11.00, Math.toRadians(360.00)), Math.toRadians(90.00))
+                .splineToLinearHeading(new Pose2d(-37, 60.00, Math.toRadians(90.00)), Math.toRadians(280.00))
+                .splineToSplineHeading(new Pose2d(-37, -6, Math.toRadians(90.00)), Math.toRadians(270.00))
+
+                .splineToSplineHeading(new Pose2d(-67, -20, Math.toRadians(350)), Math.toRadians(195.00))
 
 
                 .build();
@@ -102,8 +102,11 @@ public class CRITransWaitRight extends LinearOpMode {
 
                 .setVelConstraint(slowestMode)
 
-                .lineToLinearHeading(new Pose2d(-55.00, -11.00, Math.toRadians(360.00)))
-                .lineToLinearHeading(new Pose2d(-62.00, -11.00, Math.toRadians(360.00)))
+                .lineToLinearHeading(new Pose2d(-61, -20, Math.toRadians(350.00)))
+
+                .setVelConstraint(normalMode)
+
+                .lineToLinearHeading(new Pose2d(-71, -20, Math.toRadians(350.00)))
 
                 .setVelConstraint(normalMode)
 
@@ -186,7 +189,7 @@ public class CRITransWaitRight extends LinearOpMode {
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(poleMove1.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-35.00, -10.00, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(7.00, -15.00, Math.toRadians(180.00)))
 
 
                 .build();
@@ -195,7 +198,7 @@ public class CRITransWaitRight extends LinearOpMode {
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(poleMove2.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-12.00, -8.00, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-15.00, -12.00, Math.toRadians(180.00)))
 
                 .build();
 
@@ -203,7 +206,7 @@ public class CRITransWaitRight extends LinearOpMode {
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(poleMove2.end())
 
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(12.00, -8.00, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-40.00, -12.00, Math.toRadians(0)))
 
 
 
@@ -245,6 +248,12 @@ public class CRITransWaitRight extends LinearOpMode {
 
             drive.update();
 
+        }
+
+        else{
+            drive.followTrajectorySequence(wait2);
+
+            drive.update();
         }
 
 

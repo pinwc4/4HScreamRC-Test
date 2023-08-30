@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "Center Left")
+@Autonomous(name = "Center Right")
 @Disabled
 //this is apparently a random and useless program, and i spent an hour working on it because
 //it seemed to be the closest match. Please for the love of god name your programs instead of

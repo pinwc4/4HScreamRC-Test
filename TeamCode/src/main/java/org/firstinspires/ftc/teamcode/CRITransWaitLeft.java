@@ -253,6 +253,12 @@ public class CRITransWaitLeft extends LinearOpMode {
 
         }
 
+        else{
+            drive.followTrajectorySequence(wait2);
+
+            drive.update();
+        }
+
 
 
         while ((getRuntime() - dblStartRuntime) < 25){
